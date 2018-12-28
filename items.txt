@@ -1,0 +1,8 @@
+Item Name|Description|Actions
+House Key|What it says on the tin.|Unlock Frontdoor,Lock Frontdoor
+Knife
+Crowbar
+Mirror
+Cup
+Flashlight
+Rusty Key|This key looks very old and very dirty.|Unlock Shed,Lock Shed
