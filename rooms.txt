@@ -1,0 +1,18 @@
+Room Name|Description|Items|Exits|Actions
+Porch
+Entryway
+Living Room
+Dining Room
+Kitchen
+Laundry Room
+Pantry
+Basement East
+Basement West
+Stairway
+North Bedroom
+South Bedroom
+Upstairs Hallway
+Linen Closet
+Bathroom
+Sewing Room
+Attic
