@@ -1,18 +1,19 @@
-Room Name|Description|Items|Exits|Actions
-Porch
-Entryway
-Living Room
-Dining Room
-Kitchen
-Laundry Room
-Pantry
-Basement East
-Basement West
-Stairway
-North Bedroom
-South Bedroom
-Upstairs Hallway
-Linen Closet
-Bathroom
-Sewing Room
-Attic
+Room ID/Room Name/Description/Items/Exits/Actions
+HOR1/Porch/This is a nice porch with a cute welcome sign and a mailbox. There is a locked front door./Front Door Key,Rusty Shed Key/North,South,East,West/Unlock Front Door
+HIR1/Entryway/There is a coat rack and a nice rug./Coat/Porch/None
+HIR2/Living Room/Look, it's a room!/None/None/None
+HIR3/Dining Room/Look, it's a room!/None/None/None
+HIR4/Kitchen/Look, it's a room!/None/None/None
+HIR5/Laundry Room/Look, it's a room!/None/None/None
+HIR6/Pantry/Look, it's a room!/None/None/None
+HIBR7/Basement Stairway/Look, it's a room!/None/None/None
+HIBR1/Basement East/Look, it's a room!/None/None/None
+HIBR2/Basement West/Look, it's a room!/None/None/None
+HIR7/Second Floor Stairway/Look, it's a room!/None/None/None
+HIUR1/North Bedroom/Look, it's a room!/None/None/None
+HIUR2/South Bedroom/Look, it's a room!/None/None/None
+HIUR3/Upstairs Hallway/Look, it's a room!/None/None/None
+HIUR4/Linen Closet/Look, it's a room!/None/None/None
+HIUR5/Bathroom/Look, it's a room!/None/None/None
+HIUR6/Sewing Room/Look, it's a room!/None/None/None
+HIUR7/Attic/Look, it's a room!/None/None/None
