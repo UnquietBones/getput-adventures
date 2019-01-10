@@ -1,23 +1,56 @@
 package getput.adventures;
 
-import static java.lang.Boolean.TRUE;
-import static java.lang.Boolean.FALSE;
 
 public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        Boolean showDebug = FALSE;
-        RoomMap currentMap = new RoomMap(showDebug);
+        boolean showDebug = false;
+        boolean exitGame = false;
+
+        RoomMap gameMap = new RoomMap(showDebug);
+        ItemLibrary gameItems = new ItemLibrary(showDebug);
+        RoomExitLibrary gameExits = new RoomExitLibrary(showDebug);
+
         Room currentRoom;
+
 
         System.out.println("Loading game...");
 
-        currentMap.loadFile(showDebug);
+        gameMap.loadMap();
+        gameItems.loadLibrary();
+        gameExits.loadLibrary();
 
+        // New game defaults
         // We'll load the starting position from the file (eventually)
+
         String currentRoomID = "HOR1";
-        currentRoom = currentMap.findRoom(currentRoomID);
-        currentRoom.printRoom();
+        ListOfThings playerInventory = new ListOfThings("Inventory", 5, showDebug);
+
+        // Begin the adventure!
+
+        currentRoom = gameMap.readRoom(currentRoomID, exitGame);
+        currentRoom.printRoom(playerInventory, gameItems);
+
+        // Adventure loop
+
+        int adventureLoop = 1;
+
+        while (!exitGame) {
+            if (currentRoom.roomAction(playerInventory, gameItems)) {
+                if (!currentRoomID.equals(currentRoom.ID)) {
+                    gameMap.updateRoom(currentRoom, exitGame);
+                    currentRoom = gameMap.readRoom(currentRoomID, exitGame);
+                }
+
+                // We only need to reprint the room if something has changed
+                currentRoom.printRoom(playerInventory, gameItems);
+            }
+            adventureLoop++;
+
+            if (adventureLoop > 3) {
+                exitGame = true;
+            }
+        }
     }
 }
