@@ -5,22 +5,22 @@ import java.util.Scanner;
 
 public class RoomMap {
 
-    Boolean showDebug;
-    private String[] roomIDs = {"", "", "", "", ""};
-    private String[] roomNames = {"", "", "", "", ""};
-    private String[] roomDescriptions = {"", "", "", "", ""};
-    private String[][] roomItems = {{""}, {""}};
-    private String[][] roomExits = {{""}, {""}};
-    private String[][] roomActions = {{""}, {""}};
+    private boolean showDebug;
+    private String[] roomIDs = new String[2];
+    private String[] roomNames = new String[2];
+    private String[] roomDescriptions = new String[2];
+    private String[][] roomItems = new String[2][6];
+    private String[][] roomExits = new String[2][6];
+    private String[][] roomActions = new String[2][6];
 
-    public RoomMap(Boolean mainDebug) {
+    String currentRoomID;
+
+    public RoomMap(boolean mainDebug) {
         showDebug = mainDebug;
+        currentRoomID = "HOR1";
     }
 
-    public void loadFile(Boolean mainDebug) throws Exception {
-
-        showDebug = mainDebug;
-        ListOfThings listOfItems = new ListOfThings();
+    public void loadMap() throws Exception {
 
         String allItems;
         String allExits;
@@ -56,70 +56,39 @@ public class RoomMap {
                 if (showDebug) {
                     System.out.println(allItems);
                 }
-
-                // If there is more than one, split it out
-                if (allItems.contains(",")) {
-                    if (showDebug) {
-                        System.out.println("Splitting out items...");
-                    }
-                    roomItems[roomCounter] = allItems.split(",");
-                    itemCount = roomItems[roomCounter].length;
-                    if (showDebug) {
-                        System.out.println(itemCount + " items found.");
-                    }
-                    itemCount -= 1;
-                } else {
-                    roomItems[roomCounter][0] = allItems;
+                roomItems[roomCounter] = allItems.split(",");
+                itemCount = roomItems[roomCounter].length;
+                if (showDebug) {
+                    System.out.println(itemCount + " items found.");
                 }
 
                 allExits = scan.next();
                 if (showDebug) {
                     System.out.println(allExits);
                 }
-
-                // If there is more than one, split it out
-                if (allExits.contains(",")) {
-                    if (showDebug) {
-                        System.out.println("Splitting out Exits...");
-                    }
-                    roomExits[roomCounter] = allExits.split(",");
-                    exitCount = roomExits[roomCounter].length;
-                    if (showDebug) {
-                        System.out.println(exitCount + " Exits found.");
-                    }
-                    exitCount -= 1;
-                } else {
-                    roomExits[roomCounter][0] = allExits;
+                roomExits[roomCounter] = allExits.split(",");
+                exitCount = roomExits[roomCounter].length;
+                if (showDebug) {
+                    System.out.println(exitCount + " Exits found.");
                 }
 
-                // The next sections have comma delimitated subvalues
                 allActions = scan.next();
                 if (showDebug) {
                     System.out.println(allActions);
                 }
-
-                // If there is more than one, split it out
-                if (allActions.contains(",")) {
-                    if (showDebug) {
-                        System.out.println("Splitting out Actions...");
-                    }
-                    roomActions[roomCounter] = allActions.split(",");
-                    actionCount = roomActions[roomCounter].length;
-                    if (showDebug) {
-                        System.out.println(actionCount + " Actions found.");
-                    }
-                    actionCount -= 1;
-                } else {
-                    roomActions[roomCounter][0] = allActions;
+                roomActions[roomCounter] = allActions.split(",");
+                actionCount = roomActions[roomCounter].length;
+                if (showDebug) {
+                    System.out.println(actionCount + " Actions found.");
                 }
 
                 if (showDebug) {
                     System.out.println("Room ID          " + roomIDs[roomCounter]);
                     System.out.println("Room name        " + roomNames[roomCounter]);
                     System.out.println("Room Description " + roomDescriptions[roomCounter]);
-                    listOfItems.printListOfThings(roomItems[roomCounter], "Items: ", showDebug);
-                    listOfItems.printListOfThings(roomExits[roomCounter], "Exits: ", showDebug);
-                    listOfItems.printListOfThings(roomActions[roomCounter], "Actions: ", showDebug);
+                    System.out.println("Items            " + allItems);
+                    System.out.println("Exits            " + allExits);
+                    System.out.println("Actions          " + allActions);
                     System.out.println("--------------------");
                 }
             } else {
@@ -130,6 +99,8 @@ public class RoomMap {
             roomCounter += 1;
         }
         scan.close();
+
+        // Silly graphics just for fun!
 
         System.out.println();
         System.out.println("=========================================================");
@@ -148,7 +119,7 @@ public class RoomMap {
         System.out.println();
     }
 
-    public Room findRoom(String findThisID) {
+    public Room readRoom(String findThisID, boolean exitGame) {
 
         Room thisRoom = null;
         String thisRoomName;
@@ -165,9 +136,29 @@ public class RoomMap {
                 thisRoomItems = roomItems[roomPos];
                 thisRoomExits = roomExits[roomPos];
                 thisRoomActions = roomActions[roomPos];
-                thisRoom = new Room(thisRoomName, thisRoomDescription, thisRoomItems, thisRoomExits, thisRoomActions, showDebug);
+                thisRoom = new Room(findThisID, thisRoomName, thisRoomDescription, thisRoomItems, thisRoomExits, thisRoomActions, showDebug, exitGame);
+                return thisRoom;
             }
         }
+        System.out.println("ERMAHGERD! Unable to find room ID " + findThisID + ", aborting game.");
+        exitGame = true;
         return thisRoom;
+    }
+
+    public void updateRoom(Room changedRoom, boolean exitGame) {
+        // Setting it up so everything can change except the room ID
+        // Returns 1 if it updates the room, 0 if it can't find the room
+
+        for (int roomPos = 0; roomPos < roomIDs.length; roomPos++) {
+            if (roomIDs[roomPos].equals(changedRoom.ID)) {
+                roomNames[roomPos] = changedRoom.name;
+                roomDescriptions[roomPos] = changedRoom.description;
+                roomItems[roomPos] = changedRoom.items.itemsList;
+                roomExits[roomPos] = changedRoom.exits.itemsList;
+                roomActions[roomPos] = changedRoom.actions.itemsList;
+            }
+        }
+        System.out.println("ERMAHGERD! Unable to update room " + changedRoom.name + ", aborting game.");
+        exitGame = true;
     }
 }
