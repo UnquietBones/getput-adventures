@@ -1,0 +1,2 @@
+Exit ID/Exit Name/Description/Destination Room ID/Visible (1 yes, 0 no)
+FD1/Front Door/You open the front door and enter the house./HIR1/0
