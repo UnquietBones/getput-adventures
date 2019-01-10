@@ -8,11 +8,14 @@ public class ItemLibrary {
     // Currently not intending to write a modified Library for the save game, but we'll see...
     // Should only need to load the Library and then create individual items as needed.
 
+    int libraryCount = 1;
+
     private Boolean showDebug;
-    private String[] InventoryItemNames = new String[1];
-    private String[] InventoryItemDescriptions = new String[1];
-    private String[] InventoryItemActions = new String[1];
-    private String[] InventoryItemActionDescriptions = new String[1];
+    private String[] inventoryItemNames = new String[libraryCount];
+    private String[] inventoryItemDescriptions = new String[libraryCount];
+    private String[] inventoryItemActions = new String[libraryCount];
+    private String[] inventoryItemActionDescriptions = new String[libraryCount];
+    private String[] inventoryItemActionCommands = new String[libraryCount];
 
     public ItemLibrary(Boolean mainDebug) {
         showDebug = mainDebug;
@@ -34,21 +37,23 @@ public class ItemLibrary {
 
         while (scan.hasNext()) {
 
-            InventoryItemNames[InventoryItemCounter] = scan.next();
+            inventoryItemNames[InventoryItemCounter] = scan.next();
             if (showDebug) {
                 System.out.println("Checking line " + InventoryItemCounter);
             }
 
-            if (!InventoryItemNames[InventoryItemCounter].isEmpty()) {
-                InventoryItemDescriptions[InventoryItemCounter] = scan.next();
-                InventoryItemActions[InventoryItemCounter] = scan.next();
-                InventoryItemActionDescriptions[InventoryItemCounter] = scan.next();
+            if (!inventoryItemNames[InventoryItemCounter].isEmpty()) {
+                inventoryItemDescriptions[InventoryItemCounter] = scan.next();
+                inventoryItemActions[InventoryItemCounter] = scan.next();
+                inventoryItemActionDescriptions[InventoryItemCounter] = scan.next();
+                inventoryItemActionCommands[InventoryItemCounter] = scan.next();
 
                 if (showDebug) {
-                    System.out.println("InventoryItem Name               " + InventoryItemNames[InventoryItemCounter]);
-                    System.out.println("InventoryItem Description        " + InventoryItemDescriptions[InventoryItemCounter]);
-                    System.out.println("InventoryItem Action             " + InventoryItemActions[InventoryItemCounter]);
-                    System.out.println("InventoryItem Action Description " + InventoryItemActionDescriptions[InventoryItemCounter]);
+                    System.out.println("InventoryItem Name               " + inventoryItemNames[InventoryItemCounter]);
+                    System.out.println("InventoryItem Description        " + inventoryItemDescriptions[InventoryItemCounter]);
+                    System.out.println("InventoryItem Action             " + inventoryItemActions[InventoryItemCounter]);
+                    System.out.println("InventoryItem Action Description " + inventoryItemActionDescriptions[InventoryItemCounter]);
+                    System.out.println("InventoryItem Action Command     " + inventoryItemActionCommands[InventoryItemCounter]);
                     System.out.println("--------------------");
                 }
             } else {
@@ -71,16 +76,27 @@ public class ItemLibrary {
         String thisDescription;
         String thisAction;
         String thisActionDescription;
+        String thisActionCommand;
 
-        for (int InventoryItemPos = 0; InventoryItemPos < InventoryItemNames.length; InventoryItemPos++) {
-            if (InventoryItemNames[InventoryItemPos].equals(findThisID)) {
+        for (int InventoryItemPos = 0; InventoryItemPos < inventoryItemNames.length; InventoryItemPos++) {
+            if (inventoryItemNames[InventoryItemPos].equals(findThisID)) {
 
                 thisName = findThisID;
-                thisDescription = InventoryItemDescriptions[InventoryItemPos];
-                thisAction = InventoryItemActions[InventoryItemPos];
-                thisActionDescription = InventoryItemActionDescriptions[InventoryItemPos];
+                thisDescription = inventoryItemDescriptions[InventoryItemPos];
+                thisAction = inventoryItemActions[InventoryItemPos];
+                thisActionDescription = inventoryItemActionDescriptions[InventoryItemPos];
+                thisActionCommand = inventoryItemActionCommands[InventoryItemPos];
 
-                thisItem = new InventoryItem(thisName, thisDescription, thisAction, thisActionDescription, showDebug);
+                if (showDebug) {
+                    System.out.println("Creating item...");
+                    System.out.println("InventoryItem Name               " + thisName);
+                    System.out.println("InventoryItem Description        " + thisDescription);
+                    System.out.println("InventoryItem Action             " + thisAction);
+                    System.out.println("InventoryItem Action Description " + thisActionDescription);
+                    System.out.println("InventoryItem Action Command     " + thisActionCommand);
+                }
+
+                thisItem = new InventoryItem(thisName, thisDescription, thisAction, thisActionDescription, thisActionCommand, showDebug);
                 return thisItem;
             }
         }
