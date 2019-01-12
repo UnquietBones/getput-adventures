@@ -1,4 +1,4 @@
-Item Name/Item Description/Item Action/Item Action Description/Item Command+Exit/Item+Room
-Front Door Key/Lying next to the doormat is a Front Door Key./Unlock Front Door/You unlock the front door./toggleExit+Front Door+HOR1
-Sealed Letter/In the mailbox is a sealed letter./Open Letter/You carefully open the letter./spawnItem+Junk Mail+HOR1
-Junk Mail/Oh look, it's junk mail./Trash Junk Mail/You toss the junk mail back into the hell from whence it came./None
+Item ID/Item Name/Item Description/Action ID/
+FDK/Front Door Key/Lying next to the doormat is a Front Door Key./UFD
+SL/Sealed Letter/In the mailbox is a sealed letter./OL
+JM/Junk Mail/Oh look, it's junk mail./TJM
