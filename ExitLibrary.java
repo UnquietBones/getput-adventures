@@ -3,7 +3,7 @@ package getput.adventures;
 import java.io.File;
 import java.util.Scanner;
 
-public class RoomExitLibrary {
+public class ExitLibrary {
 
     // Currently not intending to write a modified Library for the save game, but we'll see...
     // Should only need to load the Library and then create individual items as needed.
@@ -15,19 +15,20 @@ public class RoomExitLibrary {
     private String[] exitName = new String[libraryCount];
     private String[] exitDescription = new String[libraryCount];
     private String[] exitDestination = new String[libraryCount];
-    private int[] exitVisible = new int[libraryCount];
 
-    public RoomExitLibrary(Boolean mainDebug) {
+    public ExitLibrary(Boolean mainDebug) {
         showDebug = mainDebug;
     }
 
     public void loadLibrary() throws Exception {
 
+        if (showDebug) {
+            System.out.println("Starting ExitLibrary loadLibrary...");
+        }
+
         // This program will read in the Library from the text file
 
         int exitCounter = 0;
-        String visibleToggle;
-        int intVisibleToggle;
 
         // pass the path to the file as a parameter
         File file = new File("C:\\getputadventures\\exits.txt");
@@ -48,15 +49,12 @@ public class RoomExitLibrary {
                 exitName[exitCounter] = scan.next();
                 exitDescription[exitCounter] = scan.next();
                 exitDestination[exitCounter] = scan.next();
-                visibleToggle = scan.next();
-                exitVisible[exitCounter] = Integer.valueOf(visibleToggle);
 
                 if (showDebug) {
                     System.out.println("Exit ID          " + exitID[exitCounter]);
                     System.out.println("Exit Name        " + exitName[exitCounter]);
                     System.out.println("Exit Description " + exitDescription[exitCounter]);
                     System.out.println("Exit Destination " + exitDestination[exitCounter]);
-                    System.out.println("Exit Visible     " + exitVisible[exitCounter]);
                     System.out.println("--------------------");
                 }
             } else {
@@ -69,17 +67,25 @@ public class RoomExitLibrary {
         scan.close();
     }
 
-    public RoomExit readItem(String findThisID, boolean exitGame) {
+    public ListThing readItem(String findThisID) {
+
+        if (showDebug) {
+            System.out.println("Starting ExitLibrary readItem...");
+        }
 
         // This will find the item in the Library and then create a new exit with
         // that information.
 
-        RoomExit thisExit = null;
+        ListThing thisExit = null;
+        String thisType = "Exit";
+
         String thisID;
         String thisName;
         String thisDescription;
         String thisDestination;
-        int thisVisible;
+
+        String thisActionID = "";
+        String thisCommand = "";
         
         for (int exitPos = 0; exitPos < exitID.length; exitPos++) {
             if (exitID[exitPos].equals(findThisID)) {
@@ -88,7 +94,6 @@ public class RoomExitLibrary {
                 thisName = exitName[exitPos];
                 thisDescription = exitDescription[exitPos];
                 thisDestination = exitDestination[exitPos];
-                thisVisible = exitVisible[exitPos];
 
                 if (showDebug) {
                     System.out.println("Creating exit...");
@@ -96,10 +101,9 @@ public class RoomExitLibrary {
                     System.out.println("Exit Name         " + thisName);
                     System.out.println("Exit Description  " + thisDescription);
                     System.out.println("Exit Destination  " + thisDestination);
-                    System.out.println("Exit Visible      " + thisVisible);
                 }
 
-                thisExit = new RoomExit(thisID, thisName, thisDescription, thisDestination, thisVisible, showDebug);
+                thisExit = new ListThing(thisType, thisID, thisName, thisDescription, thisActionID, thisDestination, thisCommand, showDebug);
                 return thisExit;
             }
         }
@@ -107,7 +111,6 @@ public class RoomExitLibrary {
         // Still working under the 'any errors cause program to halt' idea
 
         System.out.println("ERMAHGERD! Unable to find Inventory Item " + findThisID + ", aborting game.");
-        exitGame = true;
         return thisExit;
     }
 }
