@@ -5,46 +5,46 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        boolean showDebug = false;
+        boolean showDebug = true;
         boolean exitGame = false;
 
-        RoomMap gameMap = new RoomMap(showDebug);
         ItemLibrary gameItems = new ItemLibrary(showDebug);
-        RoomExitLibrary gameExits = new RoomExitLibrary(showDebug);
-
-        Room currentRoom;
-
+        ExitLibrary gameExits = new ExitLibrary(showDebug);
+        ActionLibrary gameActions = new ActionLibrary(showDebug);
 
         System.out.println("Loading game...");
 
-        gameMap.loadMap();
         gameItems.loadLibrary();
         gameExits.loadLibrary();
+        gameActions.loadLibrary();
+        ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameExits, gameActions, showDebug);
+
+        RoomMap gameMap = new RoomMap(gameItems, gameExits, gameActions, playerInventory, showDebug);
+        gameMap.loadMap();
 
         // New game defaults
         // We'll load the starting position from the file (eventually)
 
         String currentRoomID = "HOR1";
-        ListOfThings playerInventory = new ListOfThings("Inventory", 5, showDebug);
+        Room currentRoom = gameMap.readRoom(currentRoomID);
 
         // Begin the adventure!
 
-        currentRoom = gameMap.readRoom(currentRoomID, exitGame);
-        currentRoom.printRoom(playerInventory, gameItems);
+        currentRoom.printRoom();
 
         // Adventure loop
 
         int adventureLoop = 1;
 
         while (!exitGame) {
-            if (currentRoom.roomAction(playerInventory, gameItems)) {
+            if (currentRoom.roomAction()) {
                 if (!currentRoomID.equals(currentRoom.ID)) {
-                    gameMap.updateRoom(currentRoom, exitGame);
-                    currentRoom = gameMap.readRoom(currentRoomID, exitGame);
+                    gameMap.updateRoom(currentRoom);
+                    currentRoom = gameMap.readRoom(currentRoomID);
                 }
 
                 // We only need to reprint the room if something has changed
-                currentRoom.printRoom(playerInventory, gameItems);
+                currentRoom.printRoom();
             }
             adventureLoop++;
 
