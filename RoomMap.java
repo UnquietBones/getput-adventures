@@ -5,22 +5,40 @@ import java.util.Scanner;
 
 public class RoomMap {
 
+    int maxRooms = 2;
+    int maxItems = 6;
+
     private boolean showDebug;
-    private String[] roomIDs = new String[2];
-    private String[] roomNames = new String[2];
-    private String[] roomDescriptions = new String[2];
-    private String[][] roomItems = new String[2][6];
-    private String[][] roomExits = new String[2][6];
-    private String[][] roomActions = new String[2][6];
+    private ItemLibrary gameItems;
+    private ExitLibrary gameExits;
+    private ActionLibrary gameActions;
+    private ListOfThings playerInventory;
+
+    public String[] roomIDs = new String[2];
+    public String[] roomNames = new String[2];
+    public String[] roomDescriptions = new String[2];
+    public String[][] roomItems = new String[maxRooms][maxItems];
+    public String[][] roomExits = new String[maxRooms][maxItems];
+    public String[][] roomActions = new String[maxRooms][maxItems];
+
 
     String currentRoomID;
 
-    public RoomMap(boolean mainDebug) {
+    public RoomMap(ItemLibrary maingameItems, ExitLibrary maingameExits, ActionLibrary maingameActions, ListOfThings mainplayerInventory, boolean mainDebug) {
         showDebug = mainDebug;
         currentRoomID = "HOR1";
+
+        gameItems = maingameItems;
+        gameExits = maingameExits;
+        gameActions = maingameActions;
+        playerInventory = mainplayerInventory;
     }
 
     public void loadMap() throws Exception {
+
+        if (showDebug) {
+            System.out.println("Starting RoomMap loadMap...");
+        }
 
         String allItems;
         String allExits;
@@ -56,30 +74,36 @@ public class RoomMap {
                 if (showDebug) {
                     System.out.println(allItems);
                 }
-                roomItems[roomCounter] = allItems.split(",");
-                itemCount = roomItems[roomCounter].length;
-                if (showDebug) {
-                    System.out.println(itemCount + " items found.");
+                if (!allItems.equals("None")) {
+                    roomItems[roomCounter] = allItems.split(",");
+                    itemCount = roomItems[roomCounter].length;
+                    if (showDebug) {
+                        System.out.println(itemCount + " items found.");
+                    }
                 }
 
                 allExits = scan.next();
-                if (showDebug) {
-                    System.out.println(allExits);
-                }
-                roomExits[roomCounter] = allExits.split(",");
-                exitCount = roomExits[roomCounter].length;
-                if (showDebug) {
-                    System.out.println(exitCount + " Exits found.");
+                if (!allExits.equals("None")) {
+                    if (showDebug) {
+                        System.out.println(allExits);
+                    }
+                    roomExits[roomCounter] = allExits.split(",");
+                    exitCount = roomExits[roomCounter].length;
+                    if (showDebug) {
+                        System.out.println(exitCount + " Exits found.");
+                    }
                 }
 
                 allActions = scan.next();
-                if (showDebug) {
-                    System.out.println(allActions);
-                }
-                roomActions[roomCounter] = allActions.split(",");
-                actionCount = roomActions[roomCounter].length;
-                if (showDebug) {
-                    System.out.println(actionCount + " Actions found.");
+                if (!allActions.equals("None")) {
+                    if (showDebug) {
+                        System.out.println(allActions);
+                    }
+                    roomActions[roomCounter] = allActions.split(",");
+                    actionCount = roomActions[roomCounter].length;
+                    if (showDebug) {
+                        System.out.println(actionCount + " Actions found.");
+                    }
                 }
 
                 if (showDebug) {
@@ -119,7 +143,11 @@ public class RoomMap {
         System.out.println();
     }
 
-    public Room readRoom(String findThisID, boolean exitGame) {
+    public Room readRoom(String findThisID) {
+
+        if (showDebug) {
+            System.out.println("Starting RoomMap readRoom...");
+        }
 
         Room thisRoom = null;
         String thisRoomName;
@@ -136,29 +164,76 @@ public class RoomMap {
                 thisRoomItems = roomItems[roomPos];
                 thisRoomExits = roomExits[roomPos];
                 thisRoomActions = roomActions[roomPos];
-                thisRoom = new Room(findThisID, thisRoomName, thisRoomDescription, thisRoomItems, thisRoomExits, thisRoomActions, showDebug, exitGame);
+                thisRoom = new Room(findThisID, thisRoomName, thisRoomDescription, thisRoomItems, thisRoomExits, thisRoomActions, gameItems, gameExits, gameActions, playerInventory, this, showDebug);
                 return thisRoom;
             }
         }
         System.out.println("ERMAHGERD! Unable to find room ID " + findThisID + ", aborting game.");
-        exitGame = true;
         return thisRoom;
     }
 
-    public void updateRoom(Room changedRoom, boolean exitGame) {
+    public void updateRoom(Room changedRoom) {
         // Setting it up so everything can change except the room ID
         // Returns 1 if it updates the room, 0 if it can't find the room
+
+        if (showDebug) {
+            System.out.println("Starting RoomMap updateRoom...");
+        }
+
+        String oldValue;
+        String newValue;
 
         for (int roomPos = 0; roomPos < roomIDs.length; roomPos++) {
             if (roomIDs[roomPos].equals(changedRoom.ID)) {
                 roomNames[roomPos] = changedRoom.name;
                 roomDescriptions[roomPos] = changedRoom.description;
-                roomItems[roomPos] = changedRoom.items.itemsList;
-                roomExits[roomPos] = changedRoom.exits.itemsList;
-                roomActions[roomPos] = changedRoom.actions.itemsList;
+
+                // Time to translate the ListOfThings back into Strings
+
+                for (int itemPos = 0; itemPos < 6; itemPos++) {
+
+                    oldValue = roomItems[roomPos][itemPos];
+                    newValue = changedRoom.items.itemsList[itemPos].id;
+
+                    if (showDebug) {
+                        System.out.println("Checking [" + itemPos + "] of Old " + oldValue + " and New " + newValue);
+                    }
+
+                    if (newValue != null && !newValue.isEmpty()) {
+                        roomItems[roomPos][itemPos] = newValue;
+                    }
+                }
+
+
+                for (int itemPos = 0; itemPos < 6; itemPos++) {
+
+                    oldValue = roomExits[roomPos][itemPos];
+                    newValue = changedRoom.exits.itemsList[itemPos].id;
+
+                    if (showDebug) {
+                        System.out.println("Checking [" + itemPos + "] of Old " + oldValue + " and New " + newValue);
+                    }
+
+                    if (newValue != null && !newValue.isEmpty()) {
+                        roomExits[roomPos][itemPos] = newValue;
+                    }
+                }
+
+                for (int itemPos = 0; itemPos < 6; itemPos++) {
+
+                    oldValue = roomActions[roomPos][itemPos];
+                    newValue = changedRoom.actions.itemsList[itemPos].id;
+
+                    if (showDebug) {
+                        System.out.println("Checking [" + itemPos + "] of Old " + oldValue + " and New " + newValue);
+                    }
+
+                    if (newValue != null && !newValue.isEmpty()) {
+                        roomActions[roomPos][itemPos] = newValue;
+                    }
+                }
             }
         }
         System.out.println("ERMAHGERD! Unable to update room " + changedRoom.name + ", aborting game.");
-        exitGame = true;
     }
 }
