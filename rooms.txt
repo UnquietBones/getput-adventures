@@ -1,3 +1,3 @@
 Room ID/Room Name/Description/Items/Exits/Actions
-HOR1/Porch/This is a nice porch with a cute welcome sign and a mailbox./Front Door Key, Sealed Letter/None/None
-HIR1/Entryway/There is a coat rack and a nice rug.//Porch/None
+HOR1/Porch/This is a nice porch with a cute welcome sign and a mailbox./FDK,SL/None/UFD
+HIR1/Entryway/There is a coat rack and a nice rug./None/Porch/None
