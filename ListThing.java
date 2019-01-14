@@ -102,33 +102,37 @@ public class ListThing {
         for (int actionPos = 0; actionPos < maxActions; actionPos++) {
 
             if (showDebug) {
-                System.out.println(itemCmds[actionPos] + "    " + itemCmds[actionPos + 1]);
+                if ((actionPos + 1) >= maxActions) {
+                    System.out.println("[[[ Parsing action "+itemCmds[actionPos]);
+                } else {
+                    System.out.println("[[[ Parsing action "+itemCmds[actionPos] + "    " + itemCmds[actionPos + 1]);
+                }
             }
 
             switch (itemCmds[actionPos]) {
 
                 case "addRoomItem":
-                    currentRoom.items.addItem(itemCmds[actionPos + 1]);
+                    currentRoom.items.addItem(itemCmds[actionPos + 1], true);
                     break;
 
                 case "removeRoomItem":
-                    currentRoom.items.removeThing(itemCmds[actionPos + 1]);
+                    currentRoom.items.removeThing(itemCmds[actionPos + 1],true);
                     break;
 
                 case "addPlayerItem":
-                    playerInventory.addItem(itemCmds[actionPos + 1]);
+                    playerInventory.addItem(itemCmds[actionPos + 1], true);
                     break;
 
                 case "removePlayerItem":
-                    playerInventory.removeThing(itemCmds[actionPos + 1]);
+                    playerInventory.removeThing(itemCmds[actionPos + 1], true);
                     break;
 
                 case "addExit":
-                    currentRoom.exits.addItem(itemCmds[actionPos + 1]);
+                    currentRoom.exits.addItem(itemCmds[actionPos + 1], true);
                     break;
 
                 case "removeExit":
-                    currentRoom.exits.removeThing(itemCmds[actionPos + 1]);
+                    currentRoom.exits.removeThing(itemCmds[actionPos + 1], true);
                     break;
             }
 
@@ -144,6 +148,7 @@ public class ListThing {
         }
 
         System.out.println(description);
+
 
         if (showDebug) {
             System.out.println("Moving to room " + destination);
