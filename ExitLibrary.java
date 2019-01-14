@@ -5,10 +5,10 @@ import java.util.Scanner;
 
 public class ExitLibrary {
 
-    // Currently not intending to write a modified Library for the save game, but we'll see...
-    // Should only need to load the Library and then create individual items as needed.
+    // Available exits are currently linked to a Room. There is no need to track changes as the game
+    // progresses since the RoomMap will do so.
 
-    int libraryCount = 1;
+    int libraryCount = 2;
 
     private Boolean showDebug;
     private String[] exitID = new String[libraryCount];
@@ -23,6 +23,7 @@ public class ExitLibrary {
     public void loadLibrary() throws Exception {
 
         if (showDebug) {
+            System.out.println("-----------------------------------");
             System.out.println("Starting ExitLibrary loadLibrary...");
         }
 
@@ -31,9 +32,14 @@ public class ExitLibrary {
         int exitCounter = 0;
 
         // pass the path to the file as a parameter
-        File file = new File("C:\\getputadventures\\exits.txt");
+        String pathname = "C:\\getputadventures\\exits.txt";
+        File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
+
+        if (showDebug) {
+            System.out.println("Loading Exit Library from " + pathname);
+        }
 
         // throw out the first line, it's the field descriptions for the end user
         scan.nextLine();
@@ -55,7 +61,7 @@ public class ExitLibrary {
                     System.out.println("Exit Name        " + exitName[exitCounter]);
                     System.out.println("Exit Description " + exitDescription[exitCounter]);
                     System.out.println("Exit Destination " + exitDestination[exitCounter]);
-                    System.out.println("--------------------");
+                    System.out.println("-----------------");
                 }
             } else {
                 if (showDebug) {
@@ -65,16 +71,21 @@ public class ExitLibrary {
             exitCounter += 1;
         }
         scan.close();
-    }
-
-    public ListThing readItem(String findThisID) {
 
         if (showDebug) {
-            System.out.println("Starting ExitLibrary readItem...");
+            System.out.println("-----------------------------------");
         }
+    }
 
-        // This will find the item in the Library and then create a new exit with
-        // that information.
+    public ListThing readItem(String findThing) {
+
+        // This will try and find (and return) the item either by Name or by ID from the Library.
+
+        if (showDebug) {
+            System.out.println("--------------------------------");
+            System.out.println("Starting ExitLibrary readThing...");
+            System.out.println("Looking for Exit " + findThing);
+        }
 
         ListThing thisExit = null;
         String thisType = "Exit";
@@ -86,11 +97,11 @@ public class ExitLibrary {
 
         String thisActionID = "";
         String thisCommand = "";
-        
-        for (int exitPos = 0; exitPos < exitID.length; exitPos++) {
-            if (exitID[exitPos].equals(findThisID)) {
 
-                thisID = findThisID;
+        for (int exitPos = 0; exitPos < exitID.length; exitPos++) {
+            if (exitID[exitPos].equals(findThing) || exitName[exitPos].equals(findThing)) {
+
+                thisID = findThing;
                 thisName = exitName[exitPos];
                 thisDescription = exitDescription[exitPos];
                 thisDestination = exitDestination[exitPos];
@@ -101,6 +112,7 @@ public class ExitLibrary {
                     System.out.println("Exit Name         " + thisName);
                     System.out.println("Exit Description  " + thisDescription);
                     System.out.println("Exit Destination  " + thisDestination);
+                    System.out.println("--------------------------------");
                 }
 
                 thisExit = new ListThing(thisType, thisID, thisName, thisDescription, thisActionID, thisDestination, thisCommand, showDebug);
@@ -110,7 +122,10 @@ public class ExitLibrary {
 
         // Still working under the 'any errors cause program to halt' idea
 
-        System.out.println("ERMAHGERD! Unable to find Inventory Item " + findThisID + ", aborting game.");
+        if (showDebug) {
+            System.out.println("ERMAHGERD! Unable to find Exit " + findThing + ".");
+            System.out.println("--------------------------------");
+        }
         return thisExit;
     }
 }
