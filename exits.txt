@@ -1,2 +1,3 @@
 Exit ID/Exit Name/Description/Destination Room ID
 FD1/Front Door/You open the front door and enter the house./HIR1
+PCH/Porch/You open the front door and exit the house./HOR1
