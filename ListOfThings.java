@@ -65,7 +65,7 @@ public class ListOfThings {
         }
     }
 
-    public boolean addItem(String newItem) {
+    public boolean addItem(String newItem, boolean showMsg) {
 
         // This will find the first empty slot in the list, add the item, and
         // return true. If there are no empty slots it will return false.
@@ -84,40 +84,54 @@ public class ListOfThings {
 
                 switch (listType) {
                     case "RoomInv":
-                        itemsList[itemCounter] = gameItems.readItem(newItem);
-                        System.out.println("A " + itemsList[itemCounter].name + " appears in the room.");
+                        itemsList[itemCounter] = gameItems.readThing(newItem);
+                        if (showMsg) {
+                            System.out.println("A " + itemsList[itemCounter].name + " appears in the room.");
+                        }
                         break;
                     case "PlayerInv":
-                        itemsList[itemCounter] = gameItems.readItem(newItem);
-                        System.out.println("You have picked up the " + itemsList[itemCounter].name + ".");
+                        itemsList[itemCounter] = gameItems.readThing(newItem);
+                        if (showMsg) {
+                            System.out.println("You have picked up the " + itemsList[itemCounter].name + ".");
+                        }
                         break;
                     case "Exits":
                         itemsList[itemCounter] = gameExits.readItem(newItem);
-                        System.out.println("Exit " + itemsList[itemCounter].name + " is now available.");
+                        if (showMsg) {
+                            System.out.println("Exit " + itemsList[itemCounter].name + " is now available.");
+                        }
                         break;
                     case "Actions":
-                        itemsList[itemCounter] = gameActions.readItem(newItem);
-                        System.out.println("You can now " + itemsList[itemCounter].name + ".");
+                        itemsList[itemCounter] = gameActions.readThing(newItem);
+                        if (showMsg) {
+                            System.out.println("You can now " + itemsList[itemCounter].name + ".");
+                        }
                         break;
                 }
-                System.out.println("--------------------------------");
+                if (showDebug) {
+                    System.out.println("--------------------------------");
+                }
                 return true;
             }
         }
-        System.out.println(listName + " is full!");
-        System.out.println("--------------------------------");
+        if (showMsg) {
+            System.out.println(listName + " is full!");
+        }
+        if (showDebug) {
+            System.out.println("--------------------------------");
+        }
         return false;
     }
 
 
-    public void removeThing(String thisThing) {
+    public void removeThing(String thisThing, boolean showMsg) {
 
         // This will remove the Thing from the list, if found.
 
         if (showDebug) {
             System.out.println("---------------------------------");
             System.out.println("Starting ListOfThings removeThing...");
-            System.out.println("Trying to drop item " + thisThing);
+            System.out.println("Trying to drop item " + thisThing + " from " + listType + " " + listType);
         }
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
@@ -127,14 +141,22 @@ public class ListOfThings {
             }
             if (itemsList[itemCounter].id.equals(thisThing) || itemsList[itemCounter].name.equals(thisThing)) {
                 itemsList[itemCounter].clearThing();
-                System.out.println("Item " + thisThing + " is removed from " + listName);
-                System.out.println("---------------------------------");
+                if (showMsg) {
+                    System.out.println(itemsList[itemCounter].name + " has been removed from " + listName+".");
+                }
+                if (showDebug) {
+                    System.out.println("---------------------------------");
+                }
                 return;
             }
         }
 
-        System.out.println("Item " + thisThing + " was not in " + listName);
-        System.out.println("---------------------------------");
+        if (showMsg) {
+            System.out.println("Item " + thisThing + " was not in " + listName);
+        }
+        if (showDebug) {
+            System.out.println("---------------------------------");
+        }
     }
 
     public int freeSpot() {
@@ -165,8 +187,10 @@ public class ListOfThings {
             }
         }
 
-        System.out.println("There are no empty spots in the list.");
-        System.out.println("---------------------------------");
+        if (showDebug) {
+            System.out.println("There are no empty spots in the list.");
+            System.out.println("---------------------------------");
+        }
         return 999;
     }
 
@@ -185,24 +209,31 @@ public class ListOfThings {
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
 
-            if (showDebug) {
-                System.out.println("Checking [" + itemCounter + "] " + itemsList[itemCounter].id +
-                        itemsList[itemCounter].name);
-            }
-            if (itemsList[itemCounter].id.equals(thisThing) || itemsList[itemCounter].name.equals(thisThing)) {
+            if (itemsList[itemCounter] != null) {
 
-                // Move pointer into a temp variable to pass it out and clear it from the list
-                tempThing = itemsList[itemCounter];
-                itemsList[itemCounter] = null;
+                if (showDebug) {
+                    System.out.println("Checking [" + itemCounter + "] " + itemsList[itemCounter].id +
+                            itemsList[itemCounter].name);
+                }
+                if (itemsList[itemCounter].id.equals(thisThing) || itemsList[itemCounter].name.equals(thisThing)) {
 
-                System.out.println("Passing over " + thisThing + " from " + listName);
-                System.out.println("---------------------------------");
-                return tempThing;
+                    // Move pointer into a temp variable to pass it out and clear it from the list
+                    tempThing = itemsList[itemCounter];
+                    itemsList[itemCounter] = null;
+
+                    if (showDebug) {
+                        System.out.println("Passing over " + thisThing + " from " + listName);
+                        System.out.println("---------------------------------");
+                    }
+                    return tempThing;
+                }
             }
         }
 
-        System.out.println("Item " + thisThing + " was not in " + listName);
-        System.out.println("---------------------------------");
+        if (showDebug) {
+            System.out.println("Item " + thisThing + " was not in " + listName);
+            System.out.println("---------------------------------");
+        }
         return tempThing;
     }
 
@@ -213,7 +244,7 @@ public class ListOfThings {
         if (showDebug) {
             System.out.println("---------------------------------");
             System.out.println("Starting ListOfThings isInList...");
-            System.out.println("Looking for " + findID);
+            System.out.println("Looking for " + findID + " in "+listType+ " "+listName);
         }
 
         int itemCount = itemsList.length - 1;
@@ -255,16 +286,19 @@ public class ListOfThings {
 
         for (int itemCounter = 0; itemCounter <= (itemCount); itemCounter++) {
 
-            if (showDebug) {
-                System.out.println("[" + itemCounter + "] " + itemsList[itemCounter].id + " " + itemsList[itemCounter].name);
-            }
+            if (itemsList[itemCounter] != null) {
 
-            if (itemsList[itemCounter].id.equals(findID) || itemsList[itemCounter].name.equals(findID)) {
                 if (showDebug) {
-                    System.out.println("Found " + findID + " at " + itemCounter);
-                    System.out.println("----------------------------------");
+                    System.out.println("[" + itemCounter + "] " + itemsList[itemCounter].id + " " + itemsList[itemCounter].name);
                 }
-                return itemCounter;
+
+                if (itemsList[itemCounter].id.equals(findID) || itemsList[itemCounter].name.equals(findID)) {
+                    if (showDebug) {
+                        System.out.println("Found " + findID + " at " + itemCounter);
+                        System.out.println("----------------------------------");
+                    }
+                    return itemCounter;
+                }
             }
         }
 
@@ -278,13 +312,15 @@ public class ListOfThings {
 
     public boolean actionInList(String findAction) {
 
-        // Here we are checking a list of Items to ss if any of them has the given Action
+        // Here we are checking a list of Items to see if any of them has the given Action
 
         if (showDebug) {
             System.out.println("-------------------------------------");
             System.out.println("Starting ListOfThings actionInList...");
-            System.out.println("Looking for "+findAction+" in "+listType+" "+listName);
+            System.out.println("Looking for " + findAction + " in " + listType + " " + listName);
         }
+
+        findAction = gameActions.getID(findAction);
 
         int itemCount = itemsList.length - 1;
 
@@ -386,6 +422,9 @@ public class ListOfThings {
             }
         }
         System.out.println(listName + ": " + displayList);
-        System.out.println("------------------------------------------");
+
+        if (showDebug) {
+            System.out.println("------------------------------------------");
+        }
     }
 }
