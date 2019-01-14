@@ -4,8 +4,12 @@ As I learn (relearn) each language I'm creating a small text-based adventure gam
 
 Feedback on better ways to do this is (as always) appreciated! :)
 
-The adventures will continue on from each other and I'll try and provide the raw data needed for each setup. The story is up in the air at the moment, but if I get a proper storyline laid out, I'll note it here.
+It woooooooooooooooooooooooooooooorks! :D
 
-Who knows... maybe I'll add actual graphics by the time I get to trying out Unity!
+You can
+- Pick up an item from a room
+- Put down an item in a room
+- Do an action (if you have the item in inventory and the action exists in the room)
+- Use an exit
 
 Chapter 1 - Java 11 - This Old House (of Horrors?)  [in progress]
