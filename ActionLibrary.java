@@ -5,17 +5,17 @@ import java.util.Scanner;
 
 public class ActionLibrary {
 
-    // Currently not intending to write a modified Library for the save game, but we'll see...
-    // Should only need to load the Library and then create individual items as needed.
+    // Available actions are currently linked to a Room. There is no need to track changes as the game
+    // progresses since the RoomMap will do so.
 
     int libraryCount = 3;
 
     private boolean showDebug;
 
-    private String[] actionID           = new String[libraryCount];
-    private String[] actionName         = new String[libraryCount];
+    private String[] actionID = new String[libraryCount];
+    private String[] actionName = new String[libraryCount];
     private String[] actionDescriptions = new String[libraryCount];
-    private String[] actionCommands     = new String[libraryCount];
+    private String[] actionCommands = new String[libraryCount];
 
     public ActionLibrary(boolean mainDebug) {
         showDebug = mainDebug;
@@ -26,17 +26,23 @@ public class ActionLibrary {
         // This program will read in the Library from the text file
 
         if (showDebug) {
+            System.out.println("-------------------------------------");
             System.out.println("Starting ActionLibrary loadLibrary...");
         }
 
         int itemPos = 0;
 
         // pass the path to the file as a parameter
-        File file = new File("C:\\getputadventures\\actions.txt");
+        String pathname = "C:\\getputadventures\\actions.txt";
+        File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
 
-        // throw out the first line, it's the field descriptions for the end user
+        if (showDebug) {
+            System.out.println("Loading Action Library from " + pathname);
+        }
+
+        // throw out the first line, it's just the field descriptions for the developers
         scan.nextLine();
 
         while (scan.hasNext()) {
@@ -56,7 +62,7 @@ public class ActionLibrary {
                     System.out.println("Action Name        " + actionName[itemPos]);
                     System.out.println("Action Description " + actionDescriptions[itemPos]);
                     System.out.println("Action Command     " + actionCommands[itemPos]);
-                    System.out.println("--------------------");
+                    System.out.println("-------------------");
                 }
             } else {
                 if (showDebug) {
@@ -66,12 +72,15 @@ public class ActionLibrary {
             itemPos += 1;
         }
         scan.close();
+
+        if (showDebug) {
+            System.out.println("-------------------------------------");
+        }
     }
 
-    public ListThing readItem(String findThisID) {
+    public ListThing readThing(String findThing) {
 
-        // This will find the item in the Library and then create a new ActionItem with
-        // that information.
+        // This will try and find (and return) the item either by Name or by ID from the Library.
 
         ListThing thisItem = null;
         String thisType = "Actions";
@@ -85,25 +94,27 @@ public class ActionLibrary {
         String thisDestination = "";
 
         if (showDebug) {
-            System.out.println("Starting ActionLibrary readItem...");
+            System.out.println("----------------------------------");
+            System.out.println("Starting ActionLibrary readThing...");
+            System.out.println("Looking for Action " + findThing);
         }
 
         for (int InventoryItemPos = 0; InventoryItemPos < actionID.length; InventoryItemPos++) {
-            if (actionID[InventoryItemPos].equals(findThisID)) {
+            if (actionID[InventoryItemPos].equals(findThing) || actionName[InventoryItemPos].equals(findThing)) {
 
-                thisID = findThisID;
+                thisID = findThing;
                 thisName = actionName[InventoryItemPos];
                 thisDescription = actionDescriptions[InventoryItemPos];
                 thisCommand = actionCommands[InventoryItemPos];
 
                 if (showDebug) {
                     System.out.println("Creating item...");
-                    System.out.println("Action ID          " +thisID);
+                    System.out.println("Action ID          " + thisID);
                     System.out.println("Action Name        " + thisName);
                     System.out.println("Action Description " + thisDescription);
                     System.out.println("Action Command     " + thisCommand);
+                    System.out.println("----------------------------------");
                 }
-
                 thisItem = new ListThing(thisType, thisID, thisName, thisDescription, thisActionID, thisDestination, thisCommand, showDebug);
                 return thisItem;
             }
@@ -111,31 +122,65 @@ public class ActionLibrary {
 
         // Still working under the 'any errors cause program to halt' idea
 
-        System.out.println("ERMAHGERD! Unable to find Inventory Item " + findThisID + ", aborting game.");
+        if (showDebug) {
+            System.out.println("ERMAHGERD! Unable to find Action " + findThing + ".");
+            System.out.println("----------------------------------");
+        }
+
         return thisItem;
     }
 
-    public boolean findItem(String findThisID){
+    public boolean isInLibrary(String findThing) {
+
+        // For simplicities sake, look for a match on the ID or the Name
 
         if (showDebug) {
-            System.out.println("Starting ActionLibrary findItem...");
+            System.out.println("----------------------------------");
+            System.out.println("Starting ActionLibrary isInLibrary...");
         }
 
         for (int itemPos = 0; itemPos < actionID.length; itemPos++) {
-            if (actionID[itemPos].equals(findThisID)) {
+            if (actionID[itemPos].equals(findThing) || actionName[itemPos].equals(findThing)) {
 
                 if (showDebug) {
-                    System.out.println("Item "+findThisID+" was in the Item Library at ["+itemPos+"].");
+                    System.out.println("Action " + findThing + " was in the Action Library at [" + itemPos + "].");
+                    System.out.println("----------------------------------");
                 }
-
                 return true;
             }
         }
 
         if (showDebug) {
-            System.out.println("Item "+findThisID+" was not in the Item Library.");
+            System.out.println("Action " + findThing + " was not in the Action Library.");
+            System.out.println("----------------------------------");
+        }
+        return false;
+    }
+
+    public String getID(String findThing) {
+
+        // For this, we are providing the name and we need the ID
+
+        if (showDebug) {
+            System.out.println("----------------------------------");
+            System.out.println("Starting ActionLibrary getID...");
         }
 
-        return false;
+        for (int itemPos = 0; itemPos < actionID.length; itemPos++) {
+            if (actionID[itemPos].equals(findThing) || actionName[itemPos].equals(findThing)) {
+
+                if (showDebug) {
+                    System.out.println("Action " + findThing + " was in the Action Library at [" + itemPos + "].");
+                    System.out.println("----------------------------------");
+                }
+                return actionID[itemPos];
+            }
+        }
+
+        if (showDebug) {
+            System.out.println("Action " + findThing + " was not in the Action Library.");
+            System.out.println("----------------------------------");
+        }
+        return findThing;
     }
 }
