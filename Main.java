@@ -5,7 +5,7 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        boolean showDebug = true;
+        boolean showDebug = false;
         boolean exitGame = false;
 
         ItemLibrary gameItems = new ItemLibrary(showDebug);
@@ -14,19 +14,29 @@ public class Main {
 
         System.out.println("Loading game...");
 
+
+        System.out.println("Loading Items...");
         gameItems.loadLibrary();
+
+        System.out.println("Loading Exits...");
         gameExits.loadLibrary();
+
+        System.out.println("Loading Actions...");
         gameActions.loadLibrary();
+
+        System.out.println("Setting player inventory...");
         ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameExits, gameActions, showDebug);
 
+        System.out.println("Loading Map...");
         RoomMap gameMap = new RoomMap(gameItems, gameExits, gameActions, playerInventory, showDebug);
         gameMap.loadMap();
 
         // New game defaults
         // We'll load the starting position from the file (eventually)
 
-        String currentRoomID = "HOR1";
-        Room currentRoom = gameMap.readRoom(currentRoomID);
+        System.out.println("Loading Room...");
+        gameMap.currentRoomID = "HOR1";
+        Room currentRoom = gameMap.readRoom(gameMap.currentRoomID);
 
         // Begin the adventure!
 
@@ -35,12 +45,27 @@ public class Main {
         // Adventure loop
 
         int adventureLoop = 1;
+        int maxLoops = 8;
 
         while (!exitGame) {
             if (currentRoom.roomAction()) {
-                if (!currentRoomID.equals(currentRoom.ID)) {
+
+                if (showDebug) {
+                    System.out.println("Current Room is " + currentRoom.ID + " room loaded is " + gameMap.currentRoomID);
+                }
+                if (!gameMap.currentRoomID.equals(currentRoom.ID)) {
+
+                    if (showDebug) {
+                        System.out.println("Updating room "+currentRoom.ID);
+                    }
                     gameMap.updateRoom(currentRoom);
-                    currentRoom = gameMap.readRoom(currentRoomID);
+
+
+                    if (showDebug) {
+                        System.out.println("Loading  room "+gameMap.currentRoomID);
+                    }
+
+                    currentRoom = gameMap.readRoom(gameMap.currentRoomID);
                 }
 
                 // We only need to reprint the room if something has changed
@@ -48,7 +73,7 @@ public class Main {
             }
             adventureLoop++;
 
-            if (adventureLoop > 3) {
+            if (adventureLoop > maxLoops) {
                 exitGame = true;
             }
         }
