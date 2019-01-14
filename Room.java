@@ -64,7 +64,7 @@ public class Room {
             }
 
             if (roomItems[itemPos] != null && !roomItems[itemPos].isEmpty()) {
-                items.addItem(roomItems[itemPos]);
+                items.addItem(roomItems[itemPos], false);
             }
         }
 
@@ -80,7 +80,7 @@ public class Room {
             }
 
             if (roomExits[exitPos] != null && !roomExits[exitPos].isEmpty()) {
-                exits.addItem(roomExits[exitPos]);
+                exits.addItem(roomExits[exitPos], false);
             }
         }
 
@@ -96,7 +96,7 @@ public class Room {
             }
 
             if (roomActions[actionPos] != null && !roomActions[actionPos].isEmpty()) {
-                actions.addItem(roomActions[actionPos]);
+                actions.addItem(roomActions[actionPos], false);
             }
         }
         if (showDebug) {
@@ -111,7 +111,9 @@ public class Room {
             System.out.println("Starting Room printRoom...");
         }
 
-        System.out.println(name);
+        System.out.println("  ");
+        System.out.println("  ");
+        System.out.println("Room> " + name);
         System.out.println("---------------------------");
         System.out.println(description);
         System.out.println("");
@@ -125,6 +127,7 @@ public class Room {
     public boolean roomAction() {
 
         if (showDebug) {
+            System.out.println("==========================================");
             System.out.println("Starting Room roomAction...");
         }
 
@@ -134,9 +137,21 @@ public class Room {
         System.out.printf("> ");
         userInput = reader.nextLine();
 
+        if (showDebug) {
+            System.out.println("Checking to see if the Input null or blank");
+        }
+
         if (userInput == null || userInput.isEmpty()) {
             System.out.println("The universe listens, but does not respond.");
+
+            if (showDebug) {
+                System.out.println("==========================================");
+            }
             return false;
+        }
+
+        if (showDebug) {
+            System.out.println("Checking to see if the Input is an Item");
         }
 
         if (items.isInList(userInput)) {
@@ -146,10 +161,19 @@ public class Room {
             // If it's an Item name, try and pick it up
             if (getFreeSpot == 999) {
                 System.out.println("You already have " + items.maxItems + ", you cannot carry anymore.");
+                if (showDebug) {
+                    System.out.println("==========================================");
+                }
+                return false;
             } else {
 
                 // Move it from the room inventory to the player inventory
                 playerInventory.itemsList[getFreeSpot] = items.transferThing(userInput);
+                System.out.println("You pickup the " + userInput + ".");
+
+                if (showDebug) {
+                    System.out.println("==========================================");
+                }
                 return true;
             }
         } else {
@@ -157,23 +181,49 @@ public class Room {
             // If it's an Exit, try and move there
             // using the exit will output the description and then change the current room
 
+            if (showDebug) {
+                System.out.println("Checking to see if the Input is an Exit");
+            }
+
             int exitPos = exits.posInList(userInput);
             ListThing thisExit;
 
             if (exitPos < 999) {
 
-                thisExit = exits.itemsList[exitPos];
-
+                if (showDebug) {
+                    System.out.println("Attempting to use the Exit");
+                }
 
                 thisExit = gameExits.readItem(userInput);
                 thisExit.useRoomExit(gameMap);
+                return true;
 
             } else {
+
+                if (showDebug) {
+                    System.out.println("Checking to see if the Input is an Action");
+                }
 
                 // If it's an Action, perform the Action
                 if (actions.posInList(userInput) < 999) {
 
-                    gameItems.readItem(userInput);
+                    if (playerInventory.actionInList(userInput)) {
+
+                        if (showDebug) {
+                            System.out.println("Attempting to do the Action");
+                        }
+
+                        ListThing thisAction = gameActions.readThing(userInput);
+                        thisAction.doAction(playerInventory, this, gameItems, gameExits, gameActions);
+                        return true;
+                    } else {
+
+                        if (showDebug) {
+                            System.out.println("Action is not in Player inventory.");
+                        }
+                        System.out.println("The universe listens, but does not respond.");
+                        return false;
+                    }
 
                 } else {
 
@@ -181,30 +231,50 @@ public class Room {
 
                     if (showDebug) {
                         System.out.println("Trying to drop " + userInput);
+                        System.out.println("Checking to see if the item is in the Player Inventory");
                     }
 
                     if (playerInventory.posInList(userInput) < 999) {
+
+                        if (showDebug) {
+                            System.out.println("Checking for a free spot in the Player Inventory");
+                        }
 
                         getFreeSpot = items.freeSpot();
 
                         // If it's an Item name, try and pick it up
                         if (getFreeSpot == 999) {
+
                             System.out.println("The room already has " + items.maxItems + ", you cannot drop this here.");
+
+                            if (showDebug) {
+                                System.out.println("==========================================");
+                            }
+                            return false;
                         } else {
 
                             // Move it from the room inventory to the player inventory
                             items.itemsList[getFreeSpot] = playerInventory.transferThing(userInput);
+
+                            if (showDebug) {
+                                System.out.println("Moved item from Player Inventory to the Room Inventory.");
+                                System.out.println("==========================================");
+                            }
                             return true;
                         }
                     } else {
 
-                        // If it's not an Item, Exit, or Action... nothing happens.
+                        // If we've hit this point, assume no successful action was taken
+
                         System.out.println("The universe listens, but does not respond.");
+
+                        if (showDebug) {
+                            System.out.println("==========================================");
+                        }
+                        return false;
                     }
                 }
             }
         }
-        // If we've hit this point, assume no successful action was taken
-        return false;
     }
 }
