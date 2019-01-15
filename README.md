@@ -23,61 +23,61 @@ There is currently no way to 'win' the game, but I will be adding a 'Final Exit'
 
 Basic Libraries (aka info from the text files)
 -------------------------------------------------
-GameMap - string array of all the rooms and their Items/Exits/Actions
-ItemLibrary - string array of all the items
-ExitLibrary - string array of all the exits
-ActionLibrary - string array of all the actions
+- GameMap - string array of all the rooms and their Items/Exits/Actions
+- ItemLibrary - string array of all the items
+- ExitLibrary - string array of all the exits
+- ActionLibrary - string array of all the actions
 
 Player Inventory
 -------------------
-Items[6] - array of six possible Items (objects, not foreign keys)
+- Items[6] - array of six possible Items (objects, not foreign keys)
 
 Rooms
 --------
-ID - short nickname/primary key
-Name - title of the room
-Description - short description of the room
-Items[6] - array of six possible Items (objects, not foreign keys)
-Exit[6] - array of six possible Exits (objects, not foreign keys)
-Actions[6] - array of six possible Actions (objects, not foreign keys)
+- ID - short nickname/primary key
+- Name - title of the room
+- Description - short description of the room
+- Items[6] - array of six possible Items (objects, not foreign keys)
+- Exit[6] - array of six possible Exits (objects, not foreign keys)
+- Actions[6] - array of six possible Actions (objects, not foreign keys)
 
 Items
 -------
-ID - short nickname/primary key
-Name - what it says on the tin
-Description - short description of the item
-Action ID - this is the nickname for the matching action/foreign key
+- ID - short nickname/primary key
+- Name - what it says on the tin
+- Description - short description of the item
+- Action ID - this is the nickname for the matching action/foreign key
 
 Exits
 -------
-ID - short nickname/primary key
-Name - what it says on the tin
-Description - short description of the player using the exit
-Destination Room ID - this is the nickname for the matching room/foreign key
+- ID - short nickname/primary key
+- Name - what it says on the tin
+- Description - short description of the player using the exit
+- Destination Room ID - this is the nickname for the matching room/foreign key
 
 Note: Exits are one-way things, since the description of going up the stairs and down the stairs are different, even though you move between the same two rooms.
 
 Actions
 ---------
-ID - short nickname/primary key
-Name - what it says on the tin
-Description - short description of the player doing the action
-Command - a '~' delimiated string of actions and targets
+- ID - short nickname/primary key
+- Name - what it says on the tin
+- Description - short description of the player doing the action
+- Command - a '~' delimiated string of actions and targets
 
 Command List
 -------------
-addRoomItem - adds an item to the room
-removeRoomItem - removes an item from the room
-addPlayerItem - adds an item to the player inventory
-removePlayerItem - removes an item from the player inventory
-addExit - adds an exit to the room
-removeExit - removes an exit from the room
+- addRoomItem - adds an item to the room
+- removeRoomItem - removes an item from the room
+- addPlayerItem - adds an item to the player inventory
+- removePlayerItem - removes an item from the player inventory
+- addExit - adds an exit to the room
+- removeExit - removes an exit from the room
 
 Planned commands (aka to-do list)
 ----------------------------------
-addAction - adds an exit to the room
-removeAction - removes an exit from the room
-movePlayer - changes the current player location
-'Remote' actions - changes a different room's Items/Exits/Actions
+- addAction - adds an exit to the room
+- removeAction - removes an exit from the room
+- movePlayer - changes the current player location
+- 'Remote' actions - changes a different room's Items/Exits/Actions
 
 Currently action have to be tied to a room, am looking at ways of changing that...
