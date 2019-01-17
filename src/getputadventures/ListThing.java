@@ -1,4 +1,4 @@
-package getput.adventures;
+package getputadventures;
 
 public class ListThing {
 
