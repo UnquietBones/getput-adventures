@@ -109,7 +109,7 @@ public class ItemLibrary {
                 System.out.println("Checking InventoryLibrary [" + libraryPos + "] " + checkID + " " + checkName);
             }
 
-            if (checkID.equals(findThing) || checkName.equals(findThing)) {
+            if (checkID.equalsIgnoreCase(findThing) || checkName.equalsIgnoreCase(findThing)) {
 
                 thisID = itemIDs[libraryPos];
                 thisName = itemNames[libraryPos];
@@ -151,7 +151,7 @@ public class ItemLibrary {
                 System.out.println("Checking [" + itemPos + "] " + itemIDs[itemPos]);
             }
 
-            if (itemIDs[itemPos].equals(findThing)) {
+            if (itemIDs[itemPos].equalsIgnoreCase(findThing)) {
 
                 if (showDebug) {
                     System.out.println("Item " + findThing + " was in the Item Library at [" + itemPos + "].");

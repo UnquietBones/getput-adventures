@@ -8,7 +8,7 @@ public class ExitLibrary {
     // Available exits are currently linked to a Room. There is no need to track changes as the game
     // progresses since the RoomMap will do so.
 
-    int libraryCount = 2;
+    int libraryCount = 11;
 
     private Boolean showDebug;
     private String[] exitID = new String[libraryCount];
@@ -99,7 +99,7 @@ public class ExitLibrary {
         String thisCommand = "";
 
         for (int exitPos = 0; exitPos < exitID.length; exitPos++) {
-            if (exitID[exitPos].equals(findThing) || exitName[exitPos].equals(findThing)) {
+            if (exitID[exitPos].equalsIgnoreCase(findThing) || exitName[exitPos].equalsIgnoreCase(findThing)) {
 
                 thisID = findThing;
                 thisName = exitName[exitPos];

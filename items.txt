@@ -1,4 +1,4 @@
 Item ID/Item Name/Item Description/Action ID/
 FDK/Front Door Key/Lying next to the doormat is a Front Door Key./UFD
-SL/Sealed Letter/In the mailbox is a sealed letter./OL
 JM/Junk Mail/Oh look, it's junk mail./TJM
+SL/Sealed Letter/In the mailbox is a sealed letter./OL

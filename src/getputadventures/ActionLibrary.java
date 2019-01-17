@@ -8,7 +8,7 @@ public class ActionLibrary {
     // Available actions are currently linked to a Room. There is no need to track changes as the game
     // progresses since the RoomMap will do so.
 
-    int libraryCount = 3;
+    int libraryCount = 4;
 
     private boolean showDebug;
 
@@ -100,7 +100,7 @@ public class ActionLibrary {
         }
 
         for (int InventoryItemPos = 0; InventoryItemPos < actionID.length; InventoryItemPos++) {
-            if (actionID[InventoryItemPos].equals(findThing) || actionName[InventoryItemPos].equals(findThing)) {
+            if (actionID[InventoryItemPos].equalsIgnoreCase(findThing) || actionName[InventoryItemPos].equalsIgnoreCase(findThing)) {
 
                 thisID = findThing;
                 thisName = actionName[InventoryItemPos];
@@ -140,7 +140,7 @@ public class ActionLibrary {
         }
 
         for (int itemPos = 0; itemPos < actionID.length; itemPos++) {
-            if (actionID[itemPos].equals(findThing) || actionName[itemPos].equals(findThing)) {
+            if (actionID[itemPos].equalsIgnoreCase(findThing) || actionName[itemPos].equalsIgnoreCase(findThing)) {
 
                 if (showDebug) {
                     System.out.println("Action " + findThing + " was in the Action Library at [" + itemPos + "].");
@@ -167,7 +167,7 @@ public class ActionLibrary {
         }
 
         for (int itemPos = 0; itemPos < actionID.length; itemPos++) {
-            if (actionID[itemPos].equals(findThing) || actionName[itemPos].equals(findThing)) {
+            if (actionID[itemPos].equalsIgnoreCase(findThing) || actionName[itemPos].equalsIgnoreCase(findThing)) {
 
                 if (showDebug) {
                     System.out.println("Action " + findThing + " was in the Action Library at [" + itemPos + "].");

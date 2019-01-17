@@ -1,6 +1,5 @@
 package getputadventures;
 
-
 public class Main {
 
     public static void main(String[] args) throws Exception {
@@ -13,7 +12,6 @@ public class Main {
         ActionLibrary gameActions = new ActionLibrary(showDebug);
 
         System.out.println("Loading game...");
-
 
         System.out.println("Loading Items...");
         gameItems.loadLibrary();
@@ -43,6 +41,7 @@ public class Main {
         currentRoom.printRoom();
 
         // Adventure loop
+        // Right now this is limited by the number of loops, eventually it will be limited by the win condition
 
         int adventureLoop = 1;
         int maxLoops = 8;
@@ -56,20 +55,23 @@ public class Main {
                 if (!gameMap.currentRoomID.equals(currentRoom.ID)) {
 
                     if (showDebug) {
-                        System.out.println("Updating room "+currentRoom.ID);
+                        System.out.println("Updating room " + currentRoom.ID);
                     }
                     gameMap.updateRoom(currentRoom);
 
 
                     if (showDebug) {
-                        System.out.println("Loading  room "+gameMap.currentRoomID);
+                        System.out.println("Loading  room " + gameMap.currentRoomID);
                     }
 
                     currentRoom = gameMap.readRoom(gameMap.currentRoomID);
-                }
 
-                // We only need to reprint the room if something has changed
-                currentRoom.printRoom();
+                    // We only need to reprint the room if something has changed
+                    currentRoom.printRoom();
+                }
+            } else {
+                System.out.println("You click your ruby slippers together and the magic takes you home...");
+                exitGame = true;
             }
             adventureLoop++;
 

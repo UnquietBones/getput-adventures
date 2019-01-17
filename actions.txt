@@ -1,4 +1,5 @@
 Action ID/Action Name/Action Description/Action Command
-UFD/Unlock Front Door/You unlock the front door./removePlayerItem~FDK~addExit~FD1
+BSL/Break Shed Lock/You break the rusty lock with the hammer./removePlayerItem~FDK~addExit~FD1
 OL/Open Letter/You carefully open the letter./removePlayerItem~SL~addPlayerItem~JM
 TJM/Trash Junk Mail/You toss the junk mail back into the hell from whence it came./removePlayerItem~JM
+UFD/Unlock Front Door/You unlock the front door./removePlayerItem~FDK~addExit~PFD

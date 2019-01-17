@@ -113,9 +113,10 @@ public class Room {
 
         System.out.println("  ");
         System.out.println("  ");
-        System.out.println("Room> " + name);
+        System.out.println(name);
         System.out.println("---------------------------");
-        System.out.println(description);
+        System.out.print(description);
+        items.printListDescriptions();
         System.out.println("");
         items.printListOfThings("Pickup item", playerInventory);
         exits.printListOfThings("Use Exit", playerInventory);
@@ -125,6 +126,8 @@ public class Room {
     }
 
     public boolean roomAction() {
+
+        // Get input from the user, only return false if they want to exit the game
 
         if (showDebug) {
             System.out.println("==========================================");
@@ -147,11 +150,27 @@ public class Room {
             if (showDebug) {
                 System.out.println("==========================================");
             }
+            return true;
+        }
+
+        if (showDebug) {
+            System.out.println("Checking to see if they want to exit the game.");
+        }
+
+        if (userInput.equalsIgnoreCase("Exit")) {
             return false;
         }
 
         if (showDebug) {
-            System.out.println("Checking to see if the Input is an Item");
+            System.out.println("Check to see if they want to reprint the room.");
+        }
+
+        if (userInput.equalsIgnoreCase("Look")) {
+            this.printRoom();
+        }
+
+        if (showDebug) {
+            System.out.println("Checking to see if the Input is an Item.");
         }
 
         if (items.isInList(userInput)) {
@@ -164,7 +183,7 @@ public class Room {
                 if (showDebug) {
                     System.out.println("==========================================");
                 }
-                return false;
+                return true;
             } else {
 
                 // Move it from the room inventory to the player inventory
@@ -222,7 +241,7 @@ public class Room {
                             System.out.println("Action is not in Player inventory.");
                         }
                         System.out.println("The universe listens, but does not respond.");
-                        return false;
+                        return true;
                     }
 
                 } else {
@@ -250,7 +269,7 @@ public class Room {
                             if (showDebug) {
                                 System.out.println("==========================================");
                             }
-                            return false;
+                            return true;
                         } else {
 
                             // Move it from the room inventory to the player inventory
@@ -271,7 +290,7 @@ public class Room {
                         if (showDebug) {
                             System.out.println("==========================================");
                         }
-                        return false;
+                        return true;
                     }
                 }
             }

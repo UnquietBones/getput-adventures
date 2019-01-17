@@ -1,14 +1,11 @@
 package getputadventures;
 
-import jdk.swing.interop.SwingInterOpUtils;
-
 import java.io.File;
-import java.sql.SQLOutput;
 import java.util.Scanner;
 
 public class RoomMap {
 
-    int maxRooms = 2;
+    int maxRooms = 29;
     int maxItems = 6;
 
     private boolean showDebug;
@@ -17,9 +14,9 @@ public class RoomMap {
     private ActionLibrary gameActions;
     private ListOfThings playerInventory;
 
-    public String[] roomIDs = new String[2];
-    public String[] roomNames = new String[2];
-    public String[] roomDescriptions = new String[2];
+    public String[] roomIDs = new String[maxRooms];
+    public String[] roomNames = new String[maxRooms];
+    public String[] roomDescriptions = new String[maxRooms];
     public String[][] roomItems = new String[maxRooms][maxItems];
     public String[][] roomExits = new String[maxRooms][maxItems];
     public String[][] roomActions = new String[maxRooms][maxItems];
@@ -99,7 +96,7 @@ public class RoomMap {
 
                 // Then copy in the items (if there are any)
 
-                if (!allItems.equals("None")) {
+                if (!allItems.equalsIgnoreCase("None")) {
                     String[] tempItems = allItems.split(",");
                     itemCount = tempItems.length;
 
@@ -133,7 +130,7 @@ public class RoomMap {
 
                 // Then copy in the exits (if there are any)
 
-                if (!allExits.equals("None")) {
+                if (!allExits.equalsIgnoreCase("None")) {
 
                     String[] tempExits = allExits.split(",");
                     exitCount = tempExits.length;
@@ -169,7 +166,7 @@ public class RoomMap {
 
                 // Then copy in the actions (if there are any)
 
-                if (!allActions.equals("None")) {
+                if (!allActions.equalsIgnoreCase("None")) {
 
                     String[] tempActions = allActions.split(",");
                     actionCount = tempActions.length;
@@ -223,7 +220,7 @@ public class RoomMap {
         String[] thisRoomActions;
 
         for (int roomPos = 0; roomPos < roomIDs.length; roomPos++) {
-            if (roomIDs[roomPos].equals(findThisID) || roomNames[roomPos].equals(findThisID)) {
+            if (roomIDs[roomPos].equalsIgnoreCase(findThisID) || roomNames[roomPos].equalsIgnoreCase(findThisID)) {
 
                 thisRoomName = roomNames[roomPos];
                 thisRoomDescription = roomDescriptions[roomPos];
@@ -255,7 +252,7 @@ public class RoomMap {
         String newValue;
 
         for (int roomPos = 0; roomPos < roomIDs.length; roomPos++) {
-            if (roomIDs[roomPos].equals(changedRoom.ID)) {
+            if (roomIDs[roomPos].equalsIgnoreCase(changedRoom.ID)) {
 
                 if (showDebug) {
                     System.out.println("Updating room name from " + roomNames[roomPos] + " to " + changedRoom.name);

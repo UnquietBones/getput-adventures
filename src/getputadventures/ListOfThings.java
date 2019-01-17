@@ -139,10 +139,10 @@ public class ListOfThings {
             if (showDebug) {
                 System.out.println("Checking [" + itemCounter + "] " + itemsList[itemCounter].id + itemsList[itemCounter].name);
             }
-            if (itemsList[itemCounter].id.equals(thisThing) || itemsList[itemCounter].name.equals(thisThing)) {
+            if (itemsList[itemCounter].id.equalsIgnoreCase(thisThing) || itemsList[itemCounter].name.equalsIgnoreCase(thisThing)) {
                 itemsList[itemCounter].clearThing();
                 if (showMsg) {
-                    System.out.println(itemsList[itemCounter].name + " has been removed from " + listName+".");
+                    System.out.println(itemsList[itemCounter].name + " has been removed from " + listName + ".");
                 }
                 if (showDebug) {
                     System.out.println("---------------------------------");
@@ -215,7 +215,7 @@ public class ListOfThings {
                     System.out.println("Checking [" + itemCounter + "] " + itemsList[itemCounter].id +
                             itemsList[itemCounter].name);
                 }
-                if (itemsList[itemCounter].id.equals(thisThing) || itemsList[itemCounter].name.equals(thisThing)) {
+                if (itemsList[itemCounter].id.equalsIgnoreCase(thisThing) || itemsList[itemCounter].name.equalsIgnoreCase(thisThing)) {
 
                     // Move pointer into a temp variable to pass it out and clear it from the list
                     tempThing = itemsList[itemCounter];
@@ -244,7 +244,7 @@ public class ListOfThings {
         if (showDebug) {
             System.out.println("---------------------------------");
             System.out.println("Starting ListOfThings isInList...");
-            System.out.println("Looking for " + findID + " in "+listType+ " "+listName);
+            System.out.println("Looking for " + findID + " in " + listType + " " + listName);
         }
 
         int itemCount = itemsList.length - 1;
@@ -257,7 +257,7 @@ public class ListOfThings {
                     System.out.println("[" + itemCounter + "] " + itemsList[itemCounter].id + " " + itemsList[itemCounter].name);
                 }
 
-                if (itemsList[itemCounter].id.equals(findID) || itemsList[itemCounter].name.equals(findID)) {
+                if (itemsList[itemCounter].id.equalsIgnoreCase(findID) || itemsList[itemCounter].name.equalsIgnoreCase(findID)) {
                     return true;
                 }
             } else {
@@ -292,7 +292,7 @@ public class ListOfThings {
                     System.out.println("[" + itemCounter + "] " + itemsList[itemCounter].id + " " + itemsList[itemCounter].name);
                 }
 
-                if (itemsList[itemCounter].id.equals(findID) || itemsList[itemCounter].name.equals(findID)) {
+                if (itemsList[itemCounter].id.equalsIgnoreCase(findID) || itemsList[itemCounter].name.equalsIgnoreCase(findID)) {
                     if (showDebug) {
                         System.out.println("Found " + findID + " at " + itemCounter);
                         System.out.println("----------------------------------");
@@ -336,7 +336,7 @@ public class ListOfThings {
                     System.out.println("-------------------------------------");
                 }
 
-                if (itemsList[itemCounter].actionID.equals(findAction)) {
+                if (itemsList[itemCounter].actionID.equalsIgnoreCase(findAction)) {
                     return true;
                 }
             }
@@ -388,7 +388,7 @@ public class ListOfThings {
 
                     // Check Action against player's inventory.
 
-                    if (listType.equals("Do Action")) {
+                    if (listType.equalsIgnoreCase("Do Action")) {
 
                         if (playerInventory.actionInList(itemsList[itemCounter].id)) {
 
@@ -422,6 +422,65 @@ public class ListOfThings {
             }
         }
         System.out.println(listName + ": " + displayList);
+
+        if (showDebug) {
+            System.out.println("------------------------------------------");
+        }
+    }
+
+    public void printListDescriptions() {
+
+        // This will print out the descriptions of all the items in the list
+
+        if (showDebug) {
+            System.out.println("----------------------------------------------");
+            System.out.println("Starting ListOfThings printListDescriptions...");
+        }
+
+        String displayList = "";
+        String displayItem = "";
+        int itemCount = itemsList.length;
+
+        if (showDebug) {
+            System.out.println("Expecting " + maxItems + " maxItems in " + listName + " of type " + listType);
+            System.out.println("Found " + itemsList.length + " items.");
+        }
+
+        if (itemCount <= 0) {
+            displayList = "";
+        } else {
+
+            for (int itemCounter = 0; itemCounter < itemCount; itemCounter++) {
+
+                if (showDebug) {
+                    System.out.println("Checking [" + itemCounter + "]");
+                }
+
+                if (itemsList[itemCounter] != null && !itemsList[itemCounter].id.isEmpty()) {
+
+                    if (showDebug) {
+                        System.out.println("[" + itemCounter + "] " + itemsList[itemCounter].id + "  " +
+                                itemsList[itemCounter].name);
+                    }
+
+                    displayItem = itemsList[itemCounter].description;
+
+                    if (!displayList.isEmpty()) {
+                        displayList += " ";
+                    }
+                    displayList += displayItem;
+                } else {
+                    if (showDebug) {
+                        System.out.println("[" + itemCounter + "] is empty.");
+                    }
+                }
+
+            }
+            if (displayList.isEmpty()) {
+                displayList = "";
+            }
+        }
+        System.out.println(displayList);
 
         if (showDebug) {
             System.out.println("------------------------------------------");
