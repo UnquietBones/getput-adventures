@@ -11,6 +11,8 @@ You can
 - Put down an item in a room
 - Do an action (if you have the item in inventory and the action exists in the room)
 - Use an exit
+- Look (reprints the room)
+- Exit (quits the game)
 
 Chapter 1 - Java 11 - This Old House (of Horrors?)  [in progress]
 
