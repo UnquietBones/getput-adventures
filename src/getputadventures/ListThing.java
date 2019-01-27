@@ -1,39 +1,32 @@
+working on this will not compile
+
 package getputadventures;
 
 public class ListThing {
 
-    // Trying to make the Room, Exit, and Items all one sort of thing
-
+    // All Things have:
+    //    String ID;                  - Primary Key
+    //    String Name;                - Name of Thing
+    //    String Description;         - Description of Thing or description of action
+    
     // Items have:
-    //    String itemID;
-    //    String itemName;
-    //    String itemDescription;
-    //    String itemActionID;
-
-    // Exits have:
-    //    String roomExitID;
-    //    String roomExitName;
-    //    String roomExitDescription;
-    //    String roomExitDestination;
+    //    String itemActionID;        - Shows what actions this Item can take
 
     // Actions have:
-    //    String actionID;
-    //    String actionName;
-    //    String actionDescription;
-    //    String actionCommand;
+    //    String actionType;          - Does the action require a Room, and Object, or both
+    //    String actionCommand;       - What happens when the action is taken
 
     boolean showDebug;
-    boolean exitGame;
 
-    String thingType;
-    String id;
-    String name;
-    String description;
-    String actionID;
-    String destination;
-    String thingCommand;
+    public String thingType;
+    public String id;
+    public String name;
+    public String description;
+    public String actionID;
+    public String command;
+    public String actionType;
 
-    public ListThing(String newType, String newID, String newName, String newDescription, String newActionID, String newDestination, String newCommand, boolean mainDebug) {
+    public ListThing(String newType, String newID, String newName, String newDescription, String newActionID, String newCommand, boolean mainDebug, String newActionType) {
 
         showDebug = mainDebug;
 
@@ -42,14 +35,14 @@ public class ListThing {
         name = newName;
         description = newDescription;
         actionID = newActionID;
-        destination = newDestination;
-        thingCommand = newCommand;
+        command = newCommand;
+        actionType = newActionType;
     }
 
     public void clearThing(){
-
+        // Used to clear the slot in the array to signal it can be used
         if (showDebug) {
-            System.out.println("Starting ListThing clearThing...");
+            System.out.println("Running ListThing clearThing - set all to empty strings...");
         }
 
         thingType    = "";
@@ -57,11 +50,11 @@ public class ListThing {
         name         = "";
         description  = "";
         actionID     = "";
-        destination  = "";
-        thingCommand = "";
+        command = "";
+        actionType = "";
     }
-
-    public void doAction(ListOfThings playerInventory, Room currentRoom, ItemLibrary gameItems, ExitLibrary gameExits, ActionLibrary gameActions) {
+        
+    public void doAction(ListOfThings playerInventory, Room currentRoom, ItemLibrary gameItems, ActionLibrary gameActions) {
 
         if (showDebug) {
             System.out.println("Starting ListThing doAction...");
@@ -69,27 +62,29 @@ public class ListThing {
 
         // Basic possible commands
         // -----------------------------
-        // Add Item to current room        addRoomItem~JM
-        // Remove Item from current room   removeRoomItem~JM
-        // Add Item to inventory           addPlayerItem~JM
-        // Remove Item from inventory      removePlayerItem~JM
-        // Add Exit to current room        addExit~FD
-        // Remove Exit to current room     removeExit~FD
-
-        // may want to add in the ability to change other rooms via the Map?
+        // Add Item to Room                addRoomItem~[Item]~[Room]
+        // Remove Item from Room           removeRoomItem~[Item]~[Room]
+        // Add Action to Room              addRoomAction~[Action]~[Room]
+        // Remove Action from Room         removeRoomAction~[Action]~[Room]
+        
+        // Add Item to Inventory           addPlayerItem~[Item]
+        // Remove Item from Inventory      removePlayerItem~[Item]
+        
+        // Add Action to Item              addItemAction~[Item]
+        // Remove Action from Item         removeItemAction~[Item]
+        
+        // Move Player to Room             movePlayer~[Room]
 
         // Chained commands
         // -----------------------------
-        // Use an Item to add an Exit  removePlayerItem~FDK~addExit~FD
-        // Change Item in inventory    removePlayerItem~SL~addPlayerItem~JM
-
-        // currently idea is that using the Item will consume the item and drop it from inventory
+        // Consume an Item to add an Exit to a room                      removePlayerItem~FDK~addExit~FD~HOR1
+        // Create Item in inventory and remove action from first item    addPlayerItem~JM~removeItemAction~SL~OL
 
         String[] itemCmds;
         int maxActions;
 
         if (showDebug) {
-            System.out.println("Action Command: " + thingCommand);
+            System.out.println("  Action Command: " + thingCommand);
         }
 
         itemCmds = thingCommand.split("~");
@@ -103,58 +98,93 @@ public class ListThing {
 
             if (showDebug) {
                 if ((actionPos + 1) >= maxActions) {
-                    System.out.println("[[[ Parsing action "+itemCmds[actionPos]);
+                    System.out.println("    Parsing action "+itemCmds[actionPos]);
                 } else {
-                    System.out.println("[[[ Parsing action "+itemCmds[actionPos] + "    " + itemCmds[actionPos + 1]);
+                    System.out.println("    Parsing action "+itemCmds[actionPos] + "    " + itemCmds[actionPos + 1]);
                 }
             }
+            
+            subAction1 = ""
+            subAction2 = ""
 
             switch (itemCmds[actionPos]) {
 
                 case "addRoomItem":
-                    currentRoom.items.addItem(itemCmds[actionPos + 1], true);
+                    // Add Item to Room                addRoomItem~[Item]~[Room]
+                    subAction1 = itemCmds[actionPos + 1];
+                    subAction2 = itemCmds[actionPos + 2];
+                    //need to update map, then refresh room
+                    //currentRoom.items.addItem(itemCmds[actionPos + 1], true);
                     break;
 
                 case "removeRoomItem":
-                    currentRoom.items.removeThing(itemCmds[actionPos + 1],true);
+                    // Remove Item from Room           removeRoomItem~[Item]~[Room]
+                    subAction1 = itemCmds[actionPos + 1];
+                    subAction2 = itemCmds[actionPos + 2];
+                    //need to update map, then refresh room
+                    //currentRoom.items.removeThing(itemCmds[actionPos + 1],true);
                     break;
-
+                
+                case "addRoomAction":
+                    // Add Action to Room              addRoomAction~[Action]~[Room]
+                    subAction1 = itemCmds[actionPos + 1];
+                    subAction2 = itemCmds[actionPos + 2];
+                    //need to update map, then refresh room
+                    break;
+                    
+                case "removeRoomAction":
+                    // Remove Action from Room         removeRoomAction~[Action]~[Room]
+                    subAction1 = itemCmds[actionPos + 1];
+                    subAction2 = itemCmds[actionPos + 2];
+                    //need to update map, then refresh room
+                    break;
+                    
                 case "addPlayerItem":
-                    playerInventory.addItem(itemCmds[actionPos + 1], true);
+                    // Add Item to Inventory           addPlayerItem~[Item]
+                    subAction1 = itemCmds[actionPos + 1];
+                    playerInventory.addItem(subAction1, true);
                     break;
 
                 case "removePlayerItem":
-                    playerInventory.removeThing(itemCmds[actionPos + 1], true);
+                    // Remove Item from Inventory      removePlayerItem~[Item]
+                    subAction1 = itemCmds[actionPos + 1];
+                    playerInventory.removeThing(subAction1, true);
                     break;
-
-                case "addExit":
-                    currentRoom.exits.addItem(itemCmds[actionPos + 1], true);
+               
+                case "addItemAction":
+                    // Add Action to Item              addItemAction~[Item]
+                    subAction1 = itemCmds[actionPos + 1];
+                    //need to update library, then refresh room or player inventory
                     break;
-
-                case "removeExit":
-                    currentRoom.exits.removeThing(itemCmds[actionPos + 1], true);
+                    
+                case "removeItemAction":
+                    // Remove Action from Item         removeItemAction~[Item]
+                    subAction1 = itemCmds[actionPos + 1];
+                    //need to update library, then refresh room or player inventory
+                    break;
+                    
+                case "movePlayer":
+                    // Move Player to Room             movePlayer~[Room]
+                    subAction1 = itemCmds[actionPos + 1];
+                    System.out.println(description);
+                    gameMap.currentRoomID = subAction1;
                     break;
             }
-
         }
     }
 
 
-    public void useRoomExit(RoomMap gameMap) {
+    // Exits are now actions, so taking this out
+//    public void useRoomExit(RoomMap gameMap) {
         // using the exit will output the description and then change the current room
-
+    
+    public void removeItemAction() {
+        // Removes an action from the Item and removes it from the Item in the Item Inventory
         if (showDebug) {
-            System.out.println("Starting ListThing useRoomExit...");
+            System.out.println("Running ListThing removeItemAction...");
         }
 
-        System.out.println(description);
-
-
-        if (showDebug) {
-            System.out.println("Moving to room " + destination);
-        }
-
-        gameMap.currentRoomID = destination;
+       // update the item in the Library
+       // update the item if it's in the current Room's inventory or in the Player's inventory
     }
-
 }
