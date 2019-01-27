@@ -1,3 +1,7 @@
+
+working on this will not compile
+
+
 package getputadventures;
 
 import java.io.File;
@@ -5,10 +9,9 @@ import java.util.Scanner;
 
 public class ItemLibrary {
 
-    // Currently not intending to write a modified Library for the save game, but we'll see...
-    // Should only need to load the Library and then create individual items as needed.
+    // We will need to write out the Library modifications for the save game...
 
-    int libraryCount = 3;
+    int libraryCount = 3; // This is a count of the Items in the .txt file
 
     private Boolean showDebug;
     private String[] itemIDs = new String[libraryCount];
@@ -137,7 +140,8 @@ public class ItemLibrary {
         return thisItem;
     }
 
-    public boolean isInLibrary(String findThing) {
+    public int isInLibrary(String findThing) {
+        // This will find the location the Library of the Item or it will return 999
 
         if (showDebug) {
             System.out.println("-----------------------------------");
@@ -158,7 +162,7 @@ public class ItemLibrary {
                     System.out.println("-----------------------------------");
                 }
 
-                return true;
+                return itemPos;
             }
         }
 
@@ -167,6 +171,31 @@ public class ItemLibrary {
             System.out.println("-----------------------------------");
         }
 
-        return false;
+        return 999;
     }
+
+public boolean removeItemAction(String updateID) {
+        if (showDebug) {
+            System.out.println("------------------------------");
+            System.out.println("Starting ItemLibrary removeItemAction...");
+            System.out.println("Trying to update item " + updateID);
+        }
+
+        String oldValue;
+        String newValue;
+
+        foundPod = this.isInLibrary(updateID);
+    
+        if 
+    
+        for (int itemPos = 0; itemPos < roomIDs.length; itemPos++) {
+            if (itemIDs[itemPos].equalsIgnoreCase(updateID)) {
+
+                if (showDebug) {
+                    System.out.println("Updating item name from " + roomNames[roomPos] + " to " + changedRoom.name);
+                }
+                roomNames[roomPos] = changedRoom.name;
+
+}
+
 }
