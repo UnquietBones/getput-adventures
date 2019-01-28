@@ -6,6 +6,8 @@ Feedback on better ways to do this is (as always) appreciated! :)
 
 It woooooooooooooooooooooooooooooorks! :D
 
+...and now I am ripping it apart again in a branch so I can turn Exits into Actions, add a bunch of new Commands, and build up the House in the Woods! :)
+
 You can
 - Pick up an item from a room
 - Put down an item in a room
