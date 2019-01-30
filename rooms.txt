@@ -1,30 +1,31 @@
-Room ID/Room Name/Description/Items/Exits/Actions
-HOR1/Porch/You are standing on the porch of a small house in a deep forest. It's a well-kept porch with a cute welcome sign and a mailbox./FDK,SL/WHY,DWY/UFD
-HOR2/Overgrown Garden/You are standing in the remnants of a raised bed garden. The plants have all overgrown their beds and the cucumber and sweet potato vines are at war./None/OCD,DWY,OGW/None
-HOR3/Side Yard/The grass is slightly overgrown here, but nothing seems amiss./None/OPH/None
-HOR4/Backyard/You are standing on a wide brick patio. There are several potted plants that look in need of watering./None/None/None
-HOR5/Rusty Shed/The shed is too small to enter, but you can reach all the gardening tools easily./None/None/None
-HOR6/Cellar Door/You are standing in front of the cellar door. The area is overgrown with tall grass and vegetable vines./None/BYE/None
-HOR7/Driveway/You are standing on a simple gravel driveway leading up to a single car garage door./None/OPH/None
-HIR1/Entryway/There is a coat rack and a nice rug, but no sign that anyone has been here recently./None/PCH/None
-HIR2/Sitting Room/An empty room./None/None/None
-HIR3/Stairs Up/The stairs leading to the second floor are wide wooden steps with a carpet runner. Photos of a family and their pets adorne the walls./None/None/None
-HIR4/Breakfast Nook/There is a small white table that looks like someone just set it for dinner./None/None/None
-HIR5/Dining Room/There is a giant dark wooden table that could easily fit twelve people and a matching china cabinet./None/None/None
-HIR6/Kitchen/An empty room./None/None/None
-HIR7/Stairs Down/An empty room./None/None/None
-HIR8/Living Room/An empty room./None/None/None
-HIR9/Garage/An empty room./None/None/None
-HIB1/Basement East/An empty room./None/None/None
-HIB2/Basement West/An empty room./None/None/None
-HIU1/Hallway/An empty room./None/None/None
-HIU2/Dark Hallway/The overhead light sputters weakly, but does not turn on. Good thing this isn't Gru country!/None/None/None
-HIU3/Attic Ladder/There is a pull down ladder here that leads into the garage./None/None/None
-HIU4/Office/An empty room./None/None/None
-HIU5/Bedroom East/An empty room./None/None/None
-HIU6/Bedroom West/An empty room./None/None/None
-HIU7/Sewing Room/An empty room./None/None/None
-HIU8/Master Bedroom/An empty room./None/None/None
-HIA1/Attic North/An empty room./None/None/None
-HIA2/Attic South/An empty room./None/None/None
-HIA3/Storage Room/An empty room./None/None/None
+Room ID/Room Name/Description/Items/Actions
+HIA1/Attic North/An empty room./None/None
+HIA2/Attic South/An empty room./None/None
+HIA3/Storage Room/An empty room./None/None
+HIB1/Basement East/An empty room./None/None
+HIB2/Basement West/An empty room./None/None
+HIR1/Entryway/There is a coat rack and a nice rug, but no sign that anyone has been here recently./None/PCH
+HIR2/Sitting Room/An empty room./None/None
+HIR3/Stairs Up/The stairs leading to the second floor are wide wooden steps with a carpet runner. Photos of a family and their pets adorn the walls./None/None
+HIR4/Breakfast Nook/There is a small white table that looks like someone just set it for dinner./None/None
+HIR5/Dining Room/There is a giant dark wooden table that could easily fit twelve people and a matching china cabinet./None/None
+HIR6/Kitchen/An empty room./None/None
+HIR7/Stairs Down/An empty room./None/None
+HIR8/Living Room/There is a fireplace on the far end of the room./ADL/None
+HIR9/Garage/An empty room./None/None
+HIU1/Hallway/An empty room./None/None
+HIU2/Dark Hallway/The overhead light sputters weakly but does not turn on. Good thing this isn't Gru country!/None/None
+HIU3/Attic Ladder/There is a pull-down ladder here that leads into the garage./None/None
+HIU4/Office/An empty room./None/None
+HIU5/Bedroom East/An empty room./None/None
+HIU6/Bedroom West/An empty room./None/None
+HIU7/Sewing Room/An empty room./None/None
+HIU8/Master Bedroom/An empty room./None/None
+HOR1/Porch/You are standing on the porch of a small wooden house in a deep forest. It's a well-kept porch with a cute welcome sign, a bench swing, and a mailbox./SL/WHY,DWY,UFD
+HOR2/Overgrown Garden/You are standing in the remnants of a vegetable garden. The plants have all overgrown their beds and the cucumber and sweet potato vines are at war./None/BPO,DWY,OCD
+HOR3/Side Yard/The grass is slightly overgrown here, but save for a few scattered pine cones that concentrate near the side of the back patio, nothing seems amiss./None/OPH,BPL
+HOR4/Brick Patio/You are standing on a wide brick patio with a sliding glass door. There are several potted plants that look in need of watering./None/BYE, OGW, WHY
+HOR5/Rusty Shed/The shed is too small to enter, but you can reach all the gardening tools easily./None/CSD
+HOR6/Cellar Door/You are standing on worn stone steps that lead down to the cellar door. The area is overgrown with tall grass and vegetable vines./None/BYE
+HOR7/Driveway/You are standing on a simple gravel driveway leading up to a single car garage door./None/OPH,BYE
+HOR8/Back Yard/The yard is overgrown and you can't tell where the back yard ends and the woods begin./None/BPO
