@@ -1,4 +1,10 @@
-Item ID/Item Name/Item Description/Action ID/
-FDK/Front Door Key/Lying next to the doormat is a Front Door Key./UFD
-JM/Junk Mail/Oh look, it's junk mail./TJM
-SL/Sealed Letter/In the mailbox is a sealed letter./OL
+Item ID/Item Name/Item Description/Action ID/Can Pickup
+FDK/Front Door Key/It's a key, I wonder what it goes to?/UFD/Y
+JM/Junk Mail/Oh look, it's junk mail./SRF/Y
+SL/Sealed Letter/In the mailbox is a sealed letter./OL/Y
+SLR/Suspicious Looking Rock/There is a suspicious looking rock lying here./PTR/N
+WRF/Warm Roaring Fire/The dry aged wood make a great fuel and the fire burns happily in the fireplace./None/N
+ADL/Dry Logs/There are logs in the fireplace that look like they'd made a great fire./None/N
+BMT/Box of Matches/There is a small match box with lots of matches./SRF/Y
+FSW/Front Porch Swing/There is a wooden bench swing hanging from chains tat has carvings of dogs along the arms./None/N
+FMB/Mailbox/There is a closed mailbox./GSL/N
