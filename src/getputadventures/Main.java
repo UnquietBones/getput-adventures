@@ -8,25 +8,21 @@ public class Main {
         boolean exitGame = false;
 
         ItemLibrary gameItems = new ItemLibrary(showDebug);
-        ExitLibrary gameExits = new ExitLibrary(showDebug);
         ActionLibrary gameActions = new ActionLibrary(showDebug);
 
         System.out.println("Loading game...");
 
-        System.out.println("Loading Items...");
+        System.out.println("  Loading Items...");
         gameItems.loadLibrary();
 
-        System.out.println("Loading Exits...");
-        gameExits.loadLibrary();
-
-        System.out.println("Loading Actions...");
+        System.out.println("  Loading Actions...");
         gameActions.loadLibrary();
 
-        System.out.println("Setting player inventory...");
-        ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameExits, gameActions, showDebug);
+        System.out.println("  Setting player inventory...");
+        ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameActions, showDebug);
 
-        System.out.println("Loading Map...");
-        RoomMap gameMap = new RoomMap(gameItems, gameExits, gameActions, playerInventory, showDebug);
+        System.out.println("  Loading Map...");
+        RoomMap gameMap = new RoomMap(showDebug);
         gameMap.loadMap();
 
         // New game defaults
@@ -34,11 +30,11 @@ public class Main {
 
         System.out.println("Loading Room...");
         gameMap.currentRoomID = "HOR1";
-        Room currentRoom = gameMap.readRoom(gameMap.currentRoomID);
+        Room currentRoom = gameMap.readRoom(gameMap.currentRoomID, gameItems, gameActions, playerInventory);
 
         // Begin the adventure!
 
-        currentRoom.printRoom();
+        currentRoom.printRoom(playerInventory);
 
         // Adventure loop
         // Right now this is limited by the number of loops, eventually it will be limited by the win condition
@@ -47,27 +43,27 @@ public class Main {
         int maxLoops = 8;
 
         while (!exitGame) {
-            if (currentRoom.roomAction()) {
+            if (currentRoom.roomAction(gameItems, gameActions, playerInventory, gameMap)) {
 
                 if (showDebug) {
-                    System.out.println("Current Room is " + currentRoom.ID + " room loaded is " + gameMap.currentRoomID);
+                    System.out.printf("Current Room is %s room loaded is %s %n", currentRoom.ID, gameMap.currentRoomID);
                 }
                 if (!gameMap.currentRoomID.equals(currentRoom.ID)) {
 
                     if (showDebug) {
-                        System.out.println("Updating room " + currentRoom.ID);
+                        System.out.printf("Updating room %s %n", currentRoom.ID);
                     }
                     gameMap.updateRoom(currentRoom);
 
 
                     if (showDebug) {
-                        System.out.println("Loading  room " + gameMap.currentRoomID);
+                        System.out.printf("Loading  room %s %n", gameMap.currentRoomID);
                     }
 
-                    currentRoom = gameMap.readRoom(gameMap.currentRoomID);
+                    currentRoom = gameMap.readRoom(gameMap.currentRoomID, gameItems, gameActions, playerInventory);
 
-                    // We only need to reprint the room if something has changed
-                    currentRoom.printRoom();
+                    // We only reprint the room if they have moved, otherwise they need to use Look
+                    currentRoom.printRoom(playerInventory);
                 }
             } else {
                 System.out.println("You click your ruby slippers together and the magic takes you home...");
