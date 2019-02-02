@@ -5,14 +5,6 @@ import java.util.Scanner;
 
 public class ActionLibrary {
 
-    // Changes made
-    //  Had getID blank out the findThing if the lookup fails
-    //  Added placeholders for new actions to doAction
-    //  Turned the debug dash-breaks into statics so they are consistent
-    //  Changed all println with variables to printf's.
-    //  Rewrote getID to use isInLibrary
-    //  Tried to remove as many global variables as possible
-
     // Available actions are currently linked to a Room. There is no need to track changes as the game
     // progresses since the RoomMap will do so.
 
