@@ -1,23 +1,33 @@
-working on this will not compile
-
 package getputadventures;
 
 public class ListThing {
 
+    // Changes made
+    //  Exits are now Actions, so removed Exit stuffs
+    //  Added actionType: requires Room (R), Item (O), or both (RO)
+    //  Changed all println with variables to printf's.
+    //  Turned the debug dash-breaks into statics so they are consistent.
+    //  Updated all comments to match changes and additions
+    //  Created addItemAction
+    //  Created removeItemAction
+    //  Added canPickup
+
+
     // All Things have:
     //    String ID;                  - Primary Key
     //    String Name;                - Name of Thing
-    //    String Description;         - Description of Thing or description of action
-    
+    //    String Description;         - Description of the thing or description of the action taken
+
     // Items have:
     //    String itemActionID;        - Shows what actions this Item can take
+    //    String canPickup;           - Can the item be moved to Player's Inventory (Y/N)
 
     // Actions have:
     //    String actionType;          - Does the action require a Room, and Object, or both
     //    String actionCommand;       - What happens when the action is taken
 
-    boolean showDebug;
-
+    private static String LONGDASH = "--------------------------------";
+    private static String SHORTDASH = "----------------";
     public String thingType;
     public String id;
     public String name;
@@ -25,10 +35,10 @@ public class ListThing {
     public String actionID;
     public String command;
     public String actionType;
+    public String canPickup;
+    private boolean showDebug;
 
-    public ListThing(String newType, String newID, String newName, String newDescription, String newActionID, String newCommand, boolean mainDebug, String newActionType) {
-
-        showDebug = mainDebug;
+    public ListThing(String newType, String newID, String newName, String newDescription, String newActionID, String newCommand, String newActionType, String newPickup, boolean mainDebug) {
 
         thingType = newType;
         id = newID;
@@ -37,27 +47,51 @@ public class ListThing {
         actionID = newActionID;
         command = newCommand;
         actionType = newActionType;
+        canPickup = newPickup;
+
+        showDebug = mainDebug;
     }
 
-    public void clearThing(){
-        // Used to clear the slot in the array to signal it can be used
+    public void clearThing() {
+
+        // Used to clear the slot in the array to signal it can be used/reused
+
         if (showDebug) {
-            System.out.println("Running ListThing clearThing - set all to empty strings...");
+            System.out.println(LONGDASH);
+            System.out.println("ListThing clearThing");
         }
 
-        thingType    = "";
-        id           = "";
-        name         = "";
-        description  = "";
-        actionID     = "";
+        thingType = "";
+        id = "";
+        name = "";
+        description = "";
+        actionID = "";
         command = "";
         actionType = "";
-    }
-        
-    public void doAction(ListOfThings playerInventory, Room currentRoom, ItemLibrary gameItems, ActionLibrary gameActions) {
+        canPickup = "";
 
         if (showDebug) {
-            System.out.println("Starting ListThing doAction...");
+            System.out.println("  All values set to empty string.");
+            System.out.println(LONGDASH);
+        }
+    }
+
+    public void doAction(ItemLibrary newItems, ActionLibrary newActions, RoomMap newMap, ListOfThings newInventory, Room newRoom) {
+
+        ItemLibrary gameItems = newItems;
+        ActionLibrary gameActions = newActions;
+        RoomMap gameMap = newMap;
+        ListOfThings playerInventory = newInventory;
+        Room currentRoom = newRoom;
+
+        String[] itemCmds;
+        String subAction1;
+        String subAction2;
+        int maxActions;
+
+        if (showDebug) {
+            System.out.println(LONGDASH);
+            System.out.println("ListThing doAction");
         }
 
         // Basic possible commands
@@ -66,28 +100,25 @@ public class ListThing {
         // Remove Item from Room           removeRoomItem~[Item]~[Room]
         // Add Action to Room              addRoomAction~[Action]~[Room]
         // Remove Action from Room         removeRoomAction~[Action]~[Room]
-        
+
         // Add Item to Inventory           addPlayerItem~[Item]
         // Remove Item from Inventory      removePlayerItem~[Item]
-        
-        // Add Action to Item              addItemAction~[Item]
+
+        // Add Action to Item              addItemAction~[Item]~[Action]
         // Remove Action from Item         removeItemAction~[Item]
-        
+
         // Move Player to Room             movePlayer~[Room]
 
         // Chained commands
         // -----------------------------
         // Consume an Item to add an Exit to a room                      removePlayerItem~FDK~addExit~FD~HOR1
-        // Create Item in inventory and remove action from first item    addPlayerItem~JM~removeItemAction~SL~OL
-
-        String[] itemCmds;
-        int maxActions;
+        // Create Item in inventory and remove action from first item    addPlayerItem~JM~removeItemAction~SL
 
         if (showDebug) {
-            System.out.println("  Action Command: " + thingCommand);
+            System.out.printf("  Action Command: %s %n", command);
         }
 
-        itemCmds = thingCommand.split("~");
+        itemCmds = command.split("~");
         maxActions = itemCmds.length;
 
         // Time to step through the commands
@@ -98,14 +129,14 @@ public class ListThing {
 
             if (showDebug) {
                 if ((actionPos + 1) >= maxActions) {
-                    System.out.println("    Parsing action "+itemCmds[actionPos]);
+                    System.out.printf("    Parsing action %s %n", itemCmds[actionPos]);
                 } else {
-                    System.out.println("    Parsing action "+itemCmds[actionPos] + "    " + itemCmds[actionPos + 1]);
+                    System.out.printf("    Parsing action %s   %s %n", itemCmds[actionPos], itemCmds[actionPos + 1]);
                 }
             }
-            
-            subAction1 = ""
-            subAction2 = ""
+
+            subAction1 = "";
+            subAction2 = "";
 
             switch (itemCmds[actionPos]) {
 
@@ -124,21 +155,21 @@ public class ListThing {
                     //need to update map, then refresh room
                     //currentRoom.items.removeThing(itemCmds[actionPos + 1],true);
                     break;
-                
+
                 case "addRoomAction":
                     // Add Action to Room              addRoomAction~[Action]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     //need to update map, then refresh room
                     break;
-                    
+
                 case "removeRoomAction":
                     // Remove Action from Room         removeRoomAction~[Action]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     //need to update map, then refresh room
                     break;
-                    
+
                 case "addPlayerItem":
                     // Add Item to Inventory           addPlayerItem~[Item]
                     subAction1 = itemCmds[actionPos + 1];
@@ -150,19 +181,20 @@ public class ListThing {
                     subAction1 = itemCmds[actionPos + 1];
                     playerInventory.removeThing(subAction1, true);
                     break;
-               
+
                 case "addItemAction":
-                    // Add Action to Item              addItemAction~[Item]
+                    // Add Action to Item              addItemAction~[Item]~[Action]
                     subAction1 = itemCmds[actionPos + 1];
-                    //need to update library, then refresh room or player inventory
+                    subAction2 = itemCmds[actionPos + 2];
+                    addItemAction(subAction1, subAction2, gameItems, playerInventory, currentRoom);
                     break;
-                    
+
                 case "removeItemAction":
                     // Remove Action from Item         removeItemAction~[Item]
                     subAction1 = itemCmds[actionPos + 1];
-                    //need to update library, then refresh room or player inventory
+                    removeItemAction(subAction1, gameItems, playerInventory, currentRoom);
                     break;
-                    
+
                 case "movePlayer":
                     // Move Player to Room             movePlayer~[Room]
                     subAction1 = itemCmds[actionPos + 1];
@@ -171,20 +203,45 @@ public class ListThing {
                     break;
             }
         }
+
+        if (showDebug) {
+            System.out.println(LONGDASH);
+        }
     }
 
+    public void addItemAction(String addItemID, String actionID, ItemLibrary gameItems, ListOfThings playerInventory, Room currentRoom) {
 
-    // Exits are now actions, so taking this out
-//    public void useRoomExit(RoomMap gameMap) {
-        // using the exit will output the description and then change the current room
-    
-    public void removeItemAction() {
-        // Removes an action from the Item and removes it from the Item in the Item Inventory
+        // Adds the Action ID to the Item in the Library, Player Inventory, and current Room.
+
         if (showDebug) {
-            System.out.println("Running ListThing removeItemAction...");
+            System.out.println(LONGDASH);
+            System.out.println("ListThing addItemAction");
         }
 
-       // update the item in the Library
-       // update the item if it's in the current Room's inventory or in the Player's inventory
+            gameItems.addItemAction(addItemID, actionID);
+            playerInventory.addItemAction(addItemID, actionID);
+            currentRoom.items.addItemAction(addItemID, actionID);
+
+        if (showDebug) {
+            System.out.println(LONGDASH);
+        }
+    }
+
+    public void removeItemAction(String removeItem, ItemLibrary gameItems, ListOfThings playerInventory, Room currentRoom) {
+
+        // Removes the Action ID from the Item in the Library, Player Inventory, and current Room.
+
+        if (showDebug) {
+            System.out.println(LONGDASH);
+            System.out.println("ListThing removeItemAction");
+        }
+
+        gameItems.removeItemAction(removeItem);
+        playerInventory.removeItemAction(removeItem);
+        currentRoom.items.removeItemAction(removeItem);
+
+        if (showDebug) {
+            System.out.println(LONGDASH);
+        }
     }
 }
