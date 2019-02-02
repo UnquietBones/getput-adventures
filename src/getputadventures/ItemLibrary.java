@@ -5,19 +5,6 @@ import java.util.Scanner;
 
 public class ItemLibrary {
 
-    // Changes made
-    //  Added removeItemAction
-    //  Added addItemAction
-    //  Changed all println with variables to printf's.
-    //  Turned the debug dash-breaks into statics so they are consistent.
-    //  Removed Destination
-    //  Added actionType
-    //  Added GetID
-    //  Tried to remove as many global variables as possible
-    //  Rewrote getID to use isInLibrary
-    //  Added itemPickup
-
-
     // We will need to write out the Library modifications for the save game...
 
     private static String LONGDASH = "--------------------------------";
