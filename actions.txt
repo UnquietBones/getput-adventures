@@ -5,11 +5,8 @@ BSL/Break Shed Lock/It takes a few hits, but you managed to break the rusty shed
 BYE/Overgrown Garden/You step cautiously into the overgrown garden./movePlayer~HOR2/R
 CSD/Close Shed Door/The shed door reluctantly closes with a metallic groan and a shower of rust./movePlayer~HOR4/R
 DWY/Driveway/You walk over to the tidy gravel driveway./movePlayer~HOR7/R
-ECD/Cellar Stairs/You wrestle the heavy cellar door open and climb inside./movePlayer~HIB2/R
-EXR/Examine Rock/You flip over the rock and discover it's a plastic key-hide./removeItemAction~SR~addPlayerItem~FDK/O
-FPS/Have A Swing/You take a moment to rock gently in the swing and look down the road./None/R
-ICD/Cellar Stairs/You carefully open the cellar door and climb outside./movePlayer~HOR6/R
-IDW/Driveway/You open the garage door and walk out into the driveway./movePlayer~HOR7/R
+EXR/Examine Rock/You flip over the rock and discover it's a plastic key-hide./removeRoomAction~EXR~addPlayerItem~FDK/O
+HAS/Have A Swing/You take a moment to rock gently in the swing and look down the road. You hear the faint sound of hounds howling in the distance./None/R
 OCD/Cellar Door/You move through the vines to the cellar door./movePlayer~HOR6/R
 OGW/Backyard/You push aside the overgrown weeds and enter the backyard./movePlayer~HOR9/R
 OL/Open Letter/You carefully open the letter./removePlayerItem~SL~addPlayerItem~JM/O
@@ -17,7 +14,6 @@ OPH/Porch/You walk over the mowed front lawn and step onto the porch./movePlayer
 PCH/Porch/You open the front door and exit the house./movePlayer~HOR1/R
 PFD/Front Door/You open the front door and enter the house./movePlayer~HIR1/R
 RSD/Rusty Shed Door/The shed door opens with a moaning grind of metal./movePlayer~HOR5/R
-SRF/Start Roaring Fire/You use the matches and the junkmail to start a roaring fire in the fireplace./removePlayerItem~JM~removeRoomItem~ADL~HIR8~addRoomItem~WRF~HIR8/RO
 UFD/Unlock Front Door/You unlock the front door./removePlayerItem~FDK~addExit~PFD/RO
 WHY/Side Yard/You make your way into the side yard./movePlayer~HOR3/R
 GSL/Check Mailbox/You open the mailbox and find a sealed letter./addRoomItem~SL~HOR1/RO
