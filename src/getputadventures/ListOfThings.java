@@ -4,11 +4,6 @@ public class ListOfThings {
 
     // This can be a list of Items or Actions
 
-    // Changes Made
-    //    Tried to remove as many global variables as possible
-    //    Turned the debug dash-breaks into statics so they are consistent
-    //    Changed all println with variables to printf's.
-
     private static String LONGDASH = "--------------------------------";
     private static String SHORTDASH = "----------------";
     public String listType;          // RoomInv, PlayerInv, Actions
