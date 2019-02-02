@@ -2,17 +2,6 @@ package getputadventures;
 
 public class ListThing {
 
-    // Changes made
-    //  Exits are now Actions, so removed Exit stuffs
-    //  Added actionType: requires Room (R), Item (O), or both (RO)
-    //  Changed all println with variables to printf's.
-    //  Turned the debug dash-breaks into statics so they are consistent.
-    //  Updated all comments to match changes and additions
-    //  Created addItemAction
-    //  Created removeItemAction
-    //  Added canPickup
-
-
     // All Things have:
     //    String ID;                  - Primary Key
     //    String Name;                - Name of Thing
