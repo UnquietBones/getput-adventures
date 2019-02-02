@@ -4,14 +4,6 @@ import java.util.Scanner;
 
 public class Room {
 
-    // Changes Made
-    //  Turned the debug dash-breaks into statics so they are consistent
-    //  Changed all println with variables to printf's.
-    //  Changed maxItems to a static
-    //  Added a MAXACTIONS
-    //  Tried to remove as many global variables as possible
-    //  Added in handling for the RO Actions (that require a Room and an Item)
-
     public static int MAXITEMS = 6;
     public static int MAXACTIONS = 12;
     private static String LONGDASH = "--------------------------------";
