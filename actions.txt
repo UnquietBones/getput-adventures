@@ -5,7 +5,7 @@ BSL/Break Shed Lock/It takes a few hits, but you managed to break the rusty shed
 BYE/Overgrown Garden/You step cautiously into the overgrown garden./movePlayer~HOR2/R
 CSD/Close Shed Door/The shed door reluctantly closes with a metallic groan and a shower of rust./movePlayer~HOR4/R
 DWY/Driveway/You walk over to the tidy gravel driveway./movePlayer~HOR7/R
-EXR/Examine Rock/You flip over the rock and discover it's a plastic key-hide./removeRoomAction~EXR~addPlayerItem~FDK/O
+EXR/Examine Rock/You flip over the rock and discover it's a plastic key-hide./removeRoomAction~EXR~addPlayerItem~FDK/R
 HAS/Have A Swing/You take a moment to rock gently in the swing and look down the road. You hear the faint sound of hounds howling in the distance./None/R
 OCD/Cellar Door/You move through the vines to the cellar door./movePlayer~HOR6/R
 OGW/Backyard/You push aside the overgrown weeds and enter the backyard./movePlayer~HOR9/R

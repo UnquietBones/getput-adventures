@@ -15,16 +15,14 @@ public class ListThing {
     //    String actionType;          - Does the action require a Room, and Object, or both
     //    String actionCommand;       - What happens when the action is taken
 
-    private static String LONGDASH = "--------------------------------";
-    private static String SHORTDASH = "----------------";
-    public String thingType;
-    public String id;
-    public String name;
-    public String description;
-    public String actionID;
-    public String command;
-    public String actionType;
-    public String canPickup;
+    private String thingType;
+    private String id;
+    private String name;
+    private String description;
+    private String actionID;
+    private String command;
+    private String actionType;
+    private String canPickup;
     private boolean showDebug;
 
     public ListThing(String newType, String newID, String newName, String newDescription, String newActionID, String newCommand, String newActionType, String newPickup, boolean mainDebug) {
@@ -46,7 +44,7 @@ public class ListThing {
         // Used to clear the slot in the array to signal it can be used/reused
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
             System.out.println("ListThing clearThing");
         }
 
@@ -61,17 +59,11 @@ public class ListThing {
 
         if (showDebug) {
             System.out.println("  All values set to empty string.");
-            System.out.println(LONGDASH);
+            debugLong();
         }
     }
 
-    public void doAction(ItemLibrary newItems, ActionLibrary newActions, RoomMap newMap, ListOfThings newInventory, Room newRoom) {
-
-        ItemLibrary gameItems = newItems;
-        ActionLibrary gameActions = newActions;
-        RoomMap gameMap = newMap;
-        ListOfThings playerInventory = newInventory;
-        Room currentRoom = newRoom;
+    public void doAction(ItemLibrary gameItems, ActionLibrary gameActions, RoomMap gameMap, ListOfThings playerInventory, Room currentRoom) {
 
         String[] itemCmds;
         String subAction1;
@@ -79,7 +71,7 @@ public class ListThing {
         int maxActions;
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
             System.out.println("ListThing doAction");
         }
 
@@ -126,6 +118,7 @@ public class ListThing {
 
             subAction1 = "";
             subAction2 = "";
+            Room modifyRoom;
 
             switch (itemCmds[actionPos]) {
 
@@ -133,16 +126,28 @@ public class ListThing {
                     // Add Item to Room                addRoomItem~[Item]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
-                    //need to update map, then refresh room
-                    //currentRoom.items.addItem(itemCmds[actionPos + 1], true);
+                    if (subAction2 == gameMap.getCurrentRoomID()) {
+                        currentRoom.getItems().addItem(itemCmds[actionPos + 1],true);
+                        gameMap.updateRoom(currentRoom);
+                    } else {
+                        modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
+                        modifyRoom.getItems().addItem(itemCmds[actionPos + 1],true);
+                        gameMap.updateRoom(modifyRoom);
+                    }
                     break;
 
                 case "removeRoomItem":
                     // Remove Item from Room           removeRoomItem~[Item]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
-                    //need to update map, then refresh room
-                    //currentRoom.items.removeThing(itemCmds[actionPos + 1],true);
+                    if (subAction2 == gameMap.getCurrentRoomID()) {
+                        currentRoom.getItems().removeThing(itemCmds[actionPos + 1],true);
+                        gameMap.updateRoom(currentRoom);
+                    } else {
+                        modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
+                        modifyRoom.getItems().removeThing(itemCmds[actionPos + 1],true);
+                        gameMap.updateRoom(modifyRoom);
+                    }
                     break;
 
                 case "addRoomAction":
@@ -150,6 +155,7 @@ public class ListThing {
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     //need to update map, then refresh room
+                    System.out.println("addRoomAction~[Action]~[Room] doesn't work yet, sorry.");
                     break;
 
                 case "removeRoomAction":
@@ -157,6 +163,7 @@ public class ListThing {
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     //need to update map, then refresh room
+                    System.out.println("removeRoomAction~[Action]~[Room] doesn't work yet, sorry.");
                     break;
 
                 case "addPlayerItem":
@@ -175,62 +182,144 @@ public class ListThing {
                     // Add Action to Item              addItemAction~[Item]~[Action]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
-                    addItemAction(subAction1, subAction2, gameItems, playerInventory, currentRoom);
+                    addItemAction(subAction1, subAction2, gameItems, gameActions, playerInventory, currentRoom);
                     break;
 
                 case "removeItemAction":
                     // Remove Action from Item         removeItemAction~[Item]
                     subAction1 = itemCmds[actionPos + 1];
-                    removeItemAction(subAction1, gameItems, playerInventory, currentRoom);
+                    removeItemAction(subAction1, gameItems, gameActions, playerInventory, currentRoom);
                     break;
 
                 case "movePlayer":
                     // Move Player to Room             movePlayer~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     System.out.println(description);
-                    gameMap.currentRoomID = subAction1;
+                    gameMap.setCurrentRoomID(subAction1);
                     break;
             }
         }
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
         }
     }
 
-    public void addItemAction(String addItemID, String actionID, ItemLibrary gameItems, ListOfThings playerInventory, Room currentRoom) {
+    public void addItemAction(String addItemID, String actionID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
 
         // Adds the Action ID to the Item in the Library, Player Inventory, and current Room.
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
             System.out.println("ListThing addItemAction");
         }
 
-            gameItems.addItemAction(addItemID, actionID);
+            gameItems.addItemAction(addItemID, actionID, gameActions);
             playerInventory.addItemAction(addItemID, actionID);
-            currentRoom.items.addItemAction(addItemID, actionID);
+            currentRoom.getItems().addItemAction(addItemID, actionID);
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
         }
     }
 
-    public void removeItemAction(String removeItem, ItemLibrary gameItems, ListOfThings playerInventory, Room currentRoom) {
+    public void removeItemAction(String removeItem, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
 
         // Removes the Action ID from the Item in the Library, Player Inventory, and current Room.
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
             System.out.println("ListThing removeItemAction");
         }
 
         gameItems.removeItemAction(removeItem);
         playerInventory.removeItemAction(removeItem);
-        currentRoom.items.removeItemAction(removeItem);
+        currentRoom.getItems().removeItemAction(removeItem);
 
         if (showDebug) {
-            System.out.println(LONGDASH);
+            debugLong();
         }
+    }
+
+    private void debugLong() {
+        if (showDebug) {
+            System.out.println("--------------------------------");
+        }
+    }
+
+    private void debugShort() {
+        if (showDebug) {
+            System.out.println("----------------");
+        }
+    }
+
+    private void debugOutput(String outputThis) {
+        if (showDebug) {
+            System.out.println(outputThis);
+        }
+    }
+
+    public String getThingType() {
+        return thingType;
+    }
+
+    public void setThingType(String thingType) {
+        this.thingType = thingType;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getActionID() {
+        return actionID;
+    }
+
+    public void setActionID(String actionID) {
+        this.actionID = actionID;
+    }
+
+    public String getCommand() {
+        return command;
+    }
+
+    public void setCommand(String command) {
+        this.command = command;
+    }
+
+    public String getActionType() {
+        return actionType;
+    }
+
+    public void setActionType(String actionType) {
+        this.actionType = actionType;
+    }
+
+    public String getCanPickup() {
+        return canPickup;
+    }
+
+    public void setCanPickup(String canPickup) {
+        this.canPickup = canPickup;
     }
 }

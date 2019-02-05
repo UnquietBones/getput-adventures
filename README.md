@@ -47,7 +47,7 @@ Actions
 - ID - short nickname/primary key
 - Name - what it says on the tin
 - Description - short description of the player doing the action
-- Command - a '~' delimiated string of actions and targets
+- Command - a '~' delimited string of actions and targets
 - Type - R - requires a Room, O - requires an Item, RO - requires a Room and an Item
 
 Command List

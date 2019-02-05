@@ -7,14 +7,12 @@ public class ItemLibrary {
 
     // We will need to write out the Library modifications for the save game...
 
-    private static String LONGDASH = "--------------------------------";
-    private static String SHORTDASH = "----------------";
-    private int libraryCount = 9; // This is a count of the Items in the .txt file
-    public String[] itemIDs = new String[libraryCount];
-    public String[] itemNames = new String[libraryCount];
-    public String[] itemDescriptions = new String[libraryCount];
-    public String[] itemActions = new String[libraryCount];
-    public String[] itemPickup = new String[libraryCount];
+    private int libraryCount = 7; // This is a count of the Items in the .txt file
+    private String[] itemIDs = new String[libraryCount];
+    private String[] itemNames = new String[libraryCount];
+    private String[] itemDescriptions = new String[libraryCount];
+    private String[] itemActions = new String[libraryCount];
+    private String[] itemPickup = new String[libraryCount];
     private Boolean showDebug;
 
     public ItemLibrary(Boolean mainDebug) {
@@ -23,35 +21,27 @@ public class ItemLibrary {
 
     public void loadLibrary() throws Exception {
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary loadLibrary");
-        }
+        debugLong();
+        debugOutput("ItemLibrary loadLibrary");
 
         // This program will read in the Library from the text file
 
         int itemPos = 0;
 
-        // pass the path to the file as a parameter
         String pathname = "C:\\getputadventures\\items.txt";
         File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
 
-        if (showDebug) {
-            System.out.printf("  Loading Item Library from %s %n", pathname);
-            System.out.println(SHORTDASH);
-        }
+        debugOutput("  Loading Item Library from " + pathname);
+        debugShort();
 
         // throw out the first line, it's the field descriptions for the end user
         scan.nextLine();
 
         while (scan.hasNext()) {
-
             itemIDs[itemPos] = scan.next();
-            if (showDebug) {
-                System.out.printf("  Checking line %d %n", itemPos);
-            }
+            debugOutput("  Checking line " + itemPos);
 
             if (!itemIDs[itemPos].isEmpty()) {
                 itemNames[itemPos] = scan.next();
@@ -59,37 +49,31 @@ public class ItemLibrary {
                 itemActions[itemPos] = scan.next();
                 itemPickup[itemPos] = scan.next();
 
-                if (showDebug) {
-                    System.out.printf("    Item ID          %s %n", itemIDs[itemPos]);
-                    System.out.printf("    Item Name        %s %n", itemNames[itemPos]);
-                    System.out.printf("    Item Description %s %n", itemDescriptions[itemPos]);
-                    System.out.printf("    Item Action      %s %n", itemActions[itemPos]);
-                    System.out.printf("    Item Pickup      $s %n", itemPickup[itemPos]);
-                    System.out.println("    " + SHORTDASH);
-                }
+                debugOutput("    Item ID          " + itemIDs[itemPos]);
+                debugOutput("    Item Name        " + itemNames[itemPos]);
+                debugOutput("    Item Description " + itemDescriptions[itemPos]);
+                debugOutput("    Item Action      " + itemActions[itemPos]);
+                debugOutput("    Item Pickup      " + itemPickup[itemPos]);
+                debugShort();
             } else {
-                if (showDebug) {
-                    System.out.println("  All done!");
-                }
+                debugOutput("  All done!");
             }
             itemPos += 1;
         }
         scan.close();
-        System.out.println(LONGDASH);
+        debugLong();
     }
 
     public ListThing readThing(String findThing) {
 
-        // This will find the item in the Library and then create a new ListThing with
-        // that information.
+        // This will find the item in the Library and then create a new ListThing with that information.
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary readThing");
-            System.out.printf("  Looking for Exit %s %n", findThing);
-        }
+        debugLong();
+        debugOutput("ItemLibrary readThing");
+        debugOutput("  Looking for Exit " + findThing);
 
-        ListThing thisItem = new ListThing("Item", "", "", "", "", "", "", "", showDebug);
+        ListThing thisItem = new ListThing("Item", "", "", "", "",
+                "", "", "", showDebug);
         int libraryPos;
 
         String thisType = "Item";
@@ -113,21 +97,19 @@ public class ItemLibrary {
             thisActionID = itemActions[libraryPos];
             thisPickup = itemPickup[libraryPos];
 
-            if (showDebug) {
-                System.out.println("  Creating item...");
-                System.out.printf("    Item ID          %s %n", thisID);
-                System.out.printf("    Item Name        %s %n", thisName);
-                System.out.printf("    Item Description %s %n", thisDescription);
-                System.out.printf("    Item Action      %s %n", thisActionID);
-                System.out.printf("    Item Pickup      %s %n", thisPickup);
-                System.out.println(LONGDASH);
-            }
+            debugOutput("  Creating item...");
+            debugOutput("    Item ID          " + thisID);
+            debugOutput("    Item Name        " + thisName);
+            debugOutput("    Item Description " + thisDescription);
+            debugOutput("    Item Action      " + thisActionID);
+            debugOutput("    Item Pickup      " + thisPickup);
+            debugLong();
 
             thisItem = new ListThing(thisType, thisID, thisName, thisDescription, thisActionID, thisCommand, thisActionType, thisPickup, showDebug);
             return thisItem;
         } else {
-            System.out.printf("Unable to find Item %s %n", findThing);
-            System.out.println(LONGDASH);
+            debugOutput("Unable to find Item " + findThing);
+            debugLong();
             return thisItem;
         }
     }
@@ -136,51 +118,41 @@ public class ItemLibrary {
         // This will find the location the Library of the Item or it will return 999
         // Checks for matches on ID or Name for simplicity's sake
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary isInLibrary");
-            System.out.printf("  Trying to find %s %n", findThing);
-        }
+        debugLong();
+        debugOutput("ItemLibrary isInLibrary");
+        debugOutput("  Trying to find " + findThing);
 
         for (int itemPos = 0; itemPos < itemIDs.length; itemPos++) {
-
-            if (showDebug) {
-                System.out.printf("Checking [%d] %s, %s %n", itemPos, itemIDs[itemPos], itemNames[itemPos]);
-            }
+            debugOutput("Checking [" + itemPos + "] " + itemIDs[itemPos] + " " + itemNames[itemPos] + ".");
 
             if (itemIDs[itemPos].equalsIgnoreCase(findThing) || itemNames[itemPos].equalsIgnoreCase(findThing)) {
-
-                if (showDebug) {
-                    System.out.printf("Item %s was in the Item Library at [%d]. %n", findThing, itemPos);
-                    System.out.println(LONGDASH);
-                }
+                debugOutput("Item " + findThing + " was in the Item Library at [" + itemPos + "].");
+                debugLong();
                 return itemPos;
             }
         }
 
-        if (showDebug) {
-            System.out.printf("Item %s was not in the Item Library. %n", findThing);
-            System.out.println(LONGDASH);
-        }
+        debugOutput("Item " + findThing + " was not in the Item Library.");
+        debugLong();
         return 999;
     }
 
-    public String getID(String findThing) {
-
+    public String findID(String findThing) {
         // Given the Name or ID for the Item, it will return the ID from the Library
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary getID");
-        }
+        debugLong();
+        debugOutput("ItemLibrary findID");
 
         int itemPos = this.isInLibrary(findThing);
 
         if (itemPos < 999) {
+            debugOutput("Found Item " + findThing + ".");
+            debugLong();
             return itemIDs[itemPos];
         } else {
-            findThing = "";
-            return findThing;
+            debugOutput("Item " + findThing + " is not in the Library.");
+            debugLong();
+            return "";
         }
     }
 
@@ -189,51 +161,64 @@ public class ItemLibrary {
         // Items can only have one action at a time, so removing the action will just
         // clear the value.
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary removeItemAction");
-            System.out.printf("  Trying to update item %s %n", updateID);
-        }
+        debugLong();
+        debugOutput("ItemLibrary removeItemAction");
+        debugOutput("  Trying to remove Action from Item " + updateID);
 
         int foundPos = this.isInLibrary(updateID);
 
         if (foundPos < 999) {
-
             this.itemActions[foundPos] = "";
-
-            if (showDebug) {
-                System.out.println("  Removed Action from Item");
-                System.out.println(LONGDASH);
-            }
+            debugOutput("  Removed Action from Item " + updateID);
+            debugLong();
         } else {
-            if (showDebug) {
-                System.out.println("  Unable to find Item in Library.");
-                System.out.println(LONGDASH);
-            }
+            debugOutput("  Unable to find Item " + updateID + " in Library.");
+            debugLong();
         }
     }
 
-    public void addItemAction(String updateID, String actionID) {
+    public void addItemAction(String updateID, String actionID, ActionLibrary gameActions) {
+        // Items can only have one action at a time, so adding the action will just replace whatever value is there.
 
-        // Items can only have one action at a time, so adding the action will just
-        // replace whatever value is there.
+        debugLong();
+        debugOutput("ItemLibrary removeItemAction");
+        debugOutput("  Trying to update Item " + updateID + " with Action " + actionID);
 
-        if (showDebug) {
-            System.out.println(LONGDASH);
-            System.out.println("ItemLibrary removeItemAction");
-            System.out.printf("  Trying to update item %s with %s %n", updateID, actionID);
-        }
+        // Validate the Action ID
+        actionID = gameActions.findID(actionID);
 
-        int foundPos = this.isInLibrary(updateID);
+        if (!actionID.isEmpty()) {
+            int foundPos = this.isInLibrary(updateID);
 
-        if (foundPos < 999) {
-
-            this.itemActions[foundPos] = actionID;
-
-            if (showDebug) {
-                System.out.printf("  Action %s was added to the Item %n", actionID);
-                System.out.println(LONGDASH);
+            if (foundPos < 999) {
+                this.itemActions[foundPos] = actionID;
+                debugOutput("  Action " + actionID + " was added to the Item " + updateID + ".");
+                debugLong();
+            } else {
+                debugOutput("  Unable to find Item " + updateID + " in Library.");
+                debugLong();
             }
+        } else {
+            debugOutput("  Action " + actionID + " is not in the Library, can't update Item " + updateID);
+            debugLong();
+        }
+    }
+
+    private void debugLong() {
+        if (showDebug) {
+            System.out.println("--------------------------------");
+        }
+    }
+
+    private void debugShort() {
+        if (showDebug) {
+            System.out.println("----------------");
+        }
+    }
+
+    private void debugOutput(String outputThis) {
+        if (showDebug) {
+            System.out.println(outputThis);
         }
     }
 }
