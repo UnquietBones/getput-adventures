@@ -4,18 +4,6 @@ import java.util.Scanner;
 
 public class Room {
 
-    // List of methods so I can keep myself straight as I build this thing
-    //	public void printRoom(ListOfThings playerInventory)
-    //	public String getRoomActions(ListOfThings playerInventory)
-    //	private String addNoDuplicates(String oldString, String newString)
-    //	public boolean roomAction(ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, RoomMap gameMap)
-    //	private void pickItUp(String userInput, int itemPos, ListOfThings playerInventory)
-    //	private void dropIt(String userInput, int itemPos, ListOfThings playerInventory)
-    //	private void badRoomAction()
-    //	private void debugLong()
-    //	private void debugShort()
-    //	private void debugOutput(String outputThis)
-
     private static int MAXITEMS = 6;
     private static int MAXACTIONS = 12;
     private static Scanner reader = new Scanner(System.in);
@@ -25,6 +13,7 @@ public class Room {
     private ListOfThings items;
     private ListOfThings actions;
     private boolean showDebug;
+    private DebugMsgs debugMessage;
 
     public Room(String roomID, String roomName, String roomDescription, String[] roomItems, String[] roomActions,
                 ItemLibrary gameItems, ActionLibrary gameActions, boolean mainDebug) {
@@ -33,22 +22,23 @@ public class Room {
         ID = roomID;
         name = roomName;
         description = roomDescription;
+        debugMessage = new DebugMsgs(showDebug);
 
         /*
-         * Right now we'll have a static default, not sure if I can  specified at time of room creation?
-         * Still researching.
+         * Right now we'll have a static default for the size of the various arrays, not sure if this can be specified
+         * at time of room creation?  ...Still researching.
          */
 
         items = new ListOfThings("Room Inventory", "RoomInv", MAXITEMS, gameItems, gameActions, showDebug);
         actions = new ListOfThings("Room Actions", "Actions", MAXACTIONS, gameItems, gameActions, showDebug);
 
-        // Initialise the lists and create the items (if needed)
+        // Initialise the lists since most rooms won't have all the slots filled
 
         items.clearList();
         actions.clearList();
 
         if (showDebug) {
-            debugLong();
+            debugMessage.debugLong();
             System.out.println("Room");
         }
 
@@ -72,7 +62,7 @@ public class Room {
         // Fetch the Actions from the Library
 
         if (showDebug) {
-            debugShort();
+            debugMessage.debugShort();
             System.out.println("  Fetching Actions...");
         }
 
@@ -86,7 +76,7 @@ public class Room {
                 actions.addItem(roomActions[actionPos], false);
             }
         }
-        debugLong();
+        debugMessage.debugLong();
     }
 
 
@@ -95,23 +85,23 @@ public class Room {
         // This prints the room and items descriptions and then prints the available commands
 
         if (showDebug) {
-            debugLong();
+            debugMessage.debugLong();
             System.out.println("Room printRoom");
         }
 
         System.out.println("  ");
         System.out.println("  ");
         System.out.println(name);
-        debugShort();
+        debugMessage.debugShort();
         System.out.print(description);
         items.printListDescriptions();
         System.out.println("");
-        items.printListOfThings("Pickup item", playerInventory);
+        items.printListOfThings("Room items", playerInventory);
         System.out.printf("  Do Action : %s %n", getRoomActions(playerInventory));
         playerInventory.printListOfThings("Drop Inventory Item", playerInventory);
 
         if (showDebug) {
-            debugLong();
+            debugMessage.debugLong();
         }
     }
 
@@ -120,8 +110,8 @@ public class Room {
         // Available Actions can come from the Room, the Items in the Room, the Items in the Player Inventory
         // or a combination.
 
-        debugLong();
-        debugOutput("Room getRoomActions");
+        debugMessage.debugLong();
+        debugMessage.debugOutput("Room getRoomActions");
 
         String actionList = "";
 
@@ -133,8 +123,8 @@ public class Room {
             actionList = roomItemActions;
         }
 
-        debugOutput("List with Room Item Actions");
-        debugOutput(actionList);
+        debugMessage.debugOutput("List with only Room Item Actions");
+        debugMessage.debugOutput(actionList);
 
         if (!playerActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -144,8 +134,8 @@ public class Room {
             }
         }
 
-        debugOutput("List with Room Item and Player Actions");
-        debugOutput(actionList);
+        debugMessage.debugOutput("List with Room and Player Item Actions");
+        debugMessage.debugOutput(actionList);
 
         if (!roomActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -155,8 +145,8 @@ public class Room {
             }
         }
 
-        debugOutput("List with Room Item and Player and Room Actions");
-        debugOutput(actionList);
+        debugMessage.debugOutput("List with Room and Player Item Actions and Room Actions");
+        debugMessage.debugOutput(actionList);
         return actionList;
     }
 
@@ -183,16 +173,16 @@ public class Room {
 
         // Get input from the user, only return false if they want to exit the game
 
-        debugLong();
-        debugOutput("Room roomAction");
+        debugMessage.debugLong();
+        debugMessage.debugOutput("Room roomAction");
 
         String userInput;
         String validActions = getRoomActions(playerInventory);
 
-        System.out.printf("> ");
+        System.out.println("> ");
         userInput = reader.nextLine();
 
-        switch (userInput) {
+        switch (userInput.toUpperCase()) {
             case "":
                 badRoomAction();
                 return true;
@@ -215,24 +205,37 @@ public class Room {
                 if (validActions.contains(userInput)) {
                     ListThing thisAction = gameActions.readThing(userInput);
                     thisAction.doAction(gameItems, gameActions, gameMap, playerInventory, this);
-                    debugLong();
+                    debugMessage.debugLong();
                 } else {
                     badRoomAction();
                 }
             } else {
                 if (inventoryPos < 999) {
-                    dropIt(userInput, itemPos, playerInventory);
+                    dropIt(userInput, playerInventory);
                 } else {
                     // If we've hit this point, assume no successful action was taken
                     badRoomAction();
                 }
             }
         }
-        debugLong();
+        debugMessage.debugLong();
         return true;
     }
 
+    private void badRoomAction() {
+
+        System.out.println("The universe listens, but does not respond.");
+    }
+
     private void pickItUp(String userInput, int itemPos, ListOfThings playerInventory) {
+
+        /*
+         * This looks at the item in the given position in the list of Room Items and checks to see if it can be
+         * picked up. If it can, then it will try to add the item to the Player's Inventory.
+         */
+
+        debugMessage.debugLong();
+        debugMessage.debugOutput("Room pickItUp");
 
         ListThing roomItem = items.getListThing(itemPos);
 
@@ -240,26 +243,37 @@ public class Room {
             System.out.printf("%s is not an item that can be picked up. %n", roomItem.getName());
         } else {
             int getFreeSpot = playerInventory.freeSpot();
+
             if (getFreeSpot == 999) {
                 System.out.printf("You already have %d items, you cannot carry anymore. %n", MAXITEMS);
             } else {
-                // Move it from the room inventory to the player inventory
                 playerInventory.setListThing(getFreeSpot, items.transferThing(userInput));
                 System.out.printf("%s has been added to your inventory. %n", playerInventory.getListThing(getFreeSpot).getName());
             }
         }
+
+        debugMessage.debugLong();
     }
 
-    private void dropIt(String userInput, int itemPos, ListOfThings playerInventory) {
+    private void dropIt(String userInput, ListOfThings playerInventory) {
+
+        /*
+         * This will attempt to move the item from the Player Inventory to the Room Inventory. If the room has no open
+         * slots then the drop will fail.
+         */
+
+        debugMessage.debugLong();
+        debugMessage.debugOutput("Room dropIt");
 
         int getFreeSpot = items.freeSpot();
 
         if (getFreeSpot == 999) {
             System.out.printf("The room already has %d items, you cannot drop this here.", MAXITEMS);
         } else {
-            // Move it from the room inventory to the player inventory
             items.setListThing(getFreeSpot, playerInventory.transferThing(userInput));
         }
+
+        debugMessage.debugLong();
     }
 
     public ListOfThings getActions() {
@@ -276,28 +290,5 @@ public class Room {
 
     public String getDescription() {
         return description;
-    }
-
-    private void badRoomAction() {
-
-        System.out.println("The universe listens, but does not respond.");
-    }
-
-    private void debugLong() {
-        if (showDebug) {
-            System.out.println("--------------------------------");
-        }
-    }
-
-    private void debugShort() {
-        if (showDebug) {
-            System.out.println("----------------");
-        }
-    }
-
-    private void debugOutput(String outputThis) {
-        if (showDebug) {
-            System.out.println(outputThis);
-        }
     }
 }
