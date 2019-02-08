@@ -14,7 +14,7 @@ Basic Game Information
 
 This game is intended to let the player move through the world as built in the text files. Changing the text files will change the game world, allowing you to build whatever you like! (As long as you follow the game rules.)
 
-There is currently no way to 'win' the game, but I will be adding a 'Final Exit' room that will trigger a win condition. There is also no way to lose the game, since there are no monsters or ways to die. ...yet. ;)
+Currently the way to 'win' the game is to enter the room designated as the win room. There is a loop counter build in to make testing easier, so in theory hitting that it the 'lose' condition. There is no way to die. ...yet. ;)
 
 Basic Libraries (aka info from the text files)
 -------------------------------------------------
