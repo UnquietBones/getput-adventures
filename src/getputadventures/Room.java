@@ -24,6 +24,9 @@ public class Room {
         description = roomDescription;
         debugMessage = new DebugMsgs(showDebug);
 
+        debugMessage.debugLong();
+        debugMessage.debugOutput("Room");
+
         /*
          * Right now we'll have a static default for the size of the various arrays, not sure if this can be specified
          * at time of room creation?  ...Still researching.
@@ -34,25 +37,17 @@ public class Room {
 
         // Initialise the lists since most rooms won't have all the slots filled
 
+        debugMessage.debugOutput("  Clearing the Items list");
         items.clearList();
+
+        debugMessage.debugOutput("  Clearing the Actions list");
         actions.clearList();
 
-        if (showDebug) {
-            debugMessage.debugLong();
-            System.out.println("Room");
-        }
-
         // Fetch the Items from the Library
-
-        if (showDebug) {
-            System.out.println("  Fetching Items...");
-        }
+        debugMessage.debugOutput("  Fetching Items...");
 
         for (int itemPos = 0; itemPos < roomItems.length; itemPos++) {
-
-            if (showDebug) {
-                System.out.printf("    Checking [%d] %s %n", itemPos, roomItems[itemPos]);
-            }
+            debugMessage.debugOutput("    Checking [" + itemPos + "] " + roomItems[itemPos]);
 
             if (roomItems[itemPos] != null && !roomItems[itemPos].isEmpty()) {
                 items.addItem(roomItems[itemPos], false);
@@ -60,17 +55,11 @@ public class Room {
         }
 
         // Fetch the Actions from the Library
-
-        if (showDebug) {
-            debugMessage.debugShort();
-            System.out.println("  Fetching Actions...");
-        }
+        debugMessage.debugShort();
+        debugMessage.debugOutput("  Fetching Actions...");
 
         for (int actionPos = 0; actionPos < roomActions.length; actionPos++) {
-
-            if (showDebug) {
-                System.out.printf("    Checking [%d] %s %n", actionPos, roomActions[actionPos]);
-            }
+            debugMessage.debugOutput("    Checking [" + actionPos + "] " + roomActions[actionPos]);
 
             if (roomActions[actionPos] != null && !roomActions[actionPos].isEmpty()) {
                 actions.addItem(roomActions[actionPos], false);
@@ -123,8 +112,8 @@ public class Room {
             actionList = roomItemActions;
         }
 
-        debugMessage.debugOutput("List with only Room Item Actions");
-        debugMessage.debugOutput(actionList);
+        debugMessage.debugOutput("  List with only Room Item Actions");
+        debugMessage.debugOutput("    "+actionList);
 
         if (!playerActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -134,8 +123,8 @@ public class Room {
             }
         }
 
-        debugMessage.debugOutput("List with Room and Player Item Actions");
-        debugMessage.debugOutput(actionList);
+        debugMessage.debugOutput("  List with Room and Player Item Actions");
+        debugMessage.debugOutput("    "+actionList);
 
         if (!roomActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -145,8 +134,8 @@ public class Room {
             }
         }
 
-        debugMessage.debugOutput("List with Room and Player Item Actions and Room Actions");
-        debugMessage.debugOutput(actionList);
+        debugMessage.debugOutput("  List with Room and Player Item Actions and Room Actions");
+        debugMessage.debugOutput("    "+actionList);
         return actionList;
     }
 
@@ -177,9 +166,10 @@ public class Room {
         debugMessage.debugOutput("Room roomAction");
 
         String userInput;
+        String checkAction;
         String validActions = getRoomActions(playerInventory);
 
-        System.out.println("> ");
+        System.out.printf("> ");
         userInput = reader.nextLine();
 
         switch (userInput.toUpperCase()) {
@@ -198,22 +188,33 @@ public class Room {
         int inventoryPos = playerInventory.posInList(userInput);
         int playerActionPos = playerInventory.actionInList(userInput);
 
+        debugMessage.debugOutput("  Checking the input to see if it's valid.");
+
         if (itemPos < 999) {
+            debugMessage.debugOutput("    Trying to pick it up.");
             pickItUp(userInput, itemPos, playerInventory);
         } else {
             if ((actionPos < 999) || (playerActionPos < 999)) {
-                if (validActions.contains(userInput)) {
-                    ListThing thisAction = gameActions.readThing(userInput);
+                debugMessage.debugOutput("    It's an action, is it valid?");
+                checkAction = gameActions.findName(userInput);
+                debugMessage.debugOutput("    Valid actions are: " + validActions);
+                debugMessage.debugOutput("    Checking: " + checkAction);
+                if (validActions.contains(checkAction)) {
+                    debugMessage.debugOutput("      Yup, it's valid, try to do the thing!");
+                    ListThing thisAction = gameActions.readAction(userInput);
                     thisAction.doAction(gameItems, gameActions, gameMap, playerInventory, this);
                     debugMessage.debugLong();
                 } else {
+                    debugMessage.debugOutput("      Nope, not valid!");
                     badRoomAction();
                 }
             } else {
                 if (inventoryPos < 999) {
+                    debugMessage.debugOutput("    Trying to drop the thing!");
                     dropIt(userInput, playerInventory);
                 } else {
                     // If we've hit this point, assume no successful action was taken
+                    debugMessage.debugOutput("      Input not recognized.");
                     badRoomAction();
                 }
             }
