@@ -15,10 +15,10 @@ public class Main {
         System.out.println("Loading game...");
 
         System.out.println("  Loading Items...");
-        gameItems.loadLibrary();
+        gameItems.loadItemLibrary();
 
         System.out.println("  Loading Actions...");
-        gameActions.loadLibrary();
+        gameActions.loadActionLibrary();
 
         System.out.println("  Setting player inventory...");
         ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameActions, showDebug);
