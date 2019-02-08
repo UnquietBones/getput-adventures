@@ -10,17 +10,6 @@ public class ActionLibrary {
      * progresses since the values will not change.
      */
 
-    // List of methods so I can keep myself straight as I build this thing
-    //  public void loadLibrary()
-    //  public ListThing readThing(String findThing)
-    //  public int isInLibrary(String findThing)
-    //  public String findID(String findThing)
-    //  public String findName(String findThing)
-    //  public String findType(String findThing)
-    //  private void debugLong()
-    //  private void debugShort()
-    //  private void debugOutput(String outputThis)
-
     private static int LIBRARYCOUNT = 18;
     private boolean showDebug;
     private String[] actionID = new String[LIBRARYCOUNT];
@@ -28,12 +17,14 @@ public class ActionLibrary {
     private String[] actionDescriptions = new String[LIBRARYCOUNT];
     private String[] actionCommands = new String[LIBRARYCOUNT];
     private String[] actionType = new String[LIBRARYCOUNT];
+    private DebugMsgs debugMessage;
 
     public ActionLibrary(boolean mainDebug) {
         showDebug = mainDebug;
+        debugMessage = new DebugMsgs(showDebug);
     }
 
-    public void loadLibrary() throws Exception {
+    public void loadActionLibrary() throws Exception {
 
         /*
          * This method reads in the Library from the text file. Right now it's expecting a specific number
@@ -41,8 +32,8 @@ public class ActionLibrary {
          * to be hardcoded.
          */
 
-        debugLong();
-        debugOutput("ActionLibrary loadLibrary");
+        debugMessage.debugLong();
+        debugMessage.debugOutput("ActionLibrary loadLibrary");
 
         int actionPos = 0;
 
@@ -51,14 +42,14 @@ public class ActionLibrary {
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
 
-        debugOutput("  Loading Action Library from " + pathname);
+        debugMessage.debugOutput("  Loading Action Library from " + pathname);
 
         // We can throw out the first line, it's just the field descriptions for the game designers.
         scan.nextLine();
 
         while (scan.hasNext()) {
             actionID[actionPos] = scan.next();
-            debugOutput("  Checking line " + actionPos);
+            debugMessage.debugOutput("  Checking line " + actionPos);
 
             if (!(actionID[actionPos] == null)) {
                 actionName[actionPos] = scan.next();
@@ -66,22 +57,22 @@ public class ActionLibrary {
                 actionCommands[actionPos] = scan.next();
                 actionType[actionPos] = scan.next();
 
-                debugOutput("    Action ID          " + actionID[actionPos]);
-                debugOutput("    Action Name        " + actionName[actionPos]);
-                debugOutput("    Action Description " + actionDescriptions[actionPos]);
-                debugOutput("    Action Command     " + actionCommands[actionPos]);
-                debugOutput("    Action Type        " + actionType[actionPos]);
-                debugShort();
+                debugMessage.debugOutput("    Action ID          " + actionID[actionPos]);
+                debugMessage.debugOutput("    Action Name        " + actionName[actionPos]);
+                debugMessage.debugOutput("    Action Description " + actionDescriptions[actionPos]);
+                debugMessage.debugOutput("    Action Command     " + actionCommands[actionPos]);
+                debugMessage.debugOutput("    Action Type        " + actionType[actionPos]);
+                debugMessage.debugShort();
             } else {
-                debugOutput("All done!");
+                debugMessage.debugOutput("All done!");
             }
             actionPos += 1;
         }
         scan.close();
-        debugLong();
+        debugMessage.debugLong();
     }
 
-    public ListThing readThing(String findThing) {
+    public ListThing readAction(String findThing) {
         // This will try and find (and return) the item either by Name or by ID from the Library.
 
         ListThing thisItem = null;
@@ -97,9 +88,9 @@ public class ActionLibrary {
         String thisActionID = "";
         String thisPickup = "";
 
-        debugLong();
-        debugOutput("ActionLibrary readThing");
-        debugOutput("  Looking for Action " + findThing);
+        debugMessage.debugLong();
+        debugMessage.debugOutput("ActionLibrary readThing");
+        debugMessage.debugOutput("  Looking for Action " + findThing);
 
         int inventoryItemPos = this.isInLibrary(findThing);
 
@@ -111,12 +102,12 @@ public class ActionLibrary {
             thisCommand = actionCommands[inventoryItemPos];
             thisActionType = actionType[inventoryItemPos];
 
-            debugOutput("  Creating item...");
-            debugOutput("  Action ID          " + thisID);
-            debugOutput("  Action Name        " + thisName);
-            debugOutput("  Action Description " + thisDescription);
-            debugOutput("  Action Command     " + thisCommand);
-            debugLong();
+            debugMessage.debugOutput("  Creating item...");
+            debugMessage.debugOutput("  Action ID          " + thisID);
+            debugMessage.debugOutput("  Action Name        " + thisName);
+            debugMessage.debugOutput("  Action Description " + thisDescription);
+            debugMessage.debugOutput("  Action Command     " + thisCommand);
+            debugMessage.debugLong();
 
             thisItem = new ListThing(thisType, thisID, thisName, thisDescription, thisActionID, thisCommand,
                     thisActionType, thisPickup, showDebug);
@@ -124,7 +115,7 @@ public class ActionLibrary {
             return thisItem;
         }
 
-        debugLong();
+        debugMessage.debugLong();
         return thisItem;
     }
 
@@ -134,40 +125,34 @@ public class ActionLibrary {
          * simplicity's sake.
          */
 
-        debugLong();
-        debugOutput("ActionLibrary isInLibrary");
-        debugOutput("  Trying to find " + findThing);
+        debugMessage.debugLong();
+        debugMessage.debugOutput("ActionLibrary isInLibrary");
 
         for (int actionPos = 0; actionPos < actionID.length; actionPos++) {
-            debugOutput("  Checking [" + actionPos + "] " + actionID[actionPos] + " " + actionName[actionPos]);
+            //debugMessage.debugOutput("    Checking [" + actionPos + "] " + actionID[actionPos] + " " + actionName[actionPos]);
 
             if (actionID[actionPos].equalsIgnoreCase(findThing) || actionName[actionPos].equalsIgnoreCase(findThing)) {
-                debugOutput("  Action " + findThing + " was in the Item Library at [" + actionPos + "].");
-                debugLong();
+                debugMessage.debugOutput("  Action " + findThing + " was in the Library at [" + actionPos + "] "+ actionName[actionPos]);
+                debugMessage.debugLong();
                 return actionPos;
             }
         }
 
-        debugOutput("  Action " + findThing + " is not in the Library.");
-        debugLong();
+        debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
+        debugMessage.debugLong();
         return 999;
     }
 
     public String findID(String findThing) {
         // Given the Name or ID for the Action, it will return the ID from the Library
 
-        debugLong();
-        debugOutput("ActionLibrary findID");
-
         int actionPos = this.isInLibrary(findThing);
 
         if (actionPos < 999) {
-            debugOutput("  Found Action " + findThing + ", returning ID " + actionID[actionPos]);
-            debugLong();
+            debugMessage.debugOutput("  Found Action " + findThing + ", returning ID " + actionID[actionPos]);
             return actionID[actionPos];
         } else {
-            debugOutput("  Action " + findThing + " is not in the Library.");
-            debugLong();
+            debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
             return "";
         }
     }
@@ -175,19 +160,13 @@ public class ActionLibrary {
     public String findName(String findThing) {
         // Given the Name or ID for the Action, it will return the Name from the Library
 
-
-        debugLong();
-        debugOutput("ActionLibrary findName");
-
-        int actionPos = this.isInLibrary(findThing);
+int actionPos = this.isInLibrary(findThing);
 
         if (actionPos < 999) {
-            debugOutput("  Found Action " + findThing + ", returning Name " + actionName[actionPos]);
-            debugLong();
+            debugMessage.debugOutput("  Found Action " + findThing + ", returning Name " + actionName[actionPos]);
             return actionName[actionPos];
         } else {
-            debugOutput("  Action " + findThing + " is not in the Library.");
-            debugLong();
+            debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
             return "";
         }
     }
@@ -195,37 +174,14 @@ public class ActionLibrary {
     public String findType(String findThing) {
         // Given the Name or ID for the Action, it will return the Type from the Library
 
-        debugLong();
-        debugOutput("ActionLibrary findType");
-
         int actionPos = this.isInLibrary(findThing);
 
         if (actionPos < 999) {
-            debugOutput("  Found Action " + findThing + ", returning Type " + actionType[actionPos]);
-            debugLong();
+            debugMessage.debugOutput("  Found Action " + findThing + ", returning Type " + actionType[actionPos]);
             return actionType[actionPos];
         } else {
-            debugOutput("  Action " + findThing + " is not in the Library.");
-            debugLong();
+            debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
             return "";
-        }
-    }
-
-    private void debugLong() {
-        if (showDebug) {
-            System.out.println("--------------------------------");
-        }
-    }
-
-    private void debugShort() {
-        if (showDebug) {
-            System.out.println("----------------");
-        }
-    }
-
-    private void debugOutput(String outputThis) {
-        if (showDebug) {
-            System.out.println(outputThis);
         }
     }
 }
