@@ -1,5 +1,11 @@
 # getput-adventures
 
+I am currently working on making sure each of the commands work as expected using a test set of rooms. I am in the middle of hashing out a test plan and will come back and update this once I have it.
+
+--------------------------------------------------------------------------------------------
+--------------------------------------------------------------------------------------------
+
+
 As I learn (relearn) each language I'm creating a small text-based adventure game to hash out file I/O, user interfaces, and database queries. The first iterations will be horrible and clunky, but it should get better as I go on.
 
 Feedback on better ways to do this is -as always- appreciated! :)
