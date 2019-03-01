@@ -7,7 +7,7 @@ public class ItemLibrary {
 
     // We will need to write out the Library modifications for the save game...
 
-    private int libraryCount = 7; // This is a count of the Items in the .txt file
+    private int libraryCount = 5; // This is a count of the Items in the .txt file
     private String[] itemIDs = new String[libraryCount];
     private String[] itemNames = new String[libraryCount];
     private String[] itemDescriptions = new String[libraryCount];
@@ -30,7 +30,8 @@ public class ItemLibrary {
 
         int itemPos = 0;
 
-        String pathname = "C:\\getputadventures\\items.txt";
+        //String pathname = "C:\\getputadventures\\items.txt";
+        String pathname = "C:\\getputadventures\\testitems.txt";
         File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
@@ -150,7 +151,7 @@ public class ItemLibrary {
         }
     }
 
-    public void removeItemAction(String updateID) {
+    public boolean removeItemAction(String updateID) {
 
         // Items can only have one action at a time, so removing the action will just
         // clear the value.
@@ -165,13 +166,15 @@ public class ItemLibrary {
             this.itemActions[foundPos] = "";
             debugMessage.debugOutput("  Removed Action from Item " + updateID);
             debugMessage.debugLong();
+            return true;
         } else {
             debugMessage.debugOutput("  Unable to find Item " + updateID + " in Library.");
             debugMessage.debugLong();
+            return false;
         }
     }
 
-    public void addItemAction(String updateID, String actionID, ActionLibrary gameActions) {
+    public boolean addItemAction(String updateID, String actionID, ActionLibrary gameActions) {
         // Items can only have one action at a time, so adding the action will just replace whatever value is there.
 
         debugMessage.debugLong();
@@ -188,13 +191,16 @@ public class ItemLibrary {
                 this.itemActions[foundPos] = actionID;
                 debugMessage.debugOutput("  Action " + actionID + " was added to the Item " + updateID + ".");
                 debugMessage.debugLong();
+                return true;
             } else {
                 debugMessage.debugOutput("  Unable to find Item " + updateID + " in Library.");
                 debugMessage.debugLong();
+                return false;
             }
         } else {
             debugMessage.debugOutput("  Action " + actionID + " is not in the Library, can't update Item " + updateID);
             debugMessage.debugLong();
+            return false;
         }
     }
 }

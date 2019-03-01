@@ -175,14 +175,18 @@ public class ListThing {
                     // Add Item to Inventory           addPlayerItem~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to addPlayerItem " + subAction1);
-                    playerInventory.addItem(subAction1, true);
+                    if (playerInventory.addItem(subAction1, true)) {
+                        System.out.println(description);
+                    }
                     break;
 
                 case "removePlayerItem":
                     // Remove Item from Inventory      removePlayerItem~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to removePlayerItem " + subAction1);
-                    playerInventory.removeThing(subAction1, true);
+                    if (playerInventory.removeThing(subAction1, true)) {
+                        System.out.println(description);
+                    }
                     break;
 
                 case "addItemAction":
@@ -190,14 +194,18 @@ public class ListThing {
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to addItemAction " + subAction2 + "to Item " + subAction1);
-                    addItemAction(subAction1, subAction2, gameItems, gameActions, playerInventory, currentRoom);
+                    if (addItemsAction(subAction1, subAction2, gameItems, gameActions, playerInventory, currentRoom)) {
+                        System.out.println(description);
+                    }
                     break;
 
                 case "removeItemAction":
                     // Remove Action from Item         removeItemAction~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to removeItemAction from Item " + subAction1);
-                    removeItemAction(subAction1, gameItems, gameActions, playerInventory, currentRoom);
+                    if (removeItemsAction(subAction1, gameItems, gameActions, playerInventory, currentRoom)) {
+                        System.out.println(description);
+                    }
                     break;
 
                 case "movePlayer":
@@ -208,36 +216,49 @@ public class ListThing {
                     break;
             }
         }
-        System.out.println(description);
         debugMessage.debugLong();
     }
 
-    public void addItemAction(String addItemID, String actionID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
+    public boolean addItemsAction(String addItemID, String actionID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
 
         // Adds the Action ID to the Item in the Library, Player Inventory, and current Room.
 
         debugMessage.debugLong();
         debugMessage.debugOutput("ListThing addItemAction");
 
-        gameItems.addItemAction(addItemID, actionID, gameActions);
-        playerInventory.addItemAction(addItemID, actionID);
-        currentRoom.getItems().addItemAction(addItemID, actionID);
+        if (gameItems.addItemAction(addItemID, actionID, gameActions)) {
+            return true;
+        }
+        if (playerInventory.addItemAction(addItemID, actionID)) {
+            return true;
+        }
+        if (currentRoom.getItems().addItemAction(addItemID, actionID)) {
+            return true;
+        }
 
         debugMessage.debugLong();
+        return false;
     }
 
-    public void removeItemAction(String removeItem, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
+    public boolean removeItemsAction(String removeItem, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
 
         // Removes the Action ID from the Item in the Library, Player Inventory, and current Room.
 
         debugMessage.debugLong();
-        debugMessage.debugOutput("ListThing removeItemAction");
+        debugMessage.debugOutput("ListThing removeItemsAction");
 
-        gameItems.removeItemAction(removeItem);
-        playerInventory.removeItemAction(removeItem);
-        currentRoom.getItems().removeItemAction(removeItem);
+        if (gameItems.removeItemAction(removeItem)) {
+            return true;
+        }
+        if (playerInventory.removeItemAction(removeItem)) {
+            return true;
+        }
+        if (currentRoom.getItems().removeItemAction(removeItem)) {
+            return true;
+        }
 
         debugMessage.debugLong();
+        return false;
     }
 
     public String getThingType() {

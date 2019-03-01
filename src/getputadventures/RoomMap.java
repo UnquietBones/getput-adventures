@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class RoomMap {
 
-    private static int MAXROOMS = 30;
+    private static int MAXROOMS = 4;
     private static int MAXITEMS = 6;
     private static int MAXACTIONS = 12;
     private String[] roomIDs = new String[MAXROOMS];
@@ -28,7 +28,6 @@ public class RoomMap {
         debugMessage.debugLong();
         debugMessage.debugOutput("RoomMap loadMap");
 
-
         String allItems;
         String allActions;
 
@@ -37,9 +36,15 @@ public class RoomMap {
         int actionCount = 0;
 
         // pass the path to the file as a parameter
-        File file = new File("C:\\getputadventures\\rooms.txt");
+
+        //File file = new File("C:\\getputadventures\\rooms.txt");
+        String pathname = "C:\\getputadventures\\testrooms.txt";
+        File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
+
+        debugMessage.debugOutput("  Loading Room Map from " + pathname);
+        debugMessage.debugShort();
 
         // throw out the first line, it's the header
         scan.nextLine();

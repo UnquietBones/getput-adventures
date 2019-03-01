@@ -52,7 +52,7 @@ public class ListOfThings {
         debugMessage.debugOutput("ListOfThings addItem");
         debugMessage.debugOutput("Searching for item " + newItem + " in " + listName + " " + listType);
 
-        for (int itemCounter = 0; itemCounter <= maxItems; itemCounter++) {
+        for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
 
             debugMessage.debugOutput("Checking for empty at [" + itemCounter + "] " + itemsList[itemCounter].getName());
 
@@ -90,7 +90,7 @@ public class ListOfThings {
         return false;
     }
 
-    public void removeThing(String thisThing, boolean showMsg) {
+    public boolean removeThing(String thisThing, boolean showMsg) {
 
         // This will remove the Thing from the List, if found.
 
@@ -107,7 +107,7 @@ public class ListOfThings {
                 }
                 itemsList[itemCounter].clearThing();
                 debugMessage.debugLong();
-                return;
+                return true;
             }
         }
 
@@ -115,6 +115,7 @@ public class ListOfThings {
             System.out.printf("%s was not in %s. %n", thisThing, listName);
         }
         debugMessage.debugLong();
+        return false;
     }
 
     public int freeSpot() {
@@ -237,13 +238,13 @@ public class ListOfThings {
         return 999;
     }
 
-    public void removeItemAction(String itemID) {
+    public boolean removeItemAction(String itemID) {
 
         // Items can only have one action at a time, so removing the action will just
         // clear the value.
 
         debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary removeItemAction");
+        debugMessage.debugOutput("ItemLibrary removeItemsAction");
         debugMessage.debugOutput("  Trying to update item " + itemID);
 
         int foundPos = this.posInList(itemID);
@@ -252,19 +253,21 @@ public class ListOfThings {
             this.itemsList[foundPos].setActionID("");
             debugMessage.debugOutput("  Removed Action from Item");
             debugMessage.debugLong();
+            return true;
         } else {
             debugMessage.debugOutput("  Unable to find Item in Library.");
             debugMessage.debugLong();
+            return false;
         }
     }
 
-    public void addItemAction(String updateID, String actionID) {
+    public boolean addItemAction(String updateID, String actionID) {
 
         // Items can only have one action at a time, so adding the action will just
         // replace whatever value is there.
 
         debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary removeItemAction");
+        debugMessage.debugOutput("ItemLibrary addItemsAction");
         debugMessage.debugOutput("  Trying to update item " + updateID + " with " + actionID);
 
         int foundPos = this.posInList(updateID);
@@ -273,7 +276,10 @@ public class ListOfThings {
             this.itemsList[foundPos].setActionID(actionID);
             debugMessage.debugOutput("  Action " + actionID + " was added to Item " + updateID);
             debugMessage.debugLong();
+            return true;
         }
+
+        return false;
     }
 
     public void printListOfThings(String listType, ListOfThings playerInventory) {

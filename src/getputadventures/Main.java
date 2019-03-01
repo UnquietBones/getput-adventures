@@ -6,8 +6,12 @@ public class Main {
 
         boolean showDebug = false;
         boolean exitGame = false;
-        String winRoom = "HIR1";  // Hardcoded win position, will read from game file later
-        int maxLoops = 50;  // Hardcoded timer, will read from game file later
+
+        // These are all hardcoded right now, will read from game file later
+
+        String startRoom = "Room1";
+        String winRoom = "Room5";
+        int maxTurns = 50;
 
         ItemLibrary gameItems = new ItemLibrary(showDebug);
         ActionLibrary gameActions = new ActionLibrary(showDebug);
@@ -31,12 +35,12 @@ public class Main {
         // We'll load the starting position from the file (eventually)
 
         System.out.println("Loading Room...");
-        gameMap.setCurrentRoomID("HOR1");
+        gameMap.setCurrentRoomID(startRoom);
         Room currentRoom = gameMap.readRoom(gameMap.getCurrentRoomID(), gameItems, gameActions, playerInventory);
 
         // Begin the adventure!
 
-        currentRoom.printRoom(playerInventory);
+        currentRoom.printRoom(playerInventory, 0, maxTurns);
 
         // Adventure loop
         // Right now this is limited by the number of loops, eventually it will be limited by the win condition
@@ -44,7 +48,7 @@ public class Main {
         int adventureLoop = 1;
 
         while (!exitGame) {
-            if (currentRoom.roomAction(gameItems, gameActions, playerInventory, gameMap)) {
+            if (currentRoom.roomAction(gameItems, gameActions, playerInventory, gameMap, adventureLoop, maxTurns)) {
 
                 if (showDebug) {
                     System.out.printf("Current Room is %s room loaded is %s %n", currentRoom.ID, gameMap.getCurrentRoomID());
@@ -64,7 +68,7 @@ public class Main {
                     currentRoom = gameMap.readRoom(gameMap.getCurrentRoomID(), gameItems, gameActions, playerInventory);
 
                     // We only reprint the room if they have moved, otherwise they need to use Look
-                    currentRoom.printRoom(playerInventory);
+                    currentRoom.printRoom(playerInventory, adventureLoop, maxTurns);
 
                     if (gameMap.getCurrentRoomID().equalsIgnoreCase(winRoom)) {
                         System.out.println("You have won the game!");
@@ -77,7 +81,7 @@ public class Main {
             }
             adventureLoop++;
 
-            if (adventureLoop > maxLoops) {
+            if (adventureLoop > maxTurns) {
                 exitGame = true;
             }
         }

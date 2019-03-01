@@ -10,7 +10,7 @@ public class ActionLibrary {
      * progresses since the values will not change.
      */
 
-    private static int LIBRARYCOUNT = 18;
+    private static int LIBRARYCOUNT = 31;
     private boolean showDebug;
     private String[] actionID = new String[LIBRARYCOUNT];
     private String[] actionName = new String[LIBRARYCOUNT];
@@ -37,12 +37,14 @@ public class ActionLibrary {
 
         int actionPos = 0;
 
-        String pathname = "C:\\getputadventures\\actions.txt";
+        //String pathname = "C:\\getputadventures\\actions.txt";
+        String pathname = "C:\\getputadventures\\testactions.txt";
         File file = new File(pathname);
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
 
         debugMessage.debugOutput("  Loading Action Library from " + pathname);
+        debugMessage.debugShort();
 
         // We can throw out the first line, it's just the field descriptions for the game designers.
         scan.nextLine();
@@ -132,7 +134,7 @@ public class ActionLibrary {
             //debugMessage.debugOutput("    Checking [" + actionPos + "] " + actionID[actionPos] + " " + actionName[actionPos]);
 
             if (actionID[actionPos].equalsIgnoreCase(findThing) || actionName[actionPos].equalsIgnoreCase(findThing)) {
-                debugMessage.debugOutput("  Action " + findThing + " was in the Library at [" + actionPos + "] "+ actionName[actionPos]);
+                debugMessage.debugOutput("  Action " + findThing + " was in the Library at [" + actionPos + "] " + actionName[actionPos]);
                 debugMessage.debugLong();
                 return actionPos;
             }
@@ -160,7 +162,7 @@ public class ActionLibrary {
     public String findName(String findThing) {
         // Given the Name or ID for the Action, it will return the Name from the Library
 
-int actionPos = this.isInLibrary(findThing);
+        int actionPos = this.isInLibrary(findThing);
 
         if (actionPos < 999) {
             debugMessage.debugOutput("  Found Action " + findThing + ", returning Name " + actionName[actionPos]);

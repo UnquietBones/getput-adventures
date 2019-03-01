@@ -69,7 +69,7 @@ public class Room {
     }
 
 
-    public void printRoom(ListOfThings playerInventory) {
+    public void printRoom(ListOfThings playerInventory, int turnCounter, int maxTurns) {
 
         // This prints the room and items descriptions and then prints the available commands
 
@@ -80,7 +80,7 @@ public class Room {
 
         System.out.println("  ");
         System.out.println("  ");
-        System.out.println(name);
+        System.out.println(name + "                              Turn " + turnCounter + "/" + maxTurns);
         debugMessage.debugShort();
         System.out.print(description);
         items.printListDescriptions();
@@ -113,7 +113,7 @@ public class Room {
         }
 
         debugMessage.debugOutput("  List with only Room Item Actions");
-        debugMessage.debugOutput("    "+actionList);
+        debugMessage.debugOutput("    " + actionList);
 
         if (!playerActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -124,7 +124,7 @@ public class Room {
         }
 
         debugMessage.debugOutput("  List with Room and Player Item Actions");
-        debugMessage.debugOutput("    "+actionList);
+        debugMessage.debugOutput("    " + actionList);
 
         if (!roomActions.isEmpty()) {
             if (actionList.isEmpty()) {
@@ -135,7 +135,7 @@ public class Room {
         }
 
         debugMessage.debugOutput("  List with Room and Player Item Actions and Room Actions");
-        debugMessage.debugOutput("    "+actionList);
+        debugMessage.debugOutput("    " + actionList);
         return actionList;
     }
 
@@ -158,7 +158,7 @@ public class Room {
         return returnString;
     }
 
-    public boolean roomAction(ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, RoomMap gameMap) {
+    public boolean roomAction(ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, RoomMap gameMap, int adventureLoop, int maxTurns) {
 
         // Get input from the user, only return false if they want to exit the game
 
@@ -179,7 +179,7 @@ public class Room {
             case "EXIT":
                 return false;
             case "LOOK":
-                this.printRoom(playerInventory);
+                this.printRoom(playerInventory, adventureLoop, maxTurns);
                 return true;
         }
 
