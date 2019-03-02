@@ -5,10 +5,10 @@ API/Add Player Item/The Random Item A mysteriously appears in your pocket!/addPl
 ARA/Add Room Action/The Room can now do A Cool Thing!/addRoomAction~DCT~Room1/R
 ARC/Archway/There is an archway that leads into the wallpaper room./movePlayer~Room3/R
 ARI/Add Room Item/The Random Item B mysteriously appears in the room!/addRoomItem~RIB~Room1/R
-DAT/Do a Thing/You use the item to do a Thing. It's awesome!/None/O
-DATP/Do a Thing Properly/You use the item to do a Thing. Properly!/None/O
-DCT/Do a Cool Thing/You do a Cool Thing in the Room. It's extra awesome!/None/R
-DVCT/Do a Very Cool Thing/You do a Very Cool Thing. It's super extra awesome!/None/R
+DAT/Do a Thing/You use the item to do a Thing. It's awesome!/printDescription~DAT/O
+DATP/Do a Thing Properly/You use the item to do a Thing. Properly!/printDescription~DATP/O
+DCT/Do a Cool Thing/You do a Cool Thing in the Room. It's extra awesome!/printDescription~DCT/R
+DVCT/Do a Very Cool Thing/You do a Very Cool Thing. It's super extra awesome!/printDescription~DVCT/R
 MPR/Move Player to new Room/You have been moved suddenly, as if by a heartless computer.../movePlayer~Room2/R
 OTW/Open The Window/You open the window and crawl through it back to the blue room./movePlayer~Room1/O
 PAIA/Properly Add Item Action/Random Item A can now do a Thing Properly!/addItemAction~DATP~RIA~removeRoomAction~PAIA~Room2~addRoomAction~PRIA~Room2/RO
