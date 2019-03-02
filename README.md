@@ -1,10 +1,4 @@
-# getput-adventures
-
-I am currently working on making sure each of the commands work as expected using a test set of rooms. I am in the middle of hashing out a test plan and will come back and update this once I have it.
-
---------------------------------------------------------------------------------------------
---------------------------------------------------------------------------------------------
-
+# GetPut-Adventures
 
 As I learn (relearn) each language I'm creating a small text-based adventure game to hash out file I/O, user interfaces, and database queries. The first iterations will be horrible and clunky, but it should get better as I go on.
 
@@ -21,6 +15,18 @@ Basic Game Information
 This game is intended to let the player move through the world as built in the text files. Changing the text files will change the game world, allowing you to build whatever you like! (As long as you follow the game rules.)
 
 Currently the way to 'win' the game is to enter the room designated as the win room. There is a loop counter build in to make testing easier, so in theory hitting that it the 'lose' condition. There is no way to die. ...yet. ;)
+
+Text Files
+-------------------------------------------------
+These will hold my story... once I finish writing it!
+- actions.txt (Action ID/Action Name/Action Description/Action Command/Usage)
+- items.txt (Item ID/Item Name/Item Description/Action ID/CanPickup)
+- rooms.txt (Room ID/Room Name/Description/Items/Actions)
+
+I built a set of four rooms to test every possible combination of the Actions that I could think of.
+- testactions.txt
+- testitems.txt
+- testrooms.txt
 
 Basic Libraries (aka info from the text files)
 -------------------------------------------------
