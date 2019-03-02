@@ -73,3 +73,4 @@ Command List
 - addItemAction - adds an action to the item
 - removeItemAction - removes an action from the item
 - movePlayer - moves a player to a room
+- printDescription - prints action description
