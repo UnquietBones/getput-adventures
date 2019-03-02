@@ -1,13 +1,5 @@
 # GetPut-Adventures
 
-This Branch
------------------
-
-This branch is for testing the actions and items in Room 1 of the test map. You can see what I am testing and my progress with the bug fixes in testing-log.md
-
-Master ReadMe
------------------
-
 As I learn (relearn) each language I'm creating a small text-based adventure game to hash out file I/O, user interfaces, and database queries. The first iterations will be horrible and clunky, but it should get better as I go on.
 
 Feedback on better ways to do this is -as always- appreciated! :)
@@ -81,3 +73,4 @@ Command List
 - addItemAction - adds an action to the item
 - removeItemAction - removes an action from the item
 - movePlayer - moves a player to a room
+- printDescription - prints action description
