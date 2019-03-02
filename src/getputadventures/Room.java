@@ -24,8 +24,7 @@ public class Room {
         description = roomDescription;
         debugMessage = new DebugMsgs(showDebug);
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Room");
+        debugMessage.debugHeader("Room");
 
         /*
          * Right now we'll have a static default for the size of the various arrays, not sure if this can be specified
@@ -73,25 +72,19 @@ public class Room {
 
         // This prints the room and items descriptions and then prints the available commands
 
-        if (showDebug) {
-            debugMessage.debugLong();
-            System.out.println("Room printRoom");
-        }
+        debugMessage.debugHeader("Room printRoom");
 
         System.out.println("  ");
         System.out.println("  ");
         System.out.println(name + "                              Turn " + turnCounter + "/" + maxTurns);
         debugMessage.debugShort();
-        System.out.print(description);
-        items.printListDescriptions();
+        System.out.println(description + " " + items.printListDescriptions());
         System.out.println("");
         items.printListOfThings("Room items", playerInventory);
         System.out.printf("  Do Action : %s %n", getRoomActions(playerInventory));
         playerInventory.printListOfThings("Drop Inventory Item", playerInventory);
 
-        if (showDebug) {
-            debugMessage.debugLong();
-        }
+        debugMessage.debugLong();
     }
 
     public String getRoomActions(ListOfThings playerInventory) {
@@ -99,8 +92,7 @@ public class Room {
         // Available Actions can come from the Room, the Items in the Room, the Items in the Player Inventory
         // or a combination.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Room getRoomActions");
+        debugMessage.debugHeader("Room getRoomActions");
 
         String actionList = "";
 
@@ -162,8 +154,7 @@ public class Room {
 
         // Get input from the user, only return false if they want to exit the game
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Room roomAction");
+        debugMessage.debugHeader("Room roomAction");
 
         String userInput;
         String checkAction;
@@ -230,13 +221,7 @@ public class Room {
 
     private void pickItUp(String userInput, int itemPos, ListOfThings playerInventory) {
 
-        /*
-         * This looks at the item in the given position in the list of Room Items and checks to see if it can be
-         * picked up. If it can, then it will try to add the item to the Player's Inventory.
-         */
-
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Room pickItUp");
+        debugMessage.debugHeader("Room pickItUp");
 
         ListThing roomItem = items.getListThing(itemPos);
 
@@ -246,7 +231,7 @@ public class Room {
             int getFreeSpot = playerInventory.freeSpot();
 
             if (getFreeSpot == 999) {
-                System.out.printf("You already have %d items, you cannot carry anymore. %n", MAXITEMS);
+                System.out.println("You have run out of pockets and can't carry anymore.");
             } else {
                 playerInventory.setListThing(getFreeSpot, items.transferThing(userInput));
                 System.out.printf("%s has been added to your inventory. %n", playerInventory.getListThing(getFreeSpot).getName());
@@ -258,20 +243,16 @@ public class Room {
 
     private void dropIt(String userInput, ListOfThings playerInventory) {
 
-        /*
-         * This will attempt to move the item from the Player Inventory to the Room Inventory. If the room has no open
-         * slots then the drop will fail.
-         */
-
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Room dropIt");
+        debugMessage.debugHeader("Room dropIt");
 
         int getFreeSpot = items.freeSpot();
+        String itemName = playerInventory.findName(userInput);
 
         if (getFreeSpot == 999) {
-            System.out.printf("The room already has %d items, you cannot drop this here.", MAXITEMS);
+            System.out.printf("There is no place to put %s in the room. %n", itemName);
         } else {
             items.setListThing(getFreeSpot, playerInventory.transferThing(userInput));
+            System.out.printf("You drop %s. %n", itemName);
         }
 
         debugMessage.debugLong();
