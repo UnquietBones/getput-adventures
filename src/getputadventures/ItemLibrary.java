@@ -203,4 +203,17 @@ public class ItemLibrary {
             return false;
         }
     }
+
+    public String findName(String findThing) {
+
+        int itemPos = this.isInLibrary(findThing);
+
+        if (itemPos < 999) {
+            debugMessage.debugOutput("  Found Item " + findThing + ", returning Name " + itemNames[itemPos]);
+            return itemNames[itemPos];
+        } else {
+            debugMessage.debugOutput("  Item " + findThing + " is not in the Library.");
+            return "";
+        }
+    }
 }
