@@ -56,18 +56,18 @@ Things I Need to Test
 
 Testing First Round
 ----------------------
-YES - Does it print the room title?
-YES - Does it print the Turns taken and Turns remaning?
-YES - Does it print the room description?
-YES - Does it print the room items?
-YES - Does it print the actions (do)?
-YES - Does it print the player inventory (drop) items?
-YES - Can you pickup the Random Item C?
-YESish, missing drop action dialog  - Can you drop the Random Item C?
-YESish, duplicate dialog - Can you do action Add Player Item?
-YES - Will it stop you from adding more than six items to the Player Inventory?
-YES - Can you do action Add Room Action?
-NO, no message prints - Can you do action Do a Cool Thing once it has been added?
-YES - Can you do action Add Room Item?
-YES - Will it stop you from adding more than six items to the room?
-YES - Will it stop you from picking up Random Item B?
+- YES - Does it print the room title?
+- YES - Does it print the Turns taken and Turns remaning?
+- YES - Does it print the room description?
+- YES - Does it print the room items?
+- YES - Does it print the actions (do)?
+- YES - Does it print the player inventory (drop) items?
+- YES - Can you pickup the Random Item C?
+- YESish, missing drop action dialog  - Can you drop the Random Item C?
+- YESish, duplicate dialog - Can you do action Add Player Item?
+- YES - Will it stop you from adding more than six items to the Player Inventory?
+- YES - Can you do action Add Room Action?
+- NO, no message prints - Can you do action Do a Cool Thing once it has been added?
+- YES - Can you do action Add Room Item?
+- YES - Will it stop you from adding more than six items to the room?
+- YES - Will it stop you from picking up Random Item B?
