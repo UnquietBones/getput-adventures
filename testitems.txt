@@ -1,0 +1,6 @@
+Item ID/Item Name/Item Description/Action ID/CanPickup
+RIA/Random Item A/There is a small random item./None/Y
+RIB/Random Item B/There is a large random item./None/N
+LAW/Window/There is a window here that leads back to the first room./OTW/N
+RTT/Remote Testing Tube/There is a small tube. For testing./None/N
+RIC/Random Item C/There is a small random item that looks useless./None/Y

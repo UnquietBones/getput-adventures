@@ -1,0 +1,32 @@
+Action ID/Action Name/Action Description/Action Command/Usage
+AAW/Add a Window/You summon a window into existence. Properly!/addRoomItem~LAW~Room2~removeRoomAction~AAW~Room2/R
+AIA/Add Item Action/The Item can now do a Thing!/addItemAction~DAT~RIA/O
+API/Add Player Item/The Random Item A mysteriously appears in your pocket!/addPlayerItem~RIA/R
+ARA/Add Room Action/The Room can now do A Cool Thing!/addRoomAction~DCT~Room1/R
+ARC/Archway/There is an archway that leads into the wallpaper room./movePlayer~Room3/R
+ARI/Add Room Item/The Random Item B mysteriously appears in the room!/addRoomItem~RIB~Room1/R
+DAT/Do a Thing/You use the item to do a Thing. It's awesome!/None/O
+DATP/Do a Thing Properly/You use the item to do a Thing. Properly!/None/O
+DCT/Do a Cool Thing/You do a Cool Thing in the Room. It's extra awesome!/None/R
+DVCT/Do a Very Cool Thing/You do a Very Cool Thing. It's super extra awesome!/None/R
+MPR/Move Player to new Room/You have been moved suddenly, as if by a heartless computer.../movePlayer~Room2/R
+OTW/Open The Window/You open the window and crawl through it back to the blue room./movePlayer~Room1/O
+PAIA/Properly Add Item Action/Random Item A can now do a Thing Properly!/addItemAction~DATP~RIA~removeRoomAction~PAIA~Room2~addRoomAction~PRIA~Room2/RO
+PAPI/Properly Add Player Item/The Random Item A mysteriously appears in your pocket! Properly!/addPlayerItem~RIA~removeRoomAction~PAPI~Room2~addRoomAction~PRPI~Room2/R
+PARI/Properly Add Room Item/The Random Item B mysteriously appears in the room! Properly!/addRoomItem~RIB~Room2~removeRoomAction~PARI~Room2~addRoomAction~PRRI~Room2/R
+PRIA/Properly Remove Item Action/Random Item A can no longer do a Thing Properly!/removeItemAction~RIA~removeRoomAction~PRIA~Room2~addRoomAction~PAPI~Room2/RO
+PRPI/Properly Remove Player Item/The Random Item A mysteriously vanished from your pocket! Properly!/removePlayerItem-RIA~removeRoomAction~PRPI~Room2~addRoomAction~PAPI~Room2/RO
+PRRI/Properly Remove Room Item/The Random Item B mysteriously vanished from the room! Properly!/removeRoomItem~RIB~Room2~removeRoomAction~PRRI~Room2~addRoomAction~PARI~Room2/RO
+RAIA/Remote Add Item Action/The remote Item can now do A Thing!/addItemAction~RTT~DAT~removeRoomAction~RAIA~Room3~addRoomAction~RRIA~Room3/R
+RARA/Remote Add Room Action/Another Room can now do A Very Cool Thing!/addRoomAction~DVCT~Room4/R
+RARC/Archway/There is an archway that leads back into the yellow room./movePlayer~Room2/R
+RARI/Remote Add Room Item/The Random Item B mysteriously appears in another room!/addRoomItem~RIB~Room4~removeRoomAction~RARI~Room3~addRoomAction~RRRI~Room3/R
+RIAC/Remove Item Action/The Item can no longer do a Thing!/removeItemAction~RIA/O
+RPI/Remove Player Item/The Random Item A mysteriously vanished from your pocket!/removePlayerItem-RIA/R
+RRA/Remove Room Action/The Room can no longer do A Cool Thing!/removeRoomAction~DCT~Room1/R
+RRI/Remove Room Item/The Random Item B mysteriously vanished from the room!/removeRoomItem~RIB~Room1/R
+RRIA/Remote Remove Item Action/The remote Item can no longer do A Thing!/removeItemAction~RTT~removeRoomAction~RRIA~Room3~addRoomAction~RAIA~Room3/R
+RRRA/Remote Remove Room Action/Another Room can no longer do A Very Cool Thing!/removeRoomAction~DVCT~Room4/R
+RRRI/Remote Remove Room Item/The Random Item B mysteriously vanished from another room!/removeRoomItem~RIB~Room4~removeRoomAction~RRRI~Room3~addRoomAction~RARI~Room3/R
+TP3/Teleporter/You take the teleporter back to the previous room./movePlayer~Room3/R
+TP4/Teleporter/You take the teleporter into the next room./movePlayer~Room4/R

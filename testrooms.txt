@@ -1,0 +1,5 @@
+Room ID/Room Name/Description/Items/Actions
+Room1/Testing Room 1/You are standing in an empty room. The walls are painted a calming light blue and you feel like you can take actions with infinate consquences./RIC/API,ARA,ARI,MPR
+Room2/Testing Room 2/You are standing in an empty room. The walls are a cheerful light yellow and you feel like actions have logical consequences./None/PAPI,PARI,PAIA,ARC,AAW
+Room3/Testing Room 3/You are standing in an empty room. The walls are covered in faded wallpaper and you feel like actions will affect another room./None/TP4,RARC,RAIA,RARA,RARI
+Room4/Testing Room 4/You are standing in an empty room that is under construction. You have a feeling that things from the wallpaper room happen here./RTT/TP3,DVCT

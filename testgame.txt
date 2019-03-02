@@ -1,0 +1,2 @@
+Path/Room File/Item File/Action File/Starting Room/Win Room/Max Turns/Starting Inventory
+C:\getputadventures/rooms.txt/items.txt/actions.txt/HOR1/HIR1/50/None
