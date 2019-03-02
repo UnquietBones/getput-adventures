@@ -3,7 +3,12 @@
 This Branch
 -----------------
 
-This branch is for testing the actions and items in Room 1 of the test map. You can see what I am testing and my progress with the bug fixes in testing-log.md
+This branch is for adding some enhancements that I thought of while testing out Room 1
+
+- Don't allow creation of duplicate items (Items or Actions)
+- Refresh the available action lines when they change (Room items / Do Action / Drop Inventory Item)
+- Add some whitespace and "-" to help the visuals for the room descriptions.
+- Put a hard wrap on the room printouts so everything lines up nice and pretty
 
 Master ReadMe
 -----------------
@@ -81,3 +86,4 @@ Command List
 - addItemAction - adds an action to the item
 - removeItemAction - removes an action from the item
 - movePlayer - moves a player to a room
+- printDescription - prints action description
