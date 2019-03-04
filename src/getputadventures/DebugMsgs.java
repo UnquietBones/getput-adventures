@@ -16,7 +16,6 @@ public class DebugMsgs {
         debugLong();
     }
 
-
     public void debugLong() {
         if (showDebug) {
             System.out.println("--------------------------------");
