@@ -14,6 +14,7 @@ public class Room {
     private ListOfThings actions;
     private boolean showDebug;
     private DebugMsgs debugMessage;
+    private DisplayMsgs displayMsgs = new DisplayMsgs();
 
     public Room(String roomID, String roomName, String roomDescription, String[] roomItems, String[] roomActions,
                 ItemLibrary gameItems, ActionLibrary gameActions, boolean mainDebug) {
@@ -33,14 +34,6 @@ public class Room {
 
         items = new ListOfThings("Room Inventory", "RoomInv", MAXITEMS, gameItems, gameActions, showDebug);
         actions = new ListOfThings("Room Actions", "Actions", MAXACTIONS, gameItems, gameActions, showDebug);
-
-        // Initialise the lists since most rooms won't have all the slots filled
-
-        debugMessage.debugOutput("  Clearing the Items list");
-        items.clearList();
-
-        debugMessage.debugOutput("  Clearing the Actions list");
-        actions.clearList();
 
         // Fetch the Items from the Library
         debugMessage.debugOutput("  Fetching Items...");
@@ -165,7 +158,7 @@ public class Room {
 
         switch (userInput.toUpperCase()) {
             case "":
-                badRoomAction();
+                displayMsgs.displayMessage("BadAction", "", true);
                 return true;
             case "EXIT":
                 return false;
@@ -197,7 +190,7 @@ public class Room {
                     debugMessage.debugLong();
                 } else {
                     debugMessage.debugOutput("      Nope, not valid!");
-                    badRoomAction();
+                    displayMsgs.displayMessage("BadAction", "", true);
                 }
             } else {
                 if (inventoryPos < 999) {
@@ -206,7 +199,7 @@ public class Room {
                 } else {
                     // If we've hit this point, assume no successful action was taken
                     debugMessage.debugOutput("      Input not recognized.");
-                    badRoomAction();
+                    displayMsgs.displayMessage("BadAction", "", true);
                 }
             }
         }
@@ -214,30 +207,24 @@ public class Room {
         return true;
     }
 
-    private void badRoomAction() {
-
-        System.out.println("The universe listens, but does not respond.");
-    }
-
     private void pickItUp(String userInput, int itemPos, ListOfThings playerInventory) {
+
+        int nextFreeSpot = playerInventory.freeSpot();
+        ListThing roomItem = items.getListThing(itemPos);
+        String itemName = roomItem.getName();
 
         debugMessage.debugHeader("Room pickItUp");
 
-        ListThing roomItem = items.getListThing(itemPos);
-
         if (!roomItem.getCanPickup().equalsIgnoreCase("Y")) {
-            System.out.printf("%s is not an item that can be picked up. %n", roomItem.getName());
+            displayMsgs.displayMessage("CantPickUp", itemName, true);
         } else {
-            int getFreeSpot = playerInventory.freeSpot();
-
-            if (getFreeSpot == 999) {
-                System.out.println("You have run out of pockets and can't carry anymore.");
+            if (nextFreeSpot == 999) {
+                displayMsgs.displayMessage("PlayerInventoryFull", "", true);
             } else {
-                playerInventory.setListThing(getFreeSpot, items.transferThing(userInput));
-                System.out.printf("%s has been added to your inventory. %n", playerInventory.getListThing(getFreeSpot).getName());
+                playerInventory.setListThing(nextFreeSpot, items.transferThing(userInput));
+                displayMsgs.displayMessage("PlayerInventoryItemAdded", itemName, true);
             }
         }
-
         debugMessage.debugLong();
     }
 
