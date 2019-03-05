@@ -5,7 +5,7 @@
 This branch is for adding some enhancements that I thought of while testing out Room 1
 
 - Don't allow creation of duplicate items (Items or Actions) **-> DONE!**
-- Refresh the available action lines when they change (Room items / Do Action / Drop Inventory Item)
+- Refresh the available action lines when they change (Room items / Do Action / Drop Inventory Item)  **-> DONE!**
 - Add some whitespace and "-" to help the visuals for the room descriptions.
 - Put a hard wrap on the room printouts so everything lines up nice and pretty
 
