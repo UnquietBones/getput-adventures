@@ -6,6 +6,8 @@ public class Main {
 
         boolean showDebug = false;
         boolean exitGame = false;
+        DebugMsgs debugMessage = new DebugMsgs(showDebug);
+        DisplayMsgs displayMsgs = new DisplayMsgs();
 
         // These are all hardcoded right now, will read from game file later
 
@@ -13,75 +15,64 @@ public class Main {
         String winRoom = "Room5";
         int maxTurns = 50;
 
+        // We need probably need to split these out to a method or a load data class or something
+
         ItemLibrary gameItems = new ItemLibrary(showDebug);
         ActionLibrary gameActions = new ActionLibrary(showDebug);
 
-        System.out.println("Loading game...");
+        displayMsgs.displayMessage("LoadGame", "", true);
 
-        System.out.println("  Loading Items...");
+        displayMsgs.displayMessage("LoadItems", "", true);
         gameItems.loadItemLibrary();
 
-        System.out.println("  Loading Actions...");
+        displayMsgs.displayMessage("LoadActions", "", true);
         gameActions.loadActionLibrary();
 
-        System.out.println("  Setting player inventory...");
+        displayMsgs.displayMessage("LoadPlayerInventory", "", true);
         ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameActions, showDebug);
 
-        System.out.println("  Loading Map...");
+        displayMsgs.displayMessage("LoadMap", "", true);
         RoomMap gameMap = new RoomMap(showDebug);
         gameMap.loadMap();
-
-        // New game defaults
-        // We'll load the starting position from the file (eventually)
-
-        System.out.println("Loading Room...");
         gameMap.setCurrentRoomID(startRoom);
+
         Room currentRoom = gameMap.readRoom(gameMap.getCurrentRoomID(), gameItems, gameActions, playerInventory);
 
         // Begin the adventure!
 
         currentRoom.printRoom(playerInventory, 0, maxTurns);
 
-        // Adventure loop
-        // Right now this is limited by the number of loops, eventually it will be limited by the win condition
+        // Right now this is limited by the number of loops but could use the counter as a score instead of a timer
 
         int adventureLoop = 1;
 
         while (!exitGame) {
             if (currentRoom.roomAction(gameItems, gameActions, playerInventory, gameMap, adventureLoop, maxTurns)) {
 
-                if (showDebug) {
-                    System.out.printf("Current Room is %s room loaded is %s %n", currentRoom.ID, gameMap.getCurrentRoomID());
-                }
+                debugMessage.debugOutput("Current Room is %" + currentRoom.ID + " room loaded is " + gameMap.getCurrentRoomID() + ".");
+
                 if (!gameMap.getCurrentRoomID().equals(currentRoom.ID)) {
 
-                    if (showDebug) {
-                        System.out.printf("Updating room %s %n", currentRoom.ID);
-                    }
+                    debugMessage.debugOutput("Updating room " + currentRoom.ID + ".");
                     gameMap.updateRoom(currentRoom);
 
-
-                    if (showDebug) {
-                        System.out.printf("Loading  room %s %n", gameMap.getCurrentRoomID());
-                    }
-
+                    debugMessage.debugOutput("Loading room " + gameMap.getCurrentRoomID() + ".");
                     currentRoom = gameMap.readRoom(gameMap.getCurrentRoomID(), gameItems, gameActions, playerInventory);
-
-                    // We only reprint the room if they have moved, otherwise they need to use Look
                     currentRoom.printRoom(playerInventory, adventureLoop, maxTurns);
 
                     if (gameMap.getCurrentRoomID().equalsIgnoreCase(winRoom)) {
-                        System.out.println("You have won the game!");
+                        displayMsgs.displayMessage("WonGame", "", true);
                         exitGame = true;
                     }
                 }
             } else {
-                System.out.println("You click your ruby slippers together and the magic takes you home...");
+                displayMsgs.displayMessage("GoHome", "", true);
                 exitGame = true;
             }
             adventureLoop++;
 
             if (adventureLoop > maxTurns) {
+                displayMsgs.displayMessage("OutOfTurns", "", true);
                 exitGame = true;
             }
         }
