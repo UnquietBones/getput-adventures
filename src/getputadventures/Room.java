@@ -63,22 +63,27 @@ public class Room {
 
     public void printRoom(ListOfThings playerInventory, int turnCounter, int maxTurns) {
 
-        // This prints the room and items descriptions and then prints the available commands
-
         debugMessage.debugHeader("Room printRoom");
 
-        System.out.println("  ");
-        System.out.println("  ");
         System.out.println(name + "                              Turn " + turnCounter + "/" + maxTurns);
-        debugMessage.debugShort();
         System.out.println(description + " " + items.printListDescriptions());
-        System.out.println("");
+        System.out.println();
+        printAvailableActions(playerInventory);
+
+        debugMessage.debugLong();
+    }
+
+    private void printAvailableActions(ListOfThings playerInventory) {
+
+        debugMessage.debugHeader("Room printAvailableActions");
+
         items.printListOfThings("Room items", playerInventory);
         System.out.printf("  Do Action : %s %n", getRoomActions(playerInventory));
         playerInventory.printListOfThings("Drop Inventory Item", playerInventory);
 
         debugMessage.debugLong();
     }
+
 
     public String getRoomActions(ListOfThings playerInventory) {
 
@@ -186,7 +191,9 @@ public class Room {
                 if (validActions.contains(checkAction)) {
                     debugMessage.debugOutput("      Yup, it's valid, try to do the thing!");
                     ListThing thisAction = gameActions.readAction(userInput);
-                    thisAction.doAction(gameItems, gameActions, gameMap, playerInventory, this);
+                    if (thisAction.doAction(gameItems, gameActions, gameMap, playerInventory, this)) {
+                        printAvailableActions(playerInventory);
+                    }
                     debugMessage.debugLong();
                 } else {
                     debugMessage.debugOutput("      Nope, not valid!");
@@ -197,7 +204,6 @@ public class Room {
                     debugMessage.debugOutput("    Trying to drop the thing!");
                     dropIt(userInput, playerInventory);
                 } else {
-                    // If we've hit this point, assume no successful action was taken
                     debugMessage.debugOutput("      Input not recognized.");
                     displayMsgs.displayMessage("BadAction", "", true);
                 }
@@ -223,6 +229,7 @@ public class Room {
             } else {
                 playerInventory.setListThing(nextFreeSpot, items.transferThing(userInput));
                 displayMsgs.displayMessage("PlayerInventoryItemAdded", itemName, true);
+                printAvailableActions(playerInventory);
             }
         }
         debugMessage.debugLong();
@@ -240,6 +247,7 @@ public class Room {
         } else {
             items.setListThing(getFreeSpot, playerInventory.transferThing(userInput));
             System.out.printf("You drop %s. %n", itemName);
+            printAvailableActions(playerInventory);
         }
 
         debugMessage.debugLong();
