@@ -53,7 +53,7 @@ public class ListThing {
         canPickup = "";
     }
 
-    public void doAction(ItemLibrary gameItems, ActionLibrary gameActions, RoomMap gameMap, ListOfThings playerInventory, Room currentRoom) {
+    public boolean doAction(ItemLibrary gameItems, ActionLibrary gameActions, RoomMap gameMap, ListOfThings playerInventory, Room currentRoom) {
 
         // Basic possible commands
         // -----------------------------
@@ -81,6 +81,7 @@ public class ListThing {
         String subAction1;
         String subAction2;
         int maxActions;
+        boolean didActionsChange = false;
 
         debugMessage.debugLong();
         debugMessage.debugOutput("ListThing doAction");
@@ -114,6 +115,7 @@ public class ListThing {
                         currentRoom.getItems().addItem(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -133,6 +135,7 @@ public class ListThing {
                         currentRoom.getItems().removeThing(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -152,6 +155,7 @@ public class ListThing {
                         currentRoom.getActions().addItem(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -171,6 +175,7 @@ public class ListThing {
                         currentRoom.getActions().removeThing(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -185,6 +190,7 @@ public class ListThing {
                     debugMessage.debugOutput("      Attempting to addPlayerItem " + subAction1);
                     if (playerInventory.addItem(subAction1, true)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
@@ -194,6 +200,7 @@ public class ListThing {
                     debugMessage.debugOutput("      Attempting to removePlayerItem " + subAction1);
                     if (playerInventory.removeThing(subAction1, true)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
@@ -204,6 +211,7 @@ public class ListThing {
                     debugMessage.debugOutput("      Attempting to addItemAction " + subAction2 + "to Item " + subAction1);
                     if (addItemsAction(subAction1, subAction2, gameItems, gameActions, playerInventory, currentRoom)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
@@ -213,6 +221,7 @@ public class ListThing {
                     debugMessage.debugOutput("      Attempting to removeItemAction from Item " + subAction1);
                     if (removeItemsAction(subAction1, gameItems, gameActions, playerInventory, currentRoom)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
@@ -224,7 +233,9 @@ public class ListThing {
                     break;
             }
         }
+
         debugMessage.debugLong();
+        return didActionsChange;
     }
 
     public boolean addItemsAction(String addItemID, String actionID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {
