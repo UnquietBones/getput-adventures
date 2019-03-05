@@ -38,6 +38,33 @@ public class DisplayMsgs {
                 case "BadAction":
                     thisMessage = "The universe listens, but does not respond.";
                     break;
+                case "GoHome":
+                    thisMessage = "You click your ruby slippers together and the magic takes you home...";
+                    break;
+                case "LoadGame":
+                    thisMessage = "Loading game...";
+                    break;
+                case "LoadItems":
+                    thisMessage = "  Loading Items...";
+                    break;
+                case "LoadRooms":
+                    thisMessage = "You click your ruby slippers together and the magic takes you home...";
+                    break;
+                case "LoadActions":
+                    thisMessage = "  Loading Actions...";
+                    break;
+                case "LoadPlayerInventory":
+                    thisMessage = "  Loading Player Inventory...";
+                    break;
+                case "LoadMap":
+                    thisMessage = "  Loading Map...";
+                    break;
+                case "WinGame":
+                    thisMessage = "You have won the game!";
+                    break;
+                case "OutOfTurns":
+                    thisMessage = "You have run out of turns... DOOM BE UPON YOU! (aka You Lose)";
+                    break;
             }
             System.out.println(thisMessage);
         }
