@@ -72,7 +72,32 @@ I probably need to go back and look at the actions and see if I need to have a t
 
 2. Refresh the available action lines when they change (Room items / Do Action / Drop Inventory Item)
 
-[pending...]
+### Changes to Main
+
+- Removed some unneeded comments and added in some notes to self for later expansions
+- Added **displayMsgs**
+- Added **debugMessage**
+
+### Changes to printRoom (Room)
+
+- Split out the printing of the actionable items into **printAvailableActions**
+
+### printAvailableActions (Room)
+
+- Added to **pickItUp**, **dropIt**, **roomAction** based on a returned boolean from **doAction**
+
+### Changes to doAction (ListThing)
+
+- added boolean return to signal if the action changed the Available Actions
+- added the boolean checks for each action type (if needed)
+
+### Testing for [002 Refresh Available Actions]
+
+- Lines are displayed when room is printed like normal
+- Lines are displayed when available actions change
+- Lines are not displayed when available action don't change (failed pick up, Do a Cool Thing, etc.)
+- New 'out of turns' message works
+- Old loading messages still display fine
 
 ## 003 Tidy Up Room Display
 
