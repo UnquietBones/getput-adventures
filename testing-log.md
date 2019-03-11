@@ -18,11 +18,11 @@ Room1/Testing Room 1/You are standing in an empty room. The walls are painted a 
 - RIB/Random Item B/There is a large random item./None/N
 - RIC/Random Item C/There is a small random item that looks useless./None/Y
 
-[Random Item A] is added to the player's inventory by action [Add Player Item]. It can be picked up and put down. It has no action associated with it.
+**Random Item A** is added to the player's inventory by action **Add Player Item**. It can be picked up and put down. It has no action associated with it.
 
-[Random Item B] is added to the room by action [Add Room Item]. It cannot be picked up and has no action associated with it.
+**Random Item B** is added to the room by action **Add Room Item**. It cannot be picked up and has no action associated with it.
 
-[Random Item C] in already in the room can be picked up and put down. It has no action associated with it.
+**Random Item C** in already in the room can be picked up and put down. It has no action associated with it.
 
 ## Actions
 - API/Add Player Item/The Random Item A mysteriously appears in your pocket!/addPlayerItem RIA/R
@@ -31,15 +31,15 @@ Room1/Testing Room 1/You are standing in an empty room. The walls are painted a 
 - MPR/Move Player to new Room/You have been moved suddenly, as if by a heartless computer.../movePlayer Room2/R
 - DCT/Do a Cool Thing/You do a Cool Thing in the Room. It's extra awesome!/None/R
 
-[Add Player Item] will create [Random Item A] in the player inventory.
+**Add Player Item** will create **Random Item A** in the player inventory.
 
-[Add Room Action] will add action [Do a Cool Thing] to the room.
+**Add Room Action** will add action **Do a Cool Thing** to the room.
 
-[Add Room Item] will add [Random Item B] to the room.
+**Add Room Item** will add **Random Item B** to the room.
 
-[Move Player to new Room] will move the player to Room #2 (thus ending our test!)
+**Move Player to new Room** will move the player to Room #2 (thus ending our test!)
 
-[Do a Cool Thing] will display a message.
+**Do a Cool Thing** will display a message.
 
 ## Things I Need to Test
 - Does it print the room title?
@@ -67,11 +67,11 @@ Room1/Testing Room 1/You are standing in an empty room. The walls are painted a 
 - YES - Does it print the actions (do)?
 - YES - Does it print the player inventory (drop) items?
 - YES - Can you pickup the Random Item C?
-- **YESish, missing drop action dialog  - Can you drop the Random Item C? [Issue 001]**
-- **YESish, duplicate dialog - Can you do action Add Player Item? [Issue 002]**
+- **YESish**, missing drop action dialog  - Can you drop the Random Item C? **Issue 001**
+- **YESish**, duplicate dialog - Can you do action Add Player Item? **Issue 002**
 - YES - Will it stop you from adding more than six items to the Player Inventory?
 - YES - Can you do action Add Room Action?
-- **NO, no message prints - Can you do action Do a Cool Thing once it has been added? [Issue 003]**
+- **NO**, no message prints - Can you do action Do a Cool Thing once it has been added? **Issue 003**
 - YES - Can you do action Add Room Item?
 - YES - Will it stop you from adding more than six items to the room?
 - YES - Will it stop you from picking up Random Item B?
@@ -146,7 +146,7 @@ doAction (ListThing) does seem to be firing, but the Action Command is "None" so
 
 Added findDescription to ActionLibrary
 Added a printDescription case option to doAction (ListThing)
-Changed "None"s to "printDescription~[Action]" in the text file.
+Changed "None"s to "printDescription~**Action**" in the text file.
 
 Tested -- works!
 
@@ -208,11 +208,11 @@ Room2/Testing Room 2/You are standing in an empty room. The walls are a cheerful
 - RIA/Random Item A/There is a small random item./None/Y
 - RIB/Random Item B/There is a large random item./None/N
 
-[Window] is added to the room by action [Add a Window]. It cannot be picked up and it has the action [Open The Window].
+**Window** is added to the room by action **Add a Window**. It cannot be picked up and it has the action **Open The Window**.
 
-[Random Item A] is added to the player's inventory by action [Properly Add Player Item] and removed by [Properly Remove Player Item]. It can be picked up and put down. It has no action associated with it until [Properly Add Item Action] is used, after which it can [Do a Thing Properly]. The action can be removed by [Properly Remove Item Action].
+**Random Item A** is added to the player's inventory by action **Properly Add Player Item** and removed by **Properly Remove Player Item**. It can be picked up and put down. It has no action associated with it until **Properly Add Item Action** is used, after which it can **Do a Thing Properly**. The action can be removed by **Properly Remove Item Action**.
 
-[Random Item B] is added to the room by action [Properly Add Room Item] and removed by [Properly Remove Room Item]. It cannot be picked up and has no action associated with it.
+**Random Item B** is added to the room by action **Properly Add Room Item** and removed by **Properly Remove Room Item**. It cannot be picked up and has no action associated with it.
 
 ## Actions
 - AAW/Add a Window/You summon a window into existence. Properly!/addRoomItem LAW Room2 removeRoomAction AAW Room2/R
@@ -221,15 +221,15 @@ Room2/Testing Room 2/You are standing in an empty room. The walls are a cheerful
 - PAPI/Properly Add Player Item/The Random Item A mysteriously appears in your pocket! Properly!/addPlayerItem RIA removeRoomAction PAPI Room2 addRoomAction PRPI Room2/R
 - PARI/Properly Add Room Item/The Random Item B mysteriously appears in the room! Properly!/addRoomItem RIB Room2 removeRoomAction PARI Room2 addRoomAction PRRI Room2/R
 
-[Add a Window] will add [Window] to the room inventory and remove room action [Add a Window].
+**Add a Window** will add **Window** to the room inventory and remove room action **Add a Window**.
 
-[Archway] will move the player to Room 3.
+**Archway** will move the player to Room 3.
 
-[Properly Add Item Action] will add action [Do a Thing Properly] to item [Random Item A], remove room action [Properly Add Item Action], and add room action [Properly Remove Item Action].
+**Properly Add Item Action** will add action **Do a Thing Properly** to item **Random Item A**, remove room action **Properly Add Item Action**, and add room action **Properly Remove Item Action**.
 
-[Properly Add Player Item] will add [Random Item A] to the player's inventory, remove room action [Properly Add Player Item], and add room action [Properly Remove Player Item].
+**Properly Add Player Item** will add **Random Item A** to the player's inventory, remove room action **Properly Add Player Item**, and add room action **Properly Remove Player Item**.
 
-[Properly Add Room Item] will add [Random Item B] to the room inventory, remove room action [Properly Add Room Item], and add room action [Properly Remove Room Item]. 
+**Properly Add Room Item** will add **Random Item B** to the room inventory, remove room action **Properly Add Room Item**, and add room action **Properly Remove Room Item**. 
 
 - DATP/Do a Thing Properly/You use the item to do a Thing. Properly!/printDescription DATP/O
 - OTW/Open The Window/You open the window and crawl through it back to the blue room./movePlayer Room1/O
@@ -237,24 +237,24 @@ Room2/Testing Room 2/You are standing in an empty room. The walls are a cheerful
 - PRPI/Properly Remove Player Item/The Random Item A mysteriously vanished from your pocket! Properly!/removePlayerItem RIA removeRoomAction PRPI Room2 addRoomAction PAPI Room2/RO
 - PRRI/Properly Remove Room Item/The Random Item B mysteriously vanished from the room! Properly!/removeRoomItem RIB Room2 removeRoomAction PRRI Room2 addRoomAction PARI Room2/RO
 
-[Do a Thing Properly] will display a message.
+**Do a Thing Properly** will display a message.
 
-[Open The Window] will move the player to Room #1.
+**Open The Window** will move the player to Room #1.
 
-[Properly Remove Item Action] will remove the action from item [Random Item A], remove room action [Properly Remove Item Action], and add room action [Properly Add Item Action].
+**Properly Remove Item Action** will remove the action from item **Random Item A**, remove room action **Properly Remove Item Action**, and add room action **Properly Add Item Action**.
 
-[Properly Remove Player Item] will remove item [Random Item A] from the player's inventory, remove room action [Properly Remove Player Item], and add room action [Properly Add Player Item].
+**Properly Remove Player Item** will remove item **Random Item A** from the player's inventory, remove room action **Properly Remove Player Item**, and add room action **Properly Add Player Item**.
 
-[Properly Remove Room Item] will remove item [Random Item B] from the room inventory, remove room action [Properly Remove Room Item], and add room action [Properly Add Room Item].
+**Properly Remove Room Item** will remove item **Random Item B** from the room inventory, remove room action **Properly Remove Room Item**, and add room action **Properly Add Room Item**.
 
 ## Things I Need to Test
-- Does [Add a Window] add [Window] and remove [Add a Window]?
-- Does [Archway] move the player to Room 3?
-- Does [Properly Add Item Action] add action [Do a Thing Properly] to item [Random Item A], remove room action [Properly Add Item Action], and add room action [Properly Remove Item Action]?
-- Does [Properly Add Player Item] add [Random Item A] to the player's inventory, remove room action [Properly Add Player Item], and add room action [Properly Remove Player Item]?
-- Does [Properly Add Room Item] add [Random Item B] to the room inventory, remove room action [Properly Add Room Item], and add room action [Properly Remove Room Item]?
-- Does [Do a Thing Properly] display a message?
-- Does [Open The Window] move the player to Room #1?
-- Does [Properly Remove Item Action] remove the action from item [Random Item A], remove room action [Properly Remove Item Action], and add room action [Properly Add Item Action]?
-- Does [Properly Remove Player Item] remove item [Random Item A] from the player's inventory, remove room action [Properly Remove Player Item], and add room action [Properly Add Player Item]?
-- Does [Properly Remove Room Item] remove item [Random Item B] from the room inventory, remove room action [Properly Remove Room Item], and add room action [Properly Add Room Item]?
+- Does **Add a Window** add **Window** and remove **Add a Window**?
+- Does **Archway** move the player to Room 3?
+- Does **Properly Add Item Action** add action **Do a Thing Properly** to item **Random Item A**, remove room action **Properly Add Item Action**, and add room action **Properly Remove Item Action**?
+- Does **Properly Add Player Item** add **Random Item A** to the player's inventory, remove room action **Properly Add Player Item**, and add room action **Properly Remove Player Item**?
+- Does **Properly Add Room Item** add **Random Item B** to the room inventory, remove room action **Properly Add Room Item**, and add room action **Properly Remove Room Item**?
+- Does **Do a Thing Properly** display a message?
+- Does **Open The Window** move the player to Room #1?
+- Does **Properly Remove Item Action** remove the action from item **Random Item A**, remove room action **Properly Remove Item Action**, and add room action **Properly Add Item Action**?
+- Does **Properly Remove Player Item** remove item **Random Item A** from the player's inventory, remove room action **Properly Remove Player Item**, and add room action **Properly Add Player Item**?
+- Does **Properly Remove Room Item** remove item **Random Item B** from the room inventory, remove room action **Properly Remove Room Item**, and add room action **Properly Add Room Item**?
