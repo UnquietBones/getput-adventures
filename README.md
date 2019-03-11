@@ -1,4 +1,4 @@
-# GetPut-Adventures
+# GetPut Adventures - Chapter 1 (Java 11)
 
 ## This Branch
 
@@ -6,25 +6,21 @@ This branch is for adding some enhancements that I thought of while testing out 
 
 - Don't allow creation of duplicate items (Items or Actions) **-> DONE!**
 - Refresh the available action lines when they change (Room items / Do Action / Drop Inventory Item)  **-> DONE!**
-- Add some whitespace and "-" to help the visuals for the room descriptions.
-- Put a hard wrap on the room printouts so everything lines up nice and pretty
+- Add some whitespace and "-" to help the visuals for the room descriptions. **-> DONE!**
+- Put a hard wrap on the room printouts so everything lines up nice and pretty **-> DONE!**
 
 ---
 ## Master ReadMe
 
-As I learn (relearn) each language I'm creating a small text-based adventure game to hash out file I/O, user interfaces, and database queries. The first iterations will be horrible and clunky, but it should get better as I go on.
+As I learn (relearn) each language I'm creating a small text-based adventure game engine to hash out file I/O, user interfaces, and database queries. The first iterations will be horrible and clunky, but it should get better as I go on.
 
 Feedback on better ways to do this is -as always- appreciated! :)
 
-# Chapter 1 - Java 11 - This Old House (of Horrors?)
-
-This is the first part of the adventure game. The player is exploring a small wooden house deep in the woods. For... reasons.
-
 ## Basic Game Information
 
-This game is intended to let the player move through the world as built in the text files. Changing the text files will change the game world, allowing you to build whatever you like! (As long as you follow the game rules.)
+This game engine is intended to let the player move through the world as built in the text files. Changing the text files will change the game world, allowing you to build whatever you like! One of the future enhancements will be to make a game designer so folks don't have to actually write the text files (and it will eliminate typos).
 
-Currently the way to 'win' the game is to enter the room designated as the win room. There is a loop counter build in to make testing easier, so in theory hitting that it the 'lose' condition. There is no way to die. ...yet. ;)
+Currently the only way to 'win' the game is to enter the room designated as the win room. There is a loop counter build in to make testing easier, so in theory hitting that it the 'lose' condition. There is no way to die. ...yet. ;)
 
 ### Text Files
 
