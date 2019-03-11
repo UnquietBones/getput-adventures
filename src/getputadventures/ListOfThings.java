@@ -12,80 +12,65 @@ public class ListOfThings {
     private int maxItems;
     private boolean showDebug;
     private DebugMsgs debugMessage;
+    private DisplayMsgs displayMsgs = new DisplayMsgs();
+
 
     public ListOfThings(String newListName, String newListType, int newMaxItems, ItemLibrary newgameItems, ActionLibrary newgameActions, boolean mainDebug) {
 
-        showDebug = mainDebug;
         listType = newListType;
         listName = newListName;
         maxItems = newMaxItems;
         itemsList = new ListThing[maxItems];
         gameItems = newgameItems;
         gameActions = newgameActions;
+        showDebug = mainDebug;
+
         debugMessage = new DebugMsgs(showDebug);
-
-        clearList();
-    }
-
-    public void clearList() {
-        // Clear out the list, so we avoid nulls later
-
-        for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
-            //debugMessage.debugOutput("  Set item [" + itemCounter + "] to empty object.");
-
-            if (itemsList[itemCounter] == null) {
-
-                itemsList[itemCounter] = new ListThing("", "", "", "",
-                        "", "", "", "", showDebug);
-            } else {
-                itemsList[itemCounter].clearThing();
-            }
-        }
     }
 
     public boolean addItem(String newItem, boolean showMsg) {
 
-        // This will find the first empty slot in the list, add the item, and
-        // return true. If there are no empty slots it will return false.
+        debugMessage.debugHeader("ListOfThings addItem");
+        debugMessage.debugOutput("Attempting to add " + newItem + " to " + listName + " " + listType);
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings addItem");
-        debugMessage.debugOutput("Searching for item " + newItem + " in " + listName + " " + listType);
+        int checkDuplicate = posInList(newItem);
+        int emptyPos = freeSpot();
+        String itemName = gameItems.findName(newItem);
 
-        for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
-
-            debugMessage.debugOutput("Checking for empty at [" + itemCounter + "] " + itemsList[itemCounter].getName());
-
-            if (itemsList[itemCounter].getName().isEmpty()) {
-
+        if (checkDuplicate < 999) {
+            displayMsgs.displayMessage("DuplicateItem", itemName, showMsg);
+            return false;
+        } else {
+            if (emptyPos < 999) {
                 switch (listType) {
                     case "RoomInv":
-                        itemsList[itemCounter] = gameItems.readItem(newItem);
-                        if (showMsg) {
-                            System.out.printf("A %s appears in the room. %n", itemsList[itemCounter].getName());
-                        }
+                        itemsList[emptyPos] = gameItems.readItem(newItem);
+                        displayMsgs.displayMessage("RoomItemAdded", itemName, showMsg);
                         break;
                     case "PlayerInv":
-                        itemsList[itemCounter] = gameItems.readItem(newItem);
-                        if (showMsg) {
-                            System.out.printf("%s has been added to your inventory. %n", itemsList[itemCounter].getName());
-                        }
+                        itemsList[emptyPos] = gameItems.readItem(newItem);
                         break;
                     case "Actions":
-                        itemsList[itemCounter] = gameActions.readAction(newItem);
-                        if (showMsg) {
-                            System.out.printf("You can now %s. %n", itemsList[itemCounter].getName());
-                        }
+                        itemsList[emptyPos] = gameActions.readAction(newItem);
+                        displayMsgs.displayMessage("RoomItemAdded", itemsList[emptyPos].getName(), showMsg);
                         break;
                 }
                 debugMessage.debugLong();
                 return true;
+            } else {
+                switch (listType) {
+                    case "RoomInv":
+                        displayMsgs.displayMessage("RoomInventoryFull", itemName, showMsg);
+                        break;
+                    case "PlayerInv":
+                        displayMsgs.displayMessage("PlayerInventoryFull", showMsg);
+                        break;
+                    case "Actions":
+                        displayMsgs.displayMessage("ActionListFull",  showMsg);
+                        break;
+                }
             }
         }
-        if (showMsg) {
-            System.out.println(listName + " is full!");
-        }
-
         debugMessage.debugLong();
         return false;
     }
@@ -94,26 +79,21 @@ public class ListOfThings {
 
         // This will remove the Thing from the List, if found.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings removeThing");
+        debugMessage.debugHeader("ListOfThings removeThing");
         debugMessage.debugOutput("  Trying to remove " + thisThing + " from " + listType + ", " + listType);
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
             //debugMessage.debugOutput("    Checking [" + itemCounter + "] " + itemsList[itemCounter].getId() + " " + itemsList[itemCounter].getName());
 
             if (itemsList[itemCounter].getId().equalsIgnoreCase(thisThing) || itemsList[itemCounter].getName().equalsIgnoreCase(thisThing)) {
-                if (showMsg) {
-                    System.out.printf("%s has been removed from %s. %n", itemsList[itemCounter].getName(), listName);
-                }
+                displayMsgs.displayMessage("RemovedFromList", itemsList[itemCounter].getName(), listName, showMsg);
                 itemsList[itemCounter].clearThing();
                 debugMessage.debugLong();
                 return true;
             }
         }
 
-        if (showMsg) {
-            System.out.printf("%s was not in %s. %n", thisThing, listName);
-        }
+        displayMsgs.displayMessage("WasNotInList", thisThing, listName, showMsg);
         debugMessage.debugLong();
         return false;
     }
@@ -122,8 +102,7 @@ public class ListOfThings {
 
         // This will return the position of the first empty slot in the list or 999
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings freeSpot");
+        debugMessage.debugHeader("ListOfThings freeSpot");
         debugMessage.debugOutput("  Looking for an empty slot in " + listType + " " + listName);
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
@@ -142,32 +121,19 @@ public class ListOfThings {
 
     public ListThing transferThing(String thisThing) {
 
-        // This will remove the Thing from the list, to pass to a new list.
+        ListThing tempThing = null;
+        int itemPos = posInList(thisThing);
 
-        ListThing tempThing;
-        tempThing = null;
+        debugMessage.debugHeader("ListOfThings transferThing");
+        debugMessage.debugOutput("Trying to get reference for item " + thisThing + " and remove it from the list.");
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("Starting ListOfThings transferThing...");
-        debugMessage.debugOutput("Trying to remove item " + thisThing);
+        if (itemPos < 999) {
+            tempThing = itemsList[itemPos];
+            itemsList[itemPos] = null;
 
-        for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
-
-            if (itemsList[itemCounter] != null) {
-
-                debugMessage.debugOutput("Checking [" + itemCounter + "] " + itemsList[itemCounter].getId() +
-                        itemsList[itemCounter].getName());
-            }
-            if (itemsList[itemCounter].getId().equalsIgnoreCase(thisThing) || itemsList[itemCounter].getName().equalsIgnoreCase(thisThing)) {
-
-                // Move pointer into a temp variable to pass it out and clear it from the list
-                tempThing = itemsList[itemCounter];
-                itemsList[itemCounter] = null;
-
-                debugMessage.debugOutput("Passing over " + thisThing + " from " + listName);
-                debugMessage.debugLong();
-                return tempThing;
-            }
+            debugMessage.debugOutput("Passing over " + thisThing + " from " + listName);
+            debugMessage.debugLong();
+            return tempThing;
         }
 
         debugMessage.debugOutput("Item " + thisThing + " was not in " + listName);
@@ -177,19 +143,11 @@ public class ListOfThings {
 
     public int posInList(String findID) {
 
-        // Find the position of the Thing in the List. If it's not in the list, return 999.
-
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings posInList");
+        debugMessage.debugHeader("ListOfThings posInList");
         debugMessage.debugOutput("  Looking for " + findID + " in " + listType + " " + listName);
 
-        int itemCount = itemsList.length - 1;
-
-        for (int itemCounter = 0; itemCounter <= (itemCount); itemCounter++) {
-
+        for (int itemCounter = 0; itemCounter < itemsList.length; itemCounter++) {
             if (itemsList[itemCounter] != null) {
-                //debugMessage.debugOutput("  [" + itemCounter + "]  " + itemsList[itemCounter].getId() + " " + itemsList[itemCounter].getName());
-
                 if (itemsList[itemCounter].getId().equalsIgnoreCase(findID) || itemsList[itemCounter].getName().equalsIgnoreCase(findID)) {
                     debugMessage.debugOutput("  Found " + findID + " at " + itemCounter);
                     debugMessage.debugLong();
@@ -197,8 +155,6 @@ public class ListOfThings {
                 }
             }
         }
-
-        // Couldn't find it, so return default
         debugMessage.debugOutput("Didn't find " + findID);
         debugMessage.debugLong();
         return 999;
@@ -206,10 +162,7 @@ public class ListOfThings {
 
     public int actionInList(String findAction) {
 
-        // Check the List to see if any of the Items have the given action
-
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings actionInList");
+        debugMessage.debugHeader("ListOfThings actionInList");
         debugMessage.debugOutput("  Looking for " + findAction + " in " + listType + " " + listName);
 
         findAction = gameActions.findID(findAction);
@@ -243,8 +196,7 @@ public class ListOfThings {
         // Items can only have one action at a time, so removing the action will just
         // clear the value.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary removeItemsAction");
+        debugMessage.debugHeader("ItemLibrary removeItemsAction");
         debugMessage.debugOutput("  Trying to update item " + itemID);
 
         int foundPos = this.posInList(itemID);
@@ -266,8 +218,7 @@ public class ListOfThings {
         // Items can only have one action at a time, so adding the action will just
         // replace whatever value is there.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary addItemsAction");
+        debugMessage.debugHeader("ItemLibrary addItemsAction");
         debugMessage.debugOutput("  Trying to update item " + updateID + " with " + actionID);
 
         int foundPos = this.posInList(updateID);
@@ -290,8 +241,7 @@ public class ListOfThings {
         String displayItem;
         int itemCount = itemsList.length;
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings printListOfThings");
+        debugMessage.debugHeader("ListOfThings printListOfThings");
         debugMessage.debugOutput("  Expecting " + maxItems + " maxItems in " + listName + " of type " + listType);
         debugMessage.debugOutput("  Found " + itemsList.length + " items.");
 
@@ -345,22 +295,18 @@ public class ListOfThings {
                 displayList = "None";
             }
         }
-        System.out.println("  " + listType + " : " + displayList);
+        displayMsgs.displayOutput("[" + listType + "] : " + displayList);
         debugMessage.debugLong();
     }
 
-    public void printListDescriptions() {
-
-        // This will print out the combined descriptions of all the items in the list
+    public String printListDescriptions() {
 
         String displayList = "";
         String displayItem = "";
         int itemCount = itemsList.length;
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings printListDescriptions");
-        debugMessage.debugOutput("  Expecting " + maxItems + " maxItems in " + listName + " of type " + listType);
-        debugMessage.debugOutput("  Found " + itemsList.length + " items.");
+        debugMessage.debugHeader("ListOfThings printListDescriptions");
+        debugMessage.debugOutput("There are " + itemCount + " items in the list.");
 
         if (itemCount <= 0) {
             displayList = "";
@@ -386,6 +332,8 @@ public class ListOfThings {
         }
         debugMessage.debugOutput(" " + displayList);
         debugMessage.debugLong();
+
+        return displayList;
     }
 
 
@@ -398,8 +346,7 @@ public class ListOfThings {
         String thisActionType;
         String actionList = "";
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings stringOfActions");
+        debugMessage.debugHeader("ListOfThings stringOfActions");
         debugMessage.debugOutput("  Returning action list for " + listType + ", " + listName);
 
         int listLength = itemsList.length - 1;
@@ -468,8 +415,17 @@ public class ListOfThings {
         return actionList;
     }
 
-    public int getListLen() {
-        return itemsList.length;
+    public String findName(String findThing) {
+
+        int itemPos = this.posInList(findThing);
+
+        if (itemPos < 999) {
+            debugMessage.debugOutput("  Found Item " + findThing + ", returning Name " + itemsList[itemPos].getName());
+            return itemsList[itemPos].getName();
+        } else {
+            debugMessage.debugOutput("  Item " + findThing + " is not in the Library.");
+            return "";
+        }
     }
 
     public ListThing getListThing(int thisPos) {

@@ -160,7 +160,6 @@ public class ActionLibrary {
     }
 
     public String findName(String findThing) {
-        // Given the Name or ID for the Action, it will return the Name from the Library
 
         int actionPos = this.isInLibrary(findThing);
 
@@ -174,13 +173,25 @@ public class ActionLibrary {
     }
 
     public String findType(String findThing) {
-        // Given the Name or ID for the Action, it will return the Type from the Library
 
         int actionPos = this.isInLibrary(findThing);
 
         if (actionPos < 999) {
             debugMessage.debugOutput("  Found Action " + findThing + ", returning Type " + actionType[actionPos]);
             return actionType[actionPos];
+        } else {
+            debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
+            return "";
+        }
+    }
+
+    public String findDescription(String findThing) {
+
+        int actionPos = this.isInLibrary(findThing);
+
+        if (actionPos < 999) {
+            debugMessage.debugOutput("  Found Action " + findThing + ", returning Description " + actionName[actionPos]);
+            return actionDescriptions[actionPos];
         } else {
             debugMessage.debugOutput("  Action " + findThing + " is not in the Library.");
             return "";

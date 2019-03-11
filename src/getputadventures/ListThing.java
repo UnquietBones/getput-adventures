@@ -53,7 +53,7 @@ public class ListThing {
         canPickup = "";
     }
 
-    public void doAction(ItemLibrary gameItems, ActionLibrary gameActions, RoomMap gameMap, ListOfThings playerInventory, Room currentRoom) {
+    public boolean doAction(ItemLibrary gameItems, ActionLibrary gameActions, RoomMap gameMap, ListOfThings playerInventory, Room currentRoom) {
 
         // Basic possible commands
         // -----------------------------
@@ -70,6 +70,8 @@ public class ListThing {
 
         // Move Player to Room             movePlayer~[Room]
 
+        // Print Action Description        printDescription~[Action]
+
         // Chained commands
         // -----------------------------
         // Consume an Item to add an Exit to a room                      removePlayerItem~FDK~addExit~FD~HOR1
@@ -79,6 +81,7 @@ public class ListThing {
         String subAction1;
         String subAction2;
         int maxActions;
+        boolean didActionsChange = false;
 
         debugMessage.debugLong();
         debugMessage.debugOutput("ListThing doAction");
@@ -95,8 +98,14 @@ public class ListThing {
 
             switch (itemCmds[actionPos]) {
 
+                case "printDescription":
+                    // printDescription~[Action]
+                    subAction1 = itemCmds[actionPos + 1];
+                    System.out.println(gameActions.findDescription(subAction1));
+                    break;
+
                 case "addRoomItem":
-                    // Add Item to Room                addRoomItem~[Item]~[Room]
+                    // addRoomItem~[Item]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to addRoomItem " + subAction1 + " to Room " + subAction2 + ". We are currently in Room " + gameMap.getCurrentRoomID() + ".");
@@ -106,6 +115,7 @@ public class ListThing {
                         currentRoom.getItems().addItem(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -115,7 +125,7 @@ public class ListThing {
                     break;
 
                 case "removeRoomItem":
-                    // Remove Item from Room           removeRoomItem~[Item]~[Room]
+                    // removeRoomItem~[Item]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to removeRoomItem " + subAction1 + " from Room " + subAction2 + ". We are currently in Room " + gameMap.getCurrentRoomID() + ".");
@@ -125,6 +135,7 @@ public class ListThing {
                         currentRoom.getItems().removeThing(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -134,7 +145,7 @@ public class ListThing {
                     break;
 
                 case "addRoomAction":
-                    // Add Action to Room              addRoomAction~[Action]~[Room]
+                    // addRoomAction~[Action]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to addRoomAction " + subAction1 + " to Room " + subAction2 + ". We are currently in Room " + gameMap.getCurrentRoomID() + ".");
@@ -144,6 +155,7 @@ public class ListThing {
                         currentRoom.getActions().addItem(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -153,7 +165,7 @@ public class ListThing {
                     break;
 
                 case "removeRoomAction":
-                    // Remove Action from Room         removeRoomAction~[Action]~[Room]
+                    // removeRoomAction~[Action]~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to removeRoomAction " + subAction1 + " from Room " + subAction2 + ". We are currently in Room " + gameMap.getCurrentRoomID() + ".");
@@ -163,6 +175,7 @@ public class ListThing {
                         currentRoom.getActions().removeThing(subAction1, true);
                         debugMessage.debugOutput("      Now update the map.");
                         gameMap.updateRoom(currentRoom);
+                        didActionsChange = true;
                     } else {
                         debugMessage.debugOutput("      We're updating a different room, so just update the map.");
                         modifyRoom = gameMap.readRoom(subAction2, gameItems, gameActions, playerInventory);
@@ -172,51 +185,57 @@ public class ListThing {
                     break;
 
                 case "addPlayerItem":
-                    // Add Item to Inventory           addPlayerItem~[Item]
+                    // addPlayerItem~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to addPlayerItem " + subAction1);
                     if (playerInventory.addItem(subAction1, true)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
                 case "removePlayerItem":
-                    // Remove Item from Inventory      removePlayerItem~[Item]
+                    // removePlayerItem~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to removePlayerItem " + subAction1);
                     if (playerInventory.removeThing(subAction1, true)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
                 case "addItemAction":
-                    // Add Action to Item              addItemAction~[Item]~[Action]
+                    // addItemAction~[Item]~[Action]
                     subAction1 = itemCmds[actionPos + 1];
                     subAction2 = itemCmds[actionPos + 2];
                     debugMessage.debugOutput("      Attempting to addItemAction " + subAction2 + "to Item " + subAction1);
                     if (addItemsAction(subAction1, subAction2, gameItems, gameActions, playerInventory, currentRoom)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
                 case "removeItemAction":
-                    // Remove Action from Item         removeItemAction~[Item]
+                    // removeItemAction~[Item]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to removeItemAction from Item " + subAction1);
                     if (removeItemsAction(subAction1, gameItems, gameActions, playerInventory, currentRoom)) {
                         System.out.println(description);
+                        didActionsChange = true;
                     }
                     break;
 
                 case "movePlayer":
-                    // Move Player to Room             movePlayer~[Room]
+                    // movePlayer~[Room]
                     subAction1 = itemCmds[actionPos + 1];
                     debugMessage.debugOutput("      Attempting to movePlayer to Room " + subAction1);
                     gameMap.setCurrentRoomID(subAction1);
                     break;
             }
         }
+
         debugMessage.debugLong();
+        return didActionsChange;
     }
 
     public boolean addItemsAction(String addItemID, String actionID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory, Room currentRoom) {

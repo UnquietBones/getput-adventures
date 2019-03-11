@@ -10,6 +10,12 @@ public class DebugMsgs {
         showDebug = mainDebug;
     }
 
+    public void debugHeader(String methodName) {
+        debugLong();
+        debugOutput("| " + methodName);
+        debugLong();
+    }
+
     public void debugLong() {
         if (showDebug) {
             System.out.println("--------------------------------");
