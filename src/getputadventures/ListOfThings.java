@@ -63,10 +63,10 @@ public class ListOfThings {
                         displayMsgs.displayMessage("RoomInventoryFull", itemName, showMsg);
                         break;
                     case "PlayerInv":
-                        displayMsgs.displayMessage("PlayerInventoryFull", "", showMsg);
+                        displayMsgs.displayMessage("PlayerInventoryFull", showMsg);
                         break;
                     case "Actions":
-                        displayMsgs.displayMessage("ActionListFull", "", showMsg);
+                        displayMsgs.displayMessage("ActionListFull",  showMsg);
                         break;
                 }
             }
@@ -79,26 +79,21 @@ public class ListOfThings {
 
         // This will remove the Thing from the List, if found.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings removeThing");
+        debugMessage.debugHeader("ListOfThings removeThing");
         debugMessage.debugOutput("  Trying to remove " + thisThing + " from " + listType + ", " + listType);
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
             //debugMessage.debugOutput("    Checking [" + itemCounter + "] " + itemsList[itemCounter].getId() + " " + itemsList[itemCounter].getName());
 
             if (itemsList[itemCounter].getId().equalsIgnoreCase(thisThing) || itemsList[itemCounter].getName().equalsIgnoreCase(thisThing)) {
-                if (showMsg) {
-                    System.out.printf("%s has been removed from %s. %n", itemsList[itemCounter].getName(), listName);
-                }
+                displayMsgs.displayMessage("RemovedFromList", itemsList[itemCounter].getName(), listName, showMsg);
                 itemsList[itemCounter].clearThing();
                 debugMessage.debugLong();
                 return true;
             }
         }
 
-        if (showMsg) {
-            System.out.printf("%s was not in %s. %n", thisThing, listName);
-        }
+        displayMsgs.displayMessage("WasNotInList", thisThing, listName, showMsg);
         debugMessage.debugLong();
         return false;
     }
@@ -107,8 +102,7 @@ public class ListOfThings {
 
         // This will return the position of the first empty slot in the list or 999
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings freeSpot");
+        debugMessage.debugHeader("ListOfThings freeSpot");
         debugMessage.debugOutput("  Looking for an empty slot in " + listType + " " + listName);
 
         for (int itemCounter = 0; itemCounter < maxItems; itemCounter++) {
@@ -168,10 +162,7 @@ public class ListOfThings {
 
     public int actionInList(String findAction) {
 
-        // Check the List to see if any of the Items have the given action
-
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings actionInList");
+        debugMessage.debugHeader("ListOfThings actionInList");
         debugMessage.debugOutput("  Looking for " + findAction + " in " + listType + " " + listName);
 
         findAction = gameActions.findID(findAction);
@@ -205,8 +196,7 @@ public class ListOfThings {
         // Items can only have one action at a time, so removing the action will just
         // clear the value.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary removeItemsAction");
+        debugMessage.debugHeader("ItemLibrary removeItemsAction");
         debugMessage.debugOutput("  Trying to update item " + itemID);
 
         int foundPos = this.posInList(itemID);
@@ -228,8 +218,7 @@ public class ListOfThings {
         // Items can only have one action at a time, so adding the action will just
         // replace whatever value is there.
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ItemLibrary addItemsAction");
+        debugMessage.debugHeader("ItemLibrary addItemsAction");
         debugMessage.debugOutput("  Trying to update item " + updateID + " with " + actionID);
 
         int foundPos = this.posInList(updateID);
@@ -252,8 +241,7 @@ public class ListOfThings {
         String displayItem;
         int itemCount = itemsList.length;
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings printListOfThings");
+        debugMessage.debugHeader("ListOfThings printListOfThings");
         debugMessage.debugOutput("  Expecting " + maxItems + " maxItems in " + listName + " of type " + listType);
         debugMessage.debugOutput("  Found " + itemsList.length + " items.");
 
@@ -307,7 +295,7 @@ public class ListOfThings {
                 displayList = "None";
             }
         }
-        System.out.println("  " + listType + " : " + displayList);
+        displayMsgs.displayOutput("[" + listType + "] : " + displayList);
         debugMessage.debugLong();
     }
 
@@ -358,8 +346,7 @@ public class ListOfThings {
         String thisActionType;
         String actionList = "";
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("ListOfThings stringOfActions");
+        debugMessage.debugHeader("ListOfThings stringOfActions");
         debugMessage.debugOutput("  Returning action list for " + listType + ", " + listName);
 
         int listLength = itemsList.length - 1;
@@ -439,10 +426,6 @@ public class ListOfThings {
             debugMessage.debugOutput("  Item " + findThing + " is not in the Library.");
             return "";
         }
-    }
-
-    public int getListLen() {
-        return itemsList.length;
     }
 
     public ListThing getListThing(int thisPos) {
