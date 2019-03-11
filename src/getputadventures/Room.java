@@ -65,10 +65,28 @@ public class Room {
 
         debugMessage.debugHeader("Room printRoom");
 
-        System.out.println(name + "                              Turn " + turnCounter + "/" + maxTurns);
-        System.out.println(description + " " + items.printListDescriptions());
-        System.out.println();
+        printRoomHeader(turnCounter, maxTurns);
+        displayMsgs.displayOutput(description + " " + items.printListDescriptions());
         printAvailableActions(playerInventory);
+
+        debugMessage.debugLong();
+    }
+
+    private void printRoomHeader(int turnCounter, int maxTurns) {
+
+        String headerText;
+        String turnsDisplay;
+        int lenSpaces;
+
+        debugMessage.debugHeader("Room printRoomHeader");
+
+        turnsDisplay = "Turn " + turnCounter + "/" + maxTurns;
+        headerText = name + turnsDisplay;
+        lenSpaces = (displayMsgs.displayWidth - headerText.length());
+
+        displayMsgs.displayOutput(" ");
+        displayMsgs.displayOutput(name + " ".repeat(lenSpaces) + turnsDisplay);
+        displayMsgs.displayOutput("-".repeat(displayMsgs.displayWidth));
 
         debugMessage.debugLong();
     }
@@ -77,10 +95,12 @@ public class Room {
 
         debugMessage.debugHeader("Room printAvailableActions");
 
+        displayMsgs.displayOutput(" ");
+        displayMsgs.displayOutput("-".repeat(14));
         items.printListOfThings("Room items", playerInventory);
-        System.out.printf("  Do Action : %s %n", getRoomActions(playerInventory));
-        playerInventory.printListOfThings("Drop Inventory Item", playerInventory);
-
+        displayMsgs.displayOutput("[Do Action ] : " + getRoomActions(playerInventory));
+        playerInventory.printListOfThings("Drop Items", playerInventory);
+        displayMsgs.displayOutput("-".repeat(displayMsgs.displayWidth));
         debugMessage.debugLong();
     }
 
@@ -163,7 +183,7 @@ public class Room {
 
         switch (userInput.toUpperCase()) {
             case "":
-                displayMsgs.displayMessage("BadAction", "", true);
+                displayMsgs.displayMessage("BadAction", true);
                 return true;
             case "EXIT":
                 return false;
@@ -197,7 +217,7 @@ public class Room {
                     debugMessage.debugLong();
                 } else {
                     debugMessage.debugOutput("      Nope, not valid!");
-                    displayMsgs.displayMessage("BadAction", "", true);
+                    displayMsgs.displayMessage("BadAction", true);
                 }
             } else {
                 if (inventoryPos < 999) {
@@ -205,7 +225,7 @@ public class Room {
                     dropIt(userInput, playerInventory);
                 } else {
                     debugMessage.debugOutput("      Input not recognized.");
-                    displayMsgs.displayMessage("BadAction", "", true);
+                    displayMsgs.displayMessage("BadAction",  true);
                 }
             }
         }
@@ -225,7 +245,7 @@ public class Room {
             displayMsgs.displayMessage("CantPickUp", itemName, true);
         } else {
             if (nextFreeSpot == 999) {
-                displayMsgs.displayMessage("PlayerInventoryFull", "", true);
+                displayMsgs.displayMessage("PlayerInventoryFull",  true);
             } else {
                 playerInventory.setListThing(nextFreeSpot, items.transferThing(userInput));
                 displayMsgs.displayMessage("PlayerInventoryItemAdded", itemName, true);
@@ -243,10 +263,10 @@ public class Room {
         String itemName = playerInventory.findName(userInput);
 
         if (getFreeSpot == 999) {
-            System.out.printf("There is no place to put %s in the room. %n", itemName);
+            displayMsgs.displayMessage("CantDropThat", itemName, true);
         } else {
             items.setListThing(getFreeSpot, playerInventory.transferThing(userInput));
-            System.out.printf("You drop %s. %n", itemName);
+            displayMsgs.displayMessage("DroppedThat", itemName, true);
             printAvailableActions(playerInventory);
         }
 
