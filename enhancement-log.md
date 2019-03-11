@@ -99,14 +99,67 @@ I probably need to go back and look at the actions and see if I need to have a t
 - New 'out of turns' message works
 - Old loading messages still display fine
 
-## 003 Tidy Up Room Display
-
-3. Add some whitespace and "-" to help the visuals for the room descriptions.
-
-[pending...]
-
 ## 004 Line Wrap!
 
 4. Put a hard wrap on the room printouts so everything lines up nice and pretty
 
-[pending...]
+I decided to do this one ahead of #3, so that I'd have a better idea of the framing for the room.
+
+### Created displayOutput (DisplayMsgs)
+
+- Set the first width of the room to 60 to see how it looks.
+- Changed **DisplayMsgs** to use **displayOutput**.
+- Changed **Room** to use **displayOutput**.
+- Caught a couple things in **Room** that should have been swapped to **displayMessage** earlier. Fixed those.
+
+### Testing for [004 Line Wrap!]
+
+- Tested that lines shorter than the new width display correctly
+- Tested that lines longer than the new width display correctly
+- Victory!
+
+## 003 Tidy Up Room Display
+
+3. Add some whitespace and "-" to help the visuals for the room descriptions.
+
+### Created printRoomHeader (Room)
+
+- Added a blank line before the room name and turn counter.
+- Added calculation to make sure the turns counter is to the far right.
+- Added a line under the room name.
+
+### Updated printListOfThings (ListOfThings)
+
+- Took out the spaces in front of the list type so it will left align.
+- Swapped it over to using displayOutput (displayMsgs).
+- Added [] so the item lists names are more visible. 
+
+### Updated printAvailableActions (Room)
+
+- Took out the spaces in front of the Do Actions so it will left align.
+- Added [] so the Do Action is more visible.
+- Swapped out everything in **Rooom** to use **debugHeader** 
+- Changed list headers so they all line up nicely
+- Added a space between the room description and the list of actions
+- Added a half line of dashes above the actions and a full line below it
+
+### Deleted getListLen (ListOfThings)
+
+- Nothing was using it.
+
+### Changed displayMessage (DisplayMsgs)
+
+- Split it out into no thing, one thing, and two thing overrrides.
+- Went back and swapped out all the ones that were putting in a blank thing to the new no thing version.
+
+### Testing for [003 Tidy Up Room Display]
+
+- Made sure the new blank lines print correctly
+- Made sure the new lines of dashes print correctly
+- Made sure the lists of actions all print correctly
+- Made sure the one digit current turn spaces correctly
+- Made sure the two digit current turn spaces correctly
+
+### Enhancements and Testing Complete!
+
+Nothing more to see here... time to move on to debugging Room #2!
