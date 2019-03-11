@@ -4,6 +4,10 @@ As I learn (relearn) each language I'm creating a small text-based adventure gam
 
 Feedback on better ways to do this is -as always- appreciated! :)
 
+**testing-log.md** - Tracks work on unit testing/bug hunts
+
+**enhancement-log.md** - Tracks work on enhancements
+
 ## Basic Game Information
 
 This game engine is intended to let the player move through the world as built in the text files. Changing the text files will change the game world, allowing you to build whatever you like! One of the future enhancements will be to make a game designer so folks don't have to actually write the text files (and it will eliminate typos).
