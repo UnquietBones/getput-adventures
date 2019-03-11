@@ -20,18 +20,18 @@ public class Main {
         ItemLibrary gameItems = new ItemLibrary(showDebug);
         ActionLibrary gameActions = new ActionLibrary(showDebug);
 
-        displayMsgs.displayMessage("LoadGame", "", true);
+        displayMsgs.displayMessage("LoadGame", true);
 
-        displayMsgs.displayMessage("LoadItems", "", true);
+        displayMsgs.displayMessage("LoadItems", true);
         gameItems.loadItemLibrary();
 
-        displayMsgs.displayMessage("LoadActions", "", true);
+        displayMsgs.displayMessage("LoadActions", true);
         gameActions.loadActionLibrary();
 
-        displayMsgs.displayMessage("LoadPlayerInventory", "", true);
+        displayMsgs.displayMessage("LoadPlayerInventory", true);
         ListOfThings playerInventory = new ListOfThings("Inventory", "PlayerInv", 6, gameItems, gameActions, showDebug);
 
-        displayMsgs.displayMessage("LoadMap", "", true);
+        displayMsgs.displayMessage("LoadMap",  true);
         RoomMap gameMap = new RoomMap(showDebug);
         gameMap.loadMap();
         gameMap.setCurrentRoomID(startRoom);
@@ -61,18 +61,18 @@ public class Main {
                     currentRoom.printRoom(playerInventory, adventureLoop, maxTurns);
 
                     if (gameMap.getCurrentRoomID().equalsIgnoreCase(winRoom)) {
-                        displayMsgs.displayMessage("WonGame", "", true);
+                        displayMsgs.displayMessage("WonGame",  true);
                         exitGame = true;
                     }
                 }
             } else {
-                displayMsgs.displayMessage("GoHome", "", true);
+                displayMsgs.displayMessage("GoHome", true);
                 exitGame = true;
             }
             adventureLoop++;
 
             if (adventureLoop > maxTurns) {
-                displayMsgs.displayMessage("OutOfTurns", "", true);
+                displayMsgs.displayMessage("OutOfTurns", true);
                 exitGame = true;
             }
         }
