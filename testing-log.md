@@ -1,10 +1,11 @@
 This log contains the testing for:
 - Room 1: The first room has single actions, nothing is chained.
 - Room 2: The second room has chained actions.
-- Room 3: ???
-- Room 4: ???
+- Room 3: The third room has remote actions.
+- Room 4: This room is where the remote actions from Room 3 happen.
 
-==
+---
+
 
 # Room 1 Information
 
@@ -194,7 +195,9 @@ I did all the actions multiple times and everything worked as expected. Going to
 - Add some whitespace and "-" to help the visuals for the room descriptions.
 - Put a hard wrap on the room printouts so everything lines up nice and pretty
 
-==
+
+---
+---
 
 # Room 2 Information
 
@@ -258,3 +261,30 @@ Room2/Testing Room 2/You are standing in an empty room. The walls are a cheerful
 - Does **Properly Remove Item Action** remove the action from item **Random Item A**, remove room action **Properly Remove Item Action**, and add room action **Properly Add Item Action**?
 - Does **Properly Remove Player Item** remove item **Random Item A** from the player's inventory, remove room action **Properly Remove Player Item**, and add room action **Properly Add Player Item**?
 - Does **Properly Remove Room Item** remove item **Random Item B** from the room inventory, remove room action **Properly Remove Room Item**, and add room action **Properly Add Room Item**?
+
+## Issue 006
+
+Using **Move Player to new Room** from Room 1, moves you to Room 2 but doesn't print the message.
+
+MPR/Move Player to new Room/You have been moved suddenly, as if by a heartless computer.../movePlayer Room2/R
+
+ - **ListThing** (doAction) just didn't have a display of the description, added
+ - Swapped out all System.out.print to **displayOutput** (displayMsgs)
+ - Combined **DebugMsgs** into **DisplayMsgs** since they were both about showing messages to the user
+ - Swapped out all **DebugMsgs** for **DisplayMsgs**
+ 
+Tested -- works!
+ 
+## Issue 007
+ 
+Does **Add a Window** add **Window** and remove **Add a Window**?
+
+OTW/Open The Window/You open the window and crawl through it back to the blue room./movePlayer~Room1/O
+ 
+- It does add the item **Window** and remove the room action **Add a Window** but the new action **Open The Window** doesn't show up.
+- **Window** does have action **Open The Window**, but it's failing the check on 'Action OTW Open The Window is missing the required Item in Player Inventory.' because the action type is O
+- So what we have here is bad planning on how to validate the actions!
+
+Time to rethink how I want the actions to work...
+ 
+
