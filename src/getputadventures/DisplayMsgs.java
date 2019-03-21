@@ -3,9 +3,36 @@ package getputadventures;
 public class DisplayMsgs {
 
     public int displayWidth = 60;
+    private boolean showDebug;
 
-    public DisplayMsgs() {
+    public DisplayMsgs(boolean mainDebug) {
+        showDebug = mainDebug;
     }
+
+    public void debugHeader(String methodName) {
+        debugLong();
+        debugOutput("| " + methodName);
+        debugLong();
+    }
+
+    public void debugLong() {
+        if (showDebug) {
+            System.out.println("--------------------------------");
+        }
+    }
+
+    public void debugShort() {
+        if (showDebug) {
+            System.out.println("----------------");
+        }
+    }
+
+    public void debugOutput(String outputThis) {
+        if (showDebug) {
+            System.out.println(outputThis);
+        }
+    }
+
 
     public void displayMessage(String messageName, boolean showMsg) {
 
@@ -162,7 +189,7 @@ public class DisplayMsgs {
                 }
             }
 
-            if (buildLine.length() > 0 ) {
+            if (buildLine.length() > 0) {
                 System.out.println(buildLine);
             }
         }
