@@ -15,18 +15,17 @@ public class RoomMap {
     private String[][] roomActions = new String[MAXROOMS][MAXACTIONS];
     private String currentRoomID;
     private boolean showDebug;
-    private DebugMsgs debugMessage;
+    private DisplayMsgs displayMsgs;
 
     public RoomMap(boolean mainDebug) {
         showDebug = mainDebug;
-        debugMessage = new DebugMsgs(showDebug);
+        displayMsgs = new DisplayMsgs(showDebug);
         currentRoomID = "";
     }
 
     public void loadMap() throws Exception {
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap loadMap");
+        displayMsgs.debugHeader("RoomMap loadMap");
 
         String allItems;
         String allActions;
@@ -43,8 +42,8 @@ public class RoomMap {
         Scanner scan = new Scanner(file);
         scan.useDelimiter("/|\\r\\n");
 
-        debugMessage.debugOutput("  Loading Room Map from " + pathname);
-        debugMessage.debugShort();
+        displayMsgs.debugOutput("  Loading Room Map from " + pathname);
+        displayMsgs.debugShort();
 
         // throw out the first line, it's the header
         scan.nextLine();
@@ -52,24 +51,24 @@ public class RoomMap {
         while (scan.hasNext()) {
 
             roomIDs[roomCounter] = scan.next();
-            debugMessage.debugOutput("Checking line " + roomCounter);
+            displayMsgs.debugOutput("Checking line " + roomCounter);
 
             if (!roomIDs[roomCounter].isEmpty()) {
 
-                debugMessage.debugOutput("  Reading in room name.");
+                displayMsgs.debugOutput("  Reading in room name.");
                 roomNames[roomCounter] = scan.next();
 
-                debugMessage.debugOutput("  Reading in room description.");
+                displayMsgs.debugOutput("  Reading in room description.");
                 roomDescriptions[roomCounter] = scan.next();
 
                 // The next sections have comma delimited subvalues
                 // -------------------------------------------------------------------------------------
 
-                debugMessage.debugShort();
-                debugMessage.debugOutput("  Reading in room items.");
+                displayMsgs.debugShort();
+                displayMsgs.debugOutput("  Reading in room items.");
 
                 allItems = scan.next();
-                debugMessage.debugOutput("    " + allItems);
+                displayMsgs.debugOutput("    " + allItems);
 
                 // First clear out all the values in the room's item list
                 for (int itemPos = 0; itemPos < MAXITEMS; itemPos++) {
@@ -82,21 +81,21 @@ public class RoomMap {
                     String[] tempItems = allItems.split(",");
                     itemCount = tempItems.length;
 
-                    debugMessage.debugOutput("    " + itemCount + " items found.");
+                    displayMsgs.debugOutput("    " + itemCount + " items found.");
 
                     for (int newItemPos = 0; newItemPos < itemCount; newItemPos++) {
                         roomItems[roomCounter][newItemPos] = tempItems[newItemPos];
                     }
                 } else {
-                    debugMessage.debugOutput("    No Items found.");
+                    displayMsgs.debugOutput("    No Items found.");
                 }
 
                 // -------------------------------------------------------------------------------------
-                debugMessage.debugShort();
-                debugMessage.debugOutput("Reading in room Actions.");
+                displayMsgs.debugShort();
+                displayMsgs.debugOutput("Reading in room Actions.");
 
                 allActions = scan.next();
-                debugMessage.debugOutput("    " + allActions);
+                displayMsgs.debugOutput("    " + allActions);
 
                 // First clear out all the values in the room's actions list
                 for (int actionPos = 0; actionPos < MAXACTIONS; actionPos++) {
@@ -109,38 +108,38 @@ public class RoomMap {
 
                     String[] tempActions = allActions.split(",");
                     actionCount = tempActions.length;
-                    debugMessage.debugOutput("    " + actionCount + " Actions found.");
+                    displayMsgs.debugOutput("    " + actionCount + " Actions found.");
 
                     for (int newActionPos = 0; newActionPos < actionCount; newActionPos++) {
                         roomActions[roomCounter][newActionPos] = tempActions[newActionPos];
                     }
                 } else {
-                    debugMessage.debugOutput("    No Actions found.");
+                    displayMsgs.debugOutput("    No Actions found.");
                 }
 
                 // -------------------------------------------------------------------------------------
 
-                debugMessage.debugShort();
-                debugMessage.debugOutput("  Room ID          " + roomIDs[roomCounter]);
-                debugMessage.debugOutput("  Room name        " + roomNames[roomCounter]);
-                debugMessage.debugOutput("  Room Description " + roomDescriptions[roomCounter]);
-                debugMessage.debugOutput("  Items            " + allItems);
-                debugMessage.debugOutput("  Actions          " + allActions);
-                debugMessage.debugShort();
+                displayMsgs.debugShort();
+                displayMsgs.debugOutput("  Room ID          " + roomIDs[roomCounter]);
+                displayMsgs.debugOutput("  Room name        " + roomNames[roomCounter]);
+                displayMsgs.debugOutput("  Room Description " + roomDescriptions[roomCounter]);
+                displayMsgs.debugOutput("  Items            " + allItems);
+                displayMsgs.debugOutput("  Actions          " + allActions);
+                displayMsgs.debugShort();
             } else {
-                debugMessage.debugOutput("All done!");
-                debugMessage.debugShort();
+                displayMsgs.debugOutput("All done!");
+                displayMsgs.debugShort();
             }
             roomCounter += 1;
         }
-        debugMessage.debugLong();
+        displayMsgs.debugLong();
         scan.close();
     }
 
     public Room readRoom(String findThisID, ItemLibrary gameItems, ActionLibrary gameActions, ListOfThings playerInventory) {
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap readRoom");
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap readRoom");
 
         Room thisRoom = null;
         String thisRoomName;
@@ -155,44 +154,44 @@ public class RoomMap {
                 thisRoomItems = roomItems[roomPos];
                 thisRoomActions = roomActions[roomPos];
                 thisRoom = new Room(findThisID, thisRoomName, thisRoomDescription, thisRoomItems, thisRoomActions, gameItems, gameActions, showDebug);
-                debugMessage.debugLong();
+                displayMsgs.debugLong();
                 return thisRoom;
             }
         }
 
-        debugMessage.debugOutput("Unable to find room ID " + findThisID + ".");
-        debugMessage.debugLong();
+        displayMsgs.debugOutput("Unable to find room ID " + findThisID + ".");
+        displayMsgs.debugLong();
         return thisRoom;
     }
 
     public void updateRoom(Room changedRoom) {
         // Setting it up so everything can change except the room ID
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap updateRoom");
-        debugMessage.debugOutput("  Trying to update room " + changedRoom.ID + " " + changedRoom.name);
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap updateRoom");
+        displayMsgs.debugOutput("  Trying to update room " + changedRoom.ID + " " + changedRoom.name);
 
         int roomPos = isInMap(changedRoom.ID);
 
         if (roomPos < 999) {
             if (!roomNames[roomPos].equalsIgnoreCase(changedRoom.name)) {
-                debugMessage.debugOutput("  Updating room name from " + roomNames[roomPos] + " to " + changedRoom.name);
+                displayMsgs.debugOutput("  Updating room name from " + roomNames[roomPos] + " to " + changedRoom.name);
                 updateRoomName(changedRoom.ID, changedRoom.name);
             }
 
             if (!roomNames[roomPos].equalsIgnoreCase(changedRoom.name)) {
-                debugMessage.debugOutput("  Updating room description from " + roomDescriptions[roomPos] + " to " + changedRoom.getDescription());
+                displayMsgs.debugOutput("  Updating room description from " + roomDescriptions[roomPos] + " to " + changedRoom.getDescription());
                 updateRoomDescription(changedRoom.ID, changedRoom.getDescription());
             }
 
             updateRoomItems(roomPos, changedRoom.getItems());
             updateRoomActions(roomPos, changedRoom.getActions());
 
-            debugMessage.debugOutput("Completed room update.");
-            debugMessage.debugLong();
+            displayMsgs.debugOutput("Completed room update.");
+            displayMsgs.debugLong();
         } else {
-            debugMessage.debugOutput("Unable to find Room " + changedRoom.name);
-            debugMessage.debugLong();
+            displayMsgs.debugOutput("Unable to find Room " + changedRoom.name);
+            displayMsgs.debugLong();
         }
     }
 
@@ -201,11 +200,11 @@ public class RoomMap {
         String oldValue;
         String newValue;
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap updateRoomItems");
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap updateRoomItems");
 
         for (int itemPos = 0; itemPos < MAXITEMS; itemPos++) {
-            debugMessage.debugOutput("    Checking [" + itemPos + "]");
+            displayMsgs.debugOutput("    Checking [" + itemPos + "]");
 
             if (roomItems[roomPos][itemPos] == null) {
                 oldValue = "";
@@ -220,12 +219,12 @@ public class RoomMap {
             }
 
             if (!newValue.equalsIgnoreCase(oldValue)) {
-                debugMessage.debugOutput("      Changing [" + itemPos + "] from Old " + oldValue + " to New " + newValue);
+                displayMsgs.debugOutput("      Changing [" + itemPos + "] from Old " + oldValue + " to New " + newValue);
             }
 
             roomItems[roomPos][itemPos] = newValue;
         }
-        debugMessage.debugLong();
+        displayMsgs.debugLong();
     }
 
     public void updateRoomActions(int roomPos, ListOfThings changedActions) {
@@ -233,8 +232,8 @@ public class RoomMap {
         String oldValue;
         String newValue;
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap updateRoomActions");
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap updateRoomActions");
 
         for (int actionPos = 0; actionPos < MAXACTIONS; actionPos++) {
 
@@ -251,41 +250,41 @@ public class RoomMap {
             }
 
             if (!newValue.equalsIgnoreCase(oldValue)) {
-                debugMessage.debugOutput("      Changing [" + actionPos + "] from Old " + oldValue + " to New " + newValue);
+                displayMsgs.debugOutput("      Changing [" + actionPos + "] from Old " + oldValue + " to New " + newValue);
             }
 
             roomActions[roomPos][actionPos] = newValue;
         }
-        debugMessage.debugLong();
+        displayMsgs.debugLong();
     }
 
     public void updateRoomName(String roomID, String Name) {
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap updateRoomName");
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap updateRoomName");
 
         int roomPos = isInMap(roomID);
 
         if (roomPos < 999) {
             roomNames[roomPos] = Name;
         } else {
-            debugMessage.debugOutput("Unable to find Room " + roomID);
-            debugMessage.debugLong();
+            displayMsgs.debugOutput("Unable to find Room " + roomID);
+            displayMsgs.debugLong();
         }
     }
 
     public void updateRoomDescription(String roomID, String Description) {
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap updateRoomDescription");
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap updateRoomDescription");
 
         int roomPos = isInMap(roomID);
 
         if (roomPos < 999) {
             roomDescriptions[roomPos] = Description;
         } else {
-            debugMessage.debugOutput("Unable to find Room " + roomID);
-            debugMessage.debugLong();
+            displayMsgs.debugOutput("Unable to find Room " + roomID);
+            displayMsgs.debugLong();
         }
     }
 
@@ -294,22 +293,22 @@ public class RoomMap {
         // This will find the location the Map of the Room or it will return 999
         // Checks for matches on ID or Name for simplicity's sake
 
-        debugMessage.debugLong();
-        debugMessage.debugOutput("RoomMap isInMap");
-        debugMessage.debugOutput("  Trying to find " + findRoom);
+        displayMsgs.debugLong();
+        displayMsgs.debugOutput("RoomMap isInMap");
+        displayMsgs.debugOutput("  Trying to find " + findRoom);
 
         for (int roomPos = 0; roomPos < roomIDs.length; roomPos++) {
-            debugMessage.debugOutput("  Checking [" + roomPos + "] " + roomIDs[roomPos] + " " + roomNames[roomPos]);
+            displayMsgs.debugOutput("  Checking [" + roomPos + "] " + roomIDs[roomPos] + " " + roomNames[roomPos]);
 
             if (roomIDs[roomPos].equalsIgnoreCase(findRoom) || roomNames[roomPos].equalsIgnoreCase(findRoom)) {
-                debugMessage.debugOutput("  Room " + findRoom + " was in the Room Map at [ " + roomPos + " ].");
-                debugMessage.debugLong();
+                displayMsgs.debugOutput("  Room " + findRoom + " was in the Room Map at [ " + roomPos + " ].");
+                displayMsgs.debugLong();
                 return roomPos;
             }
         }
 
-        debugMessage.debugOutput("  Room " + findRoom + "was not in the Room Map.");
-        debugMessage.debugLong();
+        displayMsgs.debugOutput("  Room " + findRoom + "was not in the Room Map.");
+        displayMsgs.debugLong();
         return 999;
     }
 
