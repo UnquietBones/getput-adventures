@@ -14,11 +14,11 @@ public class ItemLibrary {
     private String[] itemActions = new String[libraryCount];
     private String[] itemPickup = new String[libraryCount];
     private Boolean showDebug;
-    private DebugMsgs debugMessage;
+    private DisplayMsgs debugMessage;
 
     public ItemLibrary(Boolean mainDebug) {
         showDebug = mainDebug;
-        debugMessage = new DebugMsgs(showDebug);
+        debugMessage = new DisplayMsgs(showDebug);
     }
 
     public void loadItemLibrary() throws Exception {
