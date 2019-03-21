@@ -6,8 +6,7 @@ public class Main {
 
         boolean showDebug = false;
         boolean exitGame = false;
-        DebugMsgs debugMessage = new DebugMsgs(showDebug);
-        DisplayMsgs displayMsgs = new DisplayMsgs();
+        DisplayMsgs displayMsgs = new DisplayMsgs(showDebug);
 
         // These are all hardcoded right now, will read from game file later
 
@@ -49,14 +48,14 @@ public class Main {
         while (!exitGame) {
             if (currentRoom.roomAction(gameItems, gameActions, playerInventory, gameMap, adventureLoop, maxTurns)) {
 
-                debugMessage.debugOutput("Current Room is %" + currentRoom.ID + " room loaded is " + gameMap.getCurrentRoomID() + ".");
+                displayMsgs.debugOutput("Current Room is %" + currentRoom.ID + " room loaded is " + gameMap.getCurrentRoomID() + ".");
 
                 if (!gameMap.getCurrentRoomID().equals(currentRoom.ID)) {
 
-                    debugMessage.debugOutput("Updating room " + currentRoom.ID + ".");
+                    displayMsgs.debugOutput("Updating room " + currentRoom.ID + ".");
                     gameMap.updateRoom(currentRoom);
 
-                    debugMessage.debugOutput("Loading room " + gameMap.getCurrentRoomID() + ".");
+                    displayMsgs.debugOutput("Loading room " + gameMap.getCurrentRoomID() + ".");
                     currentRoom = gameMap.readRoom(gameMap.getCurrentRoomID(), gameItems, gameActions, playerInventory);
                     currentRoom.printRoom(playerInventory, adventureLoop, maxTurns);
 
