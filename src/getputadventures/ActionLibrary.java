@@ -17,11 +17,13 @@ public class ActionLibrary {
     private String[] actionDescriptions = new String[LIBRARYCOUNT];
     private String[] actionCommands = new String[LIBRARYCOUNT];
     private String[] actionType = new String[LIBRARYCOUNT];
-    private DebugMsgs debugMessage;
+    private DisplayMsgs debugMessage;
 
     public ActionLibrary(boolean mainDebug) {
         showDebug = mainDebug;
-        debugMessage = new DebugMsgs(showDebug);
+        debugMessage = new DisplayMsgs(showDebug);
+
+        System.out.println();
     }
 
     public void loadActionLibrary() throws Exception {
